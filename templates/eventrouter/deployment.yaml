@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventrouter
+  namespace: kube-system
+  labels:
+    app: eventrouter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventrouter
+  template:
+    metadata:
+      labels:
+        app: eventrouter
+    spec:
+      containers:
+      - image: {{ include "eventRouter.imageRepository" . }}/eventrouter:v0.3
+        name: eventrouter
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: vol-config
+          mountPath: /etc/eventrouter
+        nodeSelector:
+          kubernetes.io/os: linux
+        serviceAccount: eventrouter
+        volumes:
+        - name: vol-config
+          configMap:
+            name: eventrouter

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: venti
+  namespace: kube-system
+spec:
+  selector:
+    app: venti
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080

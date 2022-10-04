@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lethe
+  namespace: kube-system
+data:
+  lethe.yaml: |
+    retention:
+      size: {{ .Values.lethe.retention.size }}
+      time: {{ .Values.lethe.retention.time }}
+  fluent-bit.conf: |
+    [SERVICE]
+        Daemon       Off
+        Flush        1
+        Log_Level    info
+        HTTP_Server  On
+        HTTP_Listen  0.0.0.0
+        HTTP_Port    2020
+        Health_Check On
+    [INPUT]
+        Name         forward
+        Listen       0.0.0.0
+        Port         24224
+    [OUTPUT]
+        Name file
+        Match *
+        Path /data/log
+        Mkdir true
+        Format template
+        Template {row}

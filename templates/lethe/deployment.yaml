@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lethe
+  namespace: kube-system
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: lethe
+  template:
+    metadata:
+      labels:
+        app: lethe
+    spec:
+      terminationGracePeriodSeconds: 0
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+      - name: reader
+        image: {{ include "lethe.imageRepository" . }}/lethe:v0.1.2
+        resources:
+          {{- toYaml .Values.lethe.resources.limits | nindent 10 }}
+        volumeMounts:
+        - name: vol-data
+          mountPath: /data
+        - name: vol-config
+          mountPath: /app/etc
+      - name: writer
+        image: {{ include "fluentBit.imageRepository" . }}/fluent-bit:1.9.3
+        resources:
+          {{- toYaml .Values.lethe.resources.limits | nindent 10 }}
+        volumeMounts:
+        - name: vol-data
+          mountPath: /data
+        - name: vol-config
+          mountPath: /fluent-bit/etc
+      volumes:
+      - name: vol-config
+        configMap:
+          name: lethe
+      - name: vol-data
+        persistentVolumeClaim:
+          claimName: lethe

@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    k8s-app: node-exporter
+  name: node-exporter 
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      k8s-app: node-exporter
+  template:
+    metadata:
+      labels:
+        k8s-app: node-exporter
+    spec:
+      containers:
+      - args:
+        - --path.procfs=/host/proc
+        - --path.sysfs=/host/sys
+        - --path.rootfs=/host/root
+        - --web.listen-address=:9100
+        - --collector.systemd
+        - --collector.textfile.directory=/var/log/textfile_collector
+        - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)
+        - --collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$
+        - --collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$
+        image: {{ include "venti.imageRepository" . }}/node-exporter:v1.3.1
+        imagePullPolicy: IfNotPresent
+        name: node-exporter
+        ports:
+        - containerPort: 9100
+          hostPort: 9100
+          name: metrics
+        resources:
+          requests:
+            memory: 50Mi
+            cpu: 100m
+          limits:
+            memory: 200Mi
+            cpu: 200m
+        securityContext:
+          allowPrivilegeEscalation: false
+        volumeMounts:
+        - mountPath: /host/proc
+          name: proc
+          readOnly: true
+        - mountPath: /host/sys
+          name: sys
+          readOnly: true
+        - mountPath: /host/root
+          mountPropagation: HostToContainer
+          name: root
+          readOnly: true
+        - mountPath: /var/run/dbus/system_bus_socket
+          name: system-dbus-socket
+          readOnly: true
+        - mountPath: /var/log/textfile_collector
+          name: pv
+          readOnly: true
+      hostNetwork: true
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      volumes:
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: sys
+        hostPath:
+          path: /sys
+      - hostPath:
+          path: /
+        name: root
+      - hostPath:
+          path: /var/run/dbus/system_bus_socket
+        name: system-dbus-socket
+      - name: pv
+        hostPath:
+          path: /var/log/textfile_collector
+      tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+      - operator: Exists
+        effect: NoExecute
+      - operator: Exists
+        effect: NoSchedule
+  updateStrategy:
+    type: RollingUpdate
