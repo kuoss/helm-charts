@@ -24,23 +24,23 @@ data:
         type: stat
         targets:
         - expr: kubernetes_build_info{job="kubernetes-apiservers"}
-          legend: "\{\{git_version\}\}"
+          legend: "{{`{{git_version}}`}}"
     - panels:
       - title: node
         type: piechart
         targets:
         - expr: sum(kube_node_status_condition{status="true"}) by (condition) > 0
-          legend: "\{\{condition\{\}"
+          legend: "{{`{{condition}}`}}"
       - title: namespace
         type: piechart
         targets:
         - expr: sum(kube_namespace_status_phase) by (phase) > 0
-          legend: "\{\{phase\{\}"
+          legend: "{{`{{phase}}`}}"
       - title: pod
         type: piechart
         targets:
         - expr: sum(kube_pod_status_phase{namespace=~"$namespace",node=~"$node"}) by (phase) > 0
-          legend: "\{\{phase\{\}"
+          legend: "{{`{{phase}}`}}"
       - title: job
         type: piechart
         targets:
@@ -54,37 +54,37 @@ data:
         type: piechart
         targets:
         - expr: sum(kube_persistentvolumeclaim_status_phase{namespace=~"$namespace"}) by (phase) > 0
-          legend: "\{\{phase\{\}"
+          legend: "{{`{{phase}}`}}"
       - title: pv
         type: piechart
         targets:
         - expr: sum(kube_persistentvolume_status_phase == 1) by (phase) > 0
-          legend: "\{\{phase\{\}"
+          legend: "{{`{{phase}}`}}"
     - panels:
       - title: node load
         type: time_series
         targets:
         - expr: node_load1
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node cpu%
         type: time_series
         targets:
         - expr: 100 * sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) by (node) / sum(kube_node_status_allocatable{resource="cpu"}) by (node)
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
         chartOptions:
           yMax: 100
       - title: node mem%
         type: time_series
         targets:
         - expr: 100 * (1 - ( node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes ))
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
         chartOptions:
           yMax: 100
       - title: node pods
         type: time_series
         targets:
         - expr: sum(kubelet_running_pods) by (instance)
-          legend: "\{\{instance\{\}"
+          legend: "{{`{{instance}}`}}"
         chartOptions:
           yMax: 120
     - panels:
@@ -92,27 +92,27 @@ data:
         type: time_series
         targets:
         - expr: sum(rate(node_network_receive_bytes_total[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node transmit (Ki/m)
         type: time_series
         targets:
         - expr: sum(rate(node_network_transmit_bytes_total[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node disk read (Ki/m)
         type: time_series
         targets:
         - expr: sum(rate(node_disk_read_bytes_total[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node disk write (Ki/m)
         type: time_series
         targets:
         - expr: sum(rate(node_disk_written_bytes_total[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node root fs%
         type: time_series
         targets:
         - expr: 100 * sum( 1-(node_filesystem_avail_bytes{fstype="xfs",mountpoint="/"} / node_filesystem_size_bytes{fstype="xfs",mountpoint="/"}) ) by (node)
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
         chartOptions:
           yMax: 100
     - panels:
@@ -120,26 +120,26 @@ data:
         type: time_series
         targets:
         - expr: 100 * max( 1 - kubelet_volume_stats_available_bytes / kubelet_volume_stats_capacity_bytes) by (namespace, persistentvolumeclaim)
-          legend: "\{\{namespace\{\}/\{\{persistentvolumeclaim\{\}"
+          legend: "{{`{{namespace/persistentvolumeclaim}}`}}"
         chartOptions:
           yMax: 100
       - title: pvc inodes%
         type: time_series
         targets:
         - expr: kubelet_volume_stats_inodes_used / kubelet_volume_stats_inodes * 100
-          legend: "\{\{namespace\{\}/\{\{persistentvolumeclaim\{\}"
+          legend: "{{`{{namespace/persistentvolumeclaim}}`}}"
         chartOptions:
           yMax: 100
       - title: pod cpu(mcores)
         type: time_series
         targets:
         - expr: sum(rate(container_cpu_usage_seconds_total{namespace=~"$namespace", instance=~"$node", container!=""}[5m])) by (namespace, pod) * 1000
-          legend: "\{\{namespace\{\}/\{\{pod\{\}"
+          legend: "{{`{{namespace}}/{{pod}}`}}"
       - title: pod mem(Mi)
         type: time_series
         targets:
         - expr: sum(container_memory_working_set_bytes{namespace=~"$namespace", instance=~"$node", container!=""}) by (namespace, pod) / 1024 / 1024
-          legend: "\{\{namespace\{\}/\{\{pod\{\}"
+          legend: "{{`{{namespace}}/{{pod}}`}}"
     - panels:
       - title: event
         type: logs
@@ -171,47 +171,47 @@ data:
         targets:
         - expr: |
             rate(container_cpu_usage_seconds_total{namespace="kube-system",pod=~"kube-apiserver-.*",image=""}[5m]) * 1000
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: mem(Mi)
         type: time_series
         targets:
         - expr: |
             container_memory_working_set_bytes{namespace="kube-system",pod=~"kube-apiserver-.*",image=""} / 1024 / 1024
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: cpu(mcores)
         type: time_series
         targets:
         - expr: |
             rate(container_cpu_usage_seconds_total{namespace="kube-system",pod=~"kube-controller-.*",image=""}[5m]) * 1000
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: mem(Mi)
         type: time_series
         targets:
         - expr: |
             container_memory_working_set_bytes{namespace="kube-system",pod=~"kube-controller-.*",image=""} / 1024 / 1024
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: cpu(mcores)
         type: time_series
         targets:
         - expr: |
             rate(container_cpu_usage_seconds_total{namespace="kube-system",pod=~"kube-scheduler-.*",image=""}[5m]) * 1000
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: mem(Mi)
         type: time_series
         targets:
         - expr: |
             container_memory_working_set_bytes{namespace="kube-system",pod=~"kube-scheduler-.*",image=""} / 1024 / 1024
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: etcd db size(Mi)
         type: time_series
         targets:
         - expr: max(etcd_db_total_size_in_bytes) by(endpoint) / 1024 / 1024 
-          legend: '\{\{endpoint\{\}'
+          legend: "{{`{{endpoint}}`}}"
       - title: etcd object
         type: time_series
         targets:
         - expr: 'sum(etcd_object_counts) by (resource) > 0'
-          legend: '\{\{resource\{\}'
+          legend: "{{`{{resource}}`}}"
     - panels:
       - title: apiserver
         type: logs
@@ -248,25 +248,25 @@ data:
 
         - expr: |
             rate(container_cpu_usage_seconds_total{pod=~"ingress-nginx-controller-.*",image=""}[5m]) * 1000
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: mem(Mi)
         type: time_series
         targets:
         - expr: |
             container_memory_working_set_bytes{pod=~"ingress-nginx-controller-.*",image=""} / 1024 / 1024
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: transmit(Ki)
         type: time_series
         targets:
         - expr: |
             rate(container_network_transmit_bytes_total{pod=~"ingress-nginx-controller-.*"}[5m]) / 1024
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
       - title: receive(Ki)
         type: time_series
         targets:
         - expr: |
             rate(container_network_receive_bytes_total{pod=~"ingress-nginx-controller-.*"}[5m]) / 1024
-          legend: '\{\{pod\{\}'
+          legend: "{{`{{pod}}`}}"
     - panels:
       - title: log
         type: logs
@@ -280,12 +280,12 @@ data:
         type: piechart
         targets:
         - expr: sum(kube_node_status_condition{status='true'}) by (condition) > 0
-          legend: "\{\{condition\{\}"
+          legend: "{{`{{condition}}`}}"
       - title: kubelet state
         type: piechart
         targets:
         - expr: sum(node_systemd_unit_state{name="kubelet.service"}) by (state) > 0
-          legend: "\{\{state\{\}"
+          legend: "{{`{{state}}`}}"
     - panels:
       - title: node info
         type: table
@@ -299,26 +299,26 @@ data:
         type: time_series
         targets:
         - expr: node_load1{node=~"$node"}
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node cpu%
         type: time_series
         targets:
         - expr: 100 * sum(rate(node_cpu_seconds_total{node=~"$node",mode!="idle",mode!="iowait"}[3m])) by (node) / sum(kube_node_status_allocatable{node=~"$node",resource="cpu"}) by (node)
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
         chartOptions:
           yMax: 100
       - title: node mem%
         type: time_series
         targets:
         - expr: 100 * (1 - ( node_memory_MemAvailable_bytes{node=~"$node"} / node_memory_MemTotal_bytes{node=~"$node"}))
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
         chartOptions:
           yMax: 100
       - title: node pods
         type: time_series
         targets:
         - expr: sum(kubelet_running_pods{instance=~"$node"}) by (instance)
-          legend: "\{\{instance\{\}"
+          legend: "{{`{{instance}}`}}"
         chartOptions:
           yMax: 120
     - panels:
@@ -326,27 +326,27 @@ data:
         type: time_series
         targets:
         - expr: sum(rate(node_network_receive_bytes_total{node=~"$node"}[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node transmit (Ki/m)
         type: time_series
         targets:
         - expr: sum(rate(node_network_transmit_bytes_total{node=~"$node"}[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node disk read (Ki/m)
         type: time_series
         targets:
         - expr: sum(rate(node_disk_read_bytes_total{node=~"$node"}[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node disk write (Ki/m)
         type: time_series
         targets:
         - expr: sum(rate(node_disk_written_bytes_total{node=~"$node"}[2m])) by (node) / 1024
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
       - title: node root fs%
         type: time_series
         targets:
         - expr: 100 * sum( 1-(node_filesystem_avail_bytes{node=~"$node",fstype="xfs",mountpoint="/"} / node_filesystem_size_bytes{node=~"$node",fstype="xfs",mountpoint="/"}) ) by (node)
-          legend: "\{\{node\{\}"
+          legend: "{{`{{node}}`}}"
         chartOptions:
           yMax: 100
     - panels:

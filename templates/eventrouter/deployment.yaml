@@ -28,10 +28,10 @@ spec:
         volumeMounts:
         - name: vol-config
           mountPath: /etc/eventrouter
-        nodeSelector:
-          kubernetes.io/os: linux
-        serviceAccount: eventrouter
-        volumes:
-        - name: vol-config
-          configMap:
-            name: eventrouter
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccount: eventrouter
+      volumes:
+      - name: vol-config
+        configMap:
+          name: eventrouter
