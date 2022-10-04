@@ -8,7 +8,7 @@ ingress:
 
 prometheus:
   persistence:
-    size: 10
+    size: 10Gi
   retention:
     size: 7GB
     time: 15d
@@ -22,7 +22,7 @@ prometheus:
 
 lethe:
   persistence:
-    size: 10
+    size: 10Gi
   retention:
     size: 7g
     time: 15d
