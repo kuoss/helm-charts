@@ -345,7 +345,7 @@ data:
       - title: node root fs%
         type: time_series
         targets:
-        - expr: 100 * sum( 1-(node_filesystem_avail_bytes{node=~"$node",fstype="xfs",mountpoint="/"} / node_filesystem_size_bytes{node=~"$node",fstype="xfs",mountpoint="/"}) ) by (node)
+        - expr: 100 * (1-(node_filesystem_avail_bytes{mountpoint="/"}/node_filesystem_size_bytes{mountpoint="/"}))
           legend: "{{`{{node}}`}}"
         chartOptions:
           yMax: 100
