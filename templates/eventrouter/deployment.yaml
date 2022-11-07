@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
       - image: {{ include "eventRouter.imageRepository" . }}/eventrouter:v0.3
+        imagePullPolicy: Always
         name: eventrouter
         resources:
           limits:
