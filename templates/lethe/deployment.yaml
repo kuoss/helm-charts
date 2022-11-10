@@ -20,7 +20,7 @@ spec:
         kubernetes.io/os: linux
       containers:
       - name: reader
-        image: {{ include "lethe.imageRepository" . }}/lethe:v0.1.2
+        image: {{ include "lethe.imageRepository" . }}/lethe:v0.1.4
         resources:
           {{- toYaml .Values.lethe.resources | nindent 10 }}
         volumeMounts:
