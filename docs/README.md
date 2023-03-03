@@ -18,10 +18,9 @@ graph TD
     Prometheus --- KubeStateMetrics("kube-state-metrics")
     Venti --- Lethe("🌊lethe") --- FluentBit("fluent-bit") --- Eventrouter("eventrouter")
 
-    classDef visual fill:#595;
-    classDef metric fill:#963;
-    classDef log fill:#369;
-    
+    classDef visual fill:#7b7;
+    classDef metric fill:#b96;
+    classDef log fill:#69b;
     class Venti visual
     class Prometheus,NodeExporter,KubeStateMetrics metric
     class Lethe,FluentBit,Eventrouter log
