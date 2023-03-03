@@ -14,10 +14,15 @@
 
 ```mermaid
 graph TD
-    A("💨venti") --- B("🔥prometheus")
-    A --- C("🌊lethe")
-    B --- D("node-exporter")
-    B --- E("kube-state-metrics")
-    C --- F("fluent-bit")
-    F --- G("eventrouter")
+    Venti("💨venti") --- Prometheus("🔥prometheus") --- NodeExporter("node-exporter")
+    Prometheus --- KubeStateMetrics("kube-state-metrics")
+    Venti --- Lethe("🌊lethe") --- FluentBit("fluent-bit") --- Eventrouter("eventrouter")
+
+    classDef visual fill:#595;
+    classDef metric fill:#963;
+    classDef log fill:#369;
+    
+    class Venti visual
+    class Prometheus,NodeExporter,KubeStateMetrics metric
+    class Lethe,FluentBit,Eventrouter log
 ```
