@@ -1,6 +1,6 @@
 # Logmon Helm Chart
 
-Installs the [kuoss-logmon stack], a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
+Installs the kuoss-logmon stack, a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
 
 ## Prerequisites
 
