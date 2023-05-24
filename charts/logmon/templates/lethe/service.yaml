@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: lethe
-  namespace: kube-system
+  name: {{ template "logmon.fullname" . }}-lethe
+  namespace: {{ template "logmon.namespace" . }}
 spec:
   selector:
     app: lethe

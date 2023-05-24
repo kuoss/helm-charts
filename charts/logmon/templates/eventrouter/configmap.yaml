@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "logmon.fullname" . }}-eventrouter
+  namespace: {{ template "logmon.namespace" . }}
+data:
+  config.json: |
+    {
+      "sink": "stdout"
+    }

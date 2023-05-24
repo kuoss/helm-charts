@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: venti
-  namespace: kube-system
+  name: {{ template "logmon.fullname" . }}-venti
+  namespace: {{ template "logmon.namespace" . }}
 spec:
   replicas: 1
   selector:

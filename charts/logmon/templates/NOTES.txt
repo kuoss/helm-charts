@@ -1,0 +1,7 @@
+{{ $.Chart.Name }} has been installed. Check its status by running:
+  kubectl -n {{ $.Release.Namespace }} get pod | grep {{ $.Release.Name }}
+  kubectl -n {{ $.Release.Namespace }} get all | grep {{ $.Release.Name }}
+  kubectl -n {{ $.Release.Namespace }} get sa,clusterrole,clusterrolebinding,pvc | grep {{ $.Release.Name }}
+
+Visit https://github.com/kuoss/helm-charts for further information.
+

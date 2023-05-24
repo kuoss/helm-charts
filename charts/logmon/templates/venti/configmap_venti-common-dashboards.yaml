@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: venti-common-dashboards
-  namespace: kube-system
+  name: {{ template "logmon.fullname" . }}-venti-common-dashboards
+  namespace: {{ template "logmon.namespace" . }}
 data:
   cluster.yaml: |
     title: Cluster

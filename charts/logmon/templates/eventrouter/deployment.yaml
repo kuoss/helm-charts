@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eventrouter
-  namespace: kube-system
+  name: {{ template "logmon.fullname" . }}-eventrouter
+  namespace: {{ template "logmon.namespace" . }}
   labels:
     app: eventrouter
 spec:

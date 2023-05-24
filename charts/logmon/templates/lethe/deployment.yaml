@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lethe
-  namespace: kube-system
+  name: {{ template "logmon.fullname" . }}-lethe
+  namespace: {{ template "logmon.namespace" . }}
 spec:
   replicas: 1
   strategy:

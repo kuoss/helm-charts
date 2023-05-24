@@ -1,8 +1,8 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: lethe
-  namespace: kube-system
+  name: {{ template "logmon.fullname" . }}-lethe
+  namespace: {{ template "logmon.namespace" . }}
 spec:
   accessModes:
   - ReadWriteOnce
