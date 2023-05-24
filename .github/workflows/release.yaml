@@ -15,12 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        # uses: actions/checkout@v3
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
-      #- name: Fetch history
-      #  run: git fetch --prune --unshallow
-
+      - name: Fetch history
+        run: git fetch --prune --unshallow
+        
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
@@ -34,6 +33,7 @@ jobs:
       - name: Add dependency chart repos
         run: |
           helm repo add fluent https://fluent.github.io/helm-charts
+          helm repo add kuoss https://kuoss.github.io/helm-charts
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 
       - name: Run chart-releaser
