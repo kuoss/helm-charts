@@ -14,19 +14,16 @@ sources:
   - https://github.com/prometheus/prometheus
   - https://github.com/prometheus/pushgateway
   - https://github.com/prometheus/node_exporter
-  
 type: application
 dependencies:
   - name: prometheus
     version: "22.6.*"
     repository: https://prometheus-community.github.io/helm-charts
     condition: prometheus.enabled
-    exported:
-    - prometheus-pushgateway.enabled
   - name: fluent-bit
     version: "0.29.*"
     repository: https://fluent.github.io/helm-charts
-    condition: prometheus.enabled
+    condition: fluent-bit.enabled
 keywords:
   - monitoring
   - prometheus
@@ -34,3 +31,8 @@ keywords:
   - logging
   - venti
   - visualizer
+annotations:
+  "artifacthub.io/license": Apache-2.0
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/kuoss/helm-charts

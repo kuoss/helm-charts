@@ -1,2 +1,0 @@
-index:
-	hack/index.sh
