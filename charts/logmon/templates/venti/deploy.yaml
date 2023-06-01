@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "venti.fullname" . }}
+  namespace: {{ template "logmon.namespace" . }}
+  labels:
+    {{- include "venti.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "venti.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "venti.labels" . | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: 0
+      serviceAccountName: {{ template "venti.fullname" . }}
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+      - name: venti
+        image: {{ include "venti.imageRepository" . }}/venti:v0.2.0
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 1000m
+        ports:
+        - containerPort: 3030
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/etc
+        - name: dashboards-volume
+          mountPath: /app/etc/dashboards/common
+        - name: user-dashboards-volume
+          mountPath: /app/etc/dashboards/user
+        - name: alertrules-volume
+          mountPath: /app/etc/alertrules
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ template "venti.fullname" . }}
+      - name: dashboards-volume
+        configMap:
+          name: {{ template "venti.fullname" . }}-dashboards
+      - name: user-dashboards-volume
+        configMap:
+          name: {{ template "venti.fullname" . }}-user-dashboards
+          optional: true
+      - name: alertrules-volume
+        configMap:
+          name: {{ template "venti.fullname" . }}-alertrules
+          optional: true

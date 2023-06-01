@@ -1,0 +1,17 @@
+{{- if not .Values.lethe.enabled -}}
+{{- if .Values.lethe.persistentVolume.enabled -}}
+{{- if not .Values.lethe.persistentVolume.existingClaim -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "lethe.fullname" . }}
+  namespace: {{ template "logmon.namespace" . }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.lethe.persistentVolume.size }}
+{{- end -}}
+{{- end -}}
+{{- end -}}

@@ -1,13 +1,110 @@
+fluent-bit:
+  image:
+    tag: 2.1.3-debug
+  flush: 1
+  logLevel: info
+  metricsPort: 2020
+  luaScripts:
+    lethe.lua: |
+      function audit(tag, timestamp, r)
+        local u = string.sub(r["stageTimestamp"],1,19).."Z"
+        return 1, timestamp, {tag=string.format("audit/audit/%s_%s.log",string.sub(u,1,10),string.sub(u,12,13)),
+        row=string.format("%s %s",u,r["log"])}
+      end
+      function kube(tag, timestamp, r)
+        local u = os.date("%Y-%m-%dT%H:%M:%SZ")
+        return 1, timestamp, {tag=string.format("pod/%s/%s_%s.log",r["kubernetes"]["namespace_name"],string.sub(u,1,10),string.sub(u,12,13)),
+        row=string.format("%s[%s|%s|%s] %s",u,r["kubernetes"]["namespace_name"],r["kubernetes"]["pod_name"],r["kubernetes"]["container_name"],r["log"])}
+      end
+      function host(tag, timestamp, r)
+        local u = os.date("%Y-%m-%dT%H:%M:%SZ")
+        return 1, timestamp, {tag=string.format("node/%s/%s_%s.log",r["_HOSTNAME"],string.sub(u,1,10),string.sub(u,12,13)),
+        row=string.format("%s[%s|%s] %s",u,r["_HOSTNAME"],r["SYSLOG_IDENTIFIER"],r["MESSAGE"])}
+      end
+
+  config:
+    inputs: |
+      [INPUT]
+          Name tail
+          Path /var/log/containers/*.log
+          multiline.parser docker, cri
+          Tag kube.*
+          Mem_Buf_Limit 5MB
+          Skip_Long_Lines On
+
+      [INPUT]
+          Name systemd
+          Tag host.*
+          Systemd_Filter _SYSTEMD_UNIT=kubelet.service
+          Systemd_Filter _SYSTEMD_UNIT=etcd.service       # logmon
+          Systemd_Filter _SYSTEMD_UNIT=containerd.service # logmon
+          Read_From_Tail On
+
+    filters: |
+      [FILTER] # kube
+          Name kubernetes
+          Match kube.*
+          Merge_Log On
+          Keep_Log Off
+          K8S-Logging.Parser On
+          K8S-Logging.Exclude On
+
+      [FILTER]
+          Name                lua
+          Match               kube.*
+          script              /fluent-bit/scripts/lethe.lua
+          call                kube
+      
+      [FILTER] # host
+          Name                lua
+          Match               host.*
+          script              /fluent-bit/scripts/lethe.lua
+          call                host
+      
+      [FILTER] # all
+          Name                rewrite_tag
+          Match_Regex         ^(kube|host)
+          Rule                $tag .* $tag false
+          Emitter_Name        re_emitted
+   
+      [FILTER]
+          Name                modify
+          Match_Regex         ^(pod|node)
+          Remove              tag
+
+    outputs: |
+      [OUTPUT]
+          Name                forward
+          Match               *
+          Host                {{ .Release.Name }}-lethe
+          Port                24224
+
 prometheus:
+
+  alertmanager:
+    persistence:
+      enabled: false
+
   prometheus-pushgateway:
     enabled: false
 
 lethe:
-  persistence:
+  extraConfigmapLabels: {}
+  persistentVolume:
+    enabled: true
+    labels: {}
+    annotations: {}
+    existingClaim: ""
+    mountPath: /data
     size: 10Gi
+
+  emptyDir:
+    sizeLimit: ""
+
   retention:
     size: 7g
     time: 15d
+
   resources:
     requests:
       cpu: 100m
@@ -16,3 +113,28 @@ lethe:
       cpu: 1000m
       memory: 1000Mi
 
+venti:
+  service:
+    enabled: true
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+    externalIPs: []
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 3030
+    sessionAffinity: None
+    type: ClusterIP
+    statefulsetReplica:
+      enabled: false
+      replica: 0
+  ingress:
+    enabled: false
+    # ingressClassName: nginx
+    annotations: {}
+    extraLabels: {}
+    hosts: []
+    path: /
+    pathType: Prefix
+    extraPaths: []
+    tls: []

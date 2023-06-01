@@ -1,12 +1,44 @@
+{{- if .Values.venti.service.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "logmon.fullname" . }}-venti
-  namespace: {{ template "logmon.namespace" . }}
+{{- if .Values.venti.service.annotations }}
+  annotations:
+{{ toYaml .Values.venti.service.annotations | indent 4 }}
+{{- end }}
+  labels:
+    {{- include "venti.labels" . | nindent 4 }}
+{{- if .Values.venti.service.labels }}
+{{ toYaml .Values.venti.service.labels | indent 4 }}
+{{- end }}
+  name: {{ template "venti.fullname" . }}
+  namespace: {{ include "logmon.namespace" . }}
 spec:
-  selector:
-    app: venti
+{{- if .Values.venti.service.clusterIP }}
+  clusterIP: {{ .Values.venti.service.clusterIP }}
+{{- end }}
+{{- if .Values.venti.service.externalIPs }}
+  externalIPs:
+{{ toYaml .Values.venti.service.externalIPs | indent 4 }}
+{{- end }}
+{{- if .Values.venti.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.venti.service.loadBalancerIP }}
+{{- end }}
+{{- if .Values.venti.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+  {{- range $cidr := .Values.venti.service.loadBalancerSourceRanges }}
+    - {{ $cidr }}
+  {{- end }}
+{{- end }}
   ports:
-  - name: http
-    port: 8080
-    targetPort: 8080
+    - name: http
+      port: {{ .Values.venti.service.servicePort }}
+      protocol: TCP
+      targetPort: 3030
+    {{- if .Values.venti.service.nodePort }}
+      nodePort: {{ .Values.venti.service.nodePort }}
+    {{- end }}
+  selector:
+    {{- include "venti.matchLabels" . | nindent 4 }}
+  type: "{{ .Values.venti.service.type }}"
+{{- end -}}

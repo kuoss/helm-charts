@@ -1,13 +1,21 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "logmon.fullname" . }}-lethe
+  labels:
+    {{- include "lethe.labels" . | nindent 4 }}
+    {{- with .Values.lethe.extraConfigmapLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  name: {{ template "lethe.fullname" . }}
   namespace: {{ template "logmon.namespace" . }}
 data:
   lethe.yaml: |
     retention:
       size: {{ .Values.lethe.retention.size }}
       time: {{ .Values.lethe.retention.time }}
+    storage:
+      driver: filesystem
+      log_data_path: /data/log
   fluent-bit.conf: |
     [SERVICE]
         Daemon       Off

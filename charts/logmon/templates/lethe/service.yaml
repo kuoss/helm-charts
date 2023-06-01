@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "logmon.fullname" . }}-lethe
+  name: {{ template "lethe.fullname" . }}
   namespace: {{ template "logmon.namespace" . }}
 spec:
   selector:
     app: lethe
   ports:
   - name: query
-    port: 8080
-    targetPort: 8080
+    port: 6060
+    targetPort: 6060
   - name: http
     port: 9880
     targetPort: 9880

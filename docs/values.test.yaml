@@ -1,0 +1,70 @@
+
+prometheus:
+  alertmanager:
+    ingress:
+      enabled: true
+      className: private
+      hosts:
+      - host: alertmanager.kuoss.org
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+      tls:
+      - hosts:
+        - alertmanager.kuoss.org
+        secretName: tls-kuoss-org
+
+  kube-state-metrics:
+    collectors:
+      - certificatesigningrequests
+      - configmaps
+      - cronjobs
+      - daemonsets
+      - deployments
+      - endpoints
+      #- horizontalpodautoscalers
+      - ingresses
+      - jobs
+      - leases
+      - limitranges
+      - mutatingwebhookconfigurations
+      - namespaces
+      - networkpolicies
+      - nodes
+      - persistentvolumeclaims
+      - persistentvolumes
+      - poddisruptionbudgets
+      - pods
+      - replicasets
+      - replicationcontrollers
+      - resourcequotas
+      - secrets
+      - services
+      - statefulsets
+      - storageclasses
+      - validatingwebhookconfigurations
+      - volumeattachments
+
+  server:
+    persistentVolume:
+      enabled: false
+    ingress:
+      enabled: true
+      ingressClassName: private
+      hosts:
+      - prometheus.kuoss.org
+      tls:
+      - hosts:
+        - prometheus.kuoss.org
+        secretName: tls-kuoss-org
+
+venti:
+  ingress:
+    enabled: true
+    ingressClassName: private
+    hosts:
+    - venti.kuoss.org
+    tls:
+    - hosts:
+      - venti.kuoss.org
+      secretName: tls-kuoss-org

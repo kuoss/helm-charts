@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "lethe.fullname" . }}
+  namespace: {{ template "logmon.namespace" . }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: lethe
+  template:
+    metadata:
+      labels:
+        app: lethe
+    spec:
+      terminationGracePeriodSeconds: 0
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+      - name: reader
+        image: {{ include "lethe.imageRepository" . }}/lethe:v0.2.1
+        resources:
+          {{- toYaml .Values.lethe.resources | nindent 10 }}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/etc
+        - name: storage-volume
+          mountPath: /data
+      - name: writer
+        image: {{ include "fluentBit.imageRepository" . }}/fluent-bit:1.9.3
+        resources:
+          {{- toYaml .Values.lethe.resources | nindent 10 }}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /fluent-bit/etc
+        - name: storage-volume
+          mountPath: /data
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ if .Values.lethe.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.lethe.configMapOverrideName }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
+        - name: storage-volume
+        {{- if .Values.lethe.persistentVolume.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.lethe.persistentVolume.existingClaim }}{{ .Values.lethe.persistentVolume.existingClaim }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir:
+          {{- if .Values.lethe.emptyDir.sizeLimit }}
+            sizeLimit: {{ .Values.lethe.emptyDir.sizeLimit }}
+          {{- else }}
+            {}
+          {{- end -}}
+        {{- end -}}

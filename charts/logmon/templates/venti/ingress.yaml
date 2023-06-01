@@ -1,23 +1,37 @@
+{{- if .Values.venti.ingress.enabled -}}
+{{- $serviceName := include "venti.fullname" . }}
+{{- $servicePort := .Values.venti.service.servicePort -}}
+{{- $ingressPath := .Values.venti.ingress.path -}}
+{{- $ingressPathType := .Values.venti.ingress.pathType -}}
+{{- $extraPaths := .Values.venti.ingress.extraPaths -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ template "logmon.fullname" . }}-venti
+  name: {{ template "venti.fullname" . }}
   namespace: {{ template "logmon.namespace" . }}
 spec:
-  {{- if and .Values.ingress.ingressClassName }}
-  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  {{- if .Values.venti.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.venti.ingress.ingressClassName }}
   {{- end -}}
-{{- if .Values.ingress.tls }}
+{{- if .Values.venti.ingress.tls }}
   tls:
-{{ tpl (toYaml .Values.ingress.tls) $ | indent 2 }}
+{{ tpl (toYaml .Values.venti.ingress.tls) $ | indent 2 }}
 {{- end }}
   rules:
-  - host: venti.{{ .Values.ingress.domain }}
-    http:
-      paths:
-      - pathType: ImplementationSpecific
-        backend:
-          service:
-            name: venti
-            port:
-              number: 8080
+  {{- range .Values.venti.ingress.hosts }}
+    {{- $url := splitList "/" . }}
+    - host: {{ first $url }}
+      http:
+        paths:
+{{ if $extraPaths }}
+{{ toYaml $extraPaths | indent 10 }}
+{{- end }}
+          - path: {{ $ingressPath }}
+            pathType: {{ $ingressPathType }}
+            backend:
+              service:
+                name: {{ $serviceName }}
+                port:
+                  number: {{ $servicePort }}
+  {{- end -}}
+{{- end -}}
