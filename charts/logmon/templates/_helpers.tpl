@@ -33,23 +33,28 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/part-of: {{ include "logmon.name" . }}
 {{- end -}}
 
+{{- define "eventrouter.labels" -}}
+{{ include "eventrouter.matchLabels" . }}
+{{ include "logmon.metaLabels" . }}
+{{- end -}}
+{{- define "eventrouter.matchLabels" -}}
+app.kubernetes.io/component: eventrouter
+{{ include "logmon.matchLabels" . }}
+{{- end -}}
 
 {{- define "lethe.labels" -}}
 {{ include "lethe.matchLabels" . }}
 {{ include "logmon.metaLabels" . }}
 {{- end -}}
-
 {{- define "lethe.matchLabels" -}}
 app.kubernetes.io/component: lethe
 {{ include "logmon.matchLabels" . }}
 {{- end -}}
 
-
 {{- define "venti.labels" -}}
 {{ include "venti.matchLabels" . }}
 {{ include "logmon.metaLabels" . }}
 {{- end -}}
-
 {{- define "venti.matchLabels" -}}
 app.kubernetes.io/component: venti
 {{ include "logmon.matchLabels" . }}
@@ -75,14 +80,19 @@ The longest name that gets created adds and extra 37 characters, so truncation s
 {{- end -}}
 {{- end -}}
 
-{{/* Venti full name */}}
-{{- define "venti.fullname" -}}
-{{- print (include "logmon.fullname" .) "-venti" -}}
+{{/* eventrouter full name */}}
+{{- define "eventrouter.fullname" -}}
+{{- print (include "logmon.fullname" .) "-eventrouter" -}}
 {{- end }}
 
-{{/* Lethe full name */}}
+{{/* lethe full name */}}
 {{- define "lethe.fullname" -}}
 {{- print (include "logmon.fullname" .) "-lethe" -}}
+{{- end }}
+
+{{/* venti full name */}}
+{{- define "venti.fullname" -}}
+{{- print (include "logmon.fullname" .) "-venti" -}}
 {{- end }}
 
 {{/*

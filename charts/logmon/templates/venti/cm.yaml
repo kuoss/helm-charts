@@ -13,7 +13,7 @@ data:
     datasources:
     - name: prometheus
       type: prometheus
-      url: http://logmon-prometheus-server:9090
+      url: http://logmon-prometheus-server
     - name: lethe
       type: lethe
       url: http://logmon-lethe:6060

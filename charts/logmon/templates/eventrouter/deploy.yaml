@@ -17,7 +17,6 @@ spec:
     spec:
       containers:
       - image: {{ include "eventRouter.imageRepository" . }}/eventrouter:v0.3
-        imagePullPolicy: Always
         name: eventrouter
         resources:
           limits:
@@ -31,8 +30,8 @@ spec:
           mountPath: /etc/eventrouter
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccount: eventrouter
+      serviceAccountName: {{ template "eventrouter.fullname" . }}
       volumes:
       - name: vol-config
         configMap:
-          name: eventrouter
+          name: {{ template "eventrouter.fullname" . }}
