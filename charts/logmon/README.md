@@ -29,10 +29,11 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 ## Dependencies
 
 By default this chart installs additional, dependent charts:
-
-- [prometheus-community/kube-state-metrics](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics)
+- [fluent/fluent-bit](https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit)
 - [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus)
-- [prometheus-community/prometheus-node-exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-node-exporter)
+  - [prometheus-community/alertmanager](https://github.com/prometheus-community/helm-charts/tree/main/charts/alertmanager)
+  - [prometheus-community/kube-state-metrics](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-state-metrics)
+  - [prometheus-community/prometheus-node-exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-node-exporter)
 
 _See [helm dependency](https://helm.sh/docs/helm/helm_dependency/) for command documentation._
 
