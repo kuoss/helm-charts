@@ -144,7 +144,7 @@ data:
       - title: event
         type: logs
         targets:
-        - expr: pod{namespace="kube-system",pod="eventrouter-.*"}
+        - expr: pod{namespace="logmon",container="eventrouter"}
   control_plane.yaml: |
     title: Control Plane
     rows:
@@ -247,31 +247,31 @@ data:
         targets:
 
         - expr: |
-            rate(container_cpu_usage_seconds_total{container="nginx-ingress-controller"}[5m]) * 1000
+            rate(container_cpu_usage_seconds_total{pod=~".*ingress-nginx.*",image=""}[5m]) * 1000
           legend: "{{`{{pod}}`}}"
       - title: mem(Mi)
         type: time_series
         targets:
         - expr: |
-            container_memory_working_set_bytes{container="nginx-ingress-controller"} / 1024 / 1024
+            container_memory_working_set_bytes{pod=~".*ingress-nginx.*",image=""} / 1024 / 1024
           legend: "{{`{{namespace}}/{{pod}}`}}"
       - title: transmit(Ki)
         type: time_series
         targets:
         - expr: |
-            rate(container_network_transmit_bytes_total{pod=~"nginx-ingress-controller.*"}[5m]) / 1024
+            rate(container_network_transmit_bytes_total{pod=~".*ingress-nginx.*"}[5m]) / 1024
           legend: "{{`{{namespace}}/{{pod}}`}}"
       - title: receive(Ki)
         type: time_series
         targets:
         - expr: |
-            rate(container_network_receive_bytes_total{pod=~"nginx-ingress-controller.*"}[5m]) / 1024
+            rate(container_network_receive_bytes_total{pod=~".*ingress-nginx.*"}[5m]) / 1024
           legend: "{{`{{namespace}}/{{pod}}`}}"
     - panels:
       - title: log
         type: logs
         targets:
-        - expr: pod{container="nginx-ingress-controller"}
+        - expr: pod{namespace=~"(kube-system|ingress-nginx)",container="controller"}
   node.yaml: |
     title: Node
     rows:
@@ -291,8 +291,16 @@ data:
         type: table
         targets:
         - expr: kube_node_info{node=~".*"}
-          headers: ["Node", "OS"      , "Internal IP" ,"Container Runtime"        ]
-          columns: ["node", "os_image", "internal_ip" ,"container_runtime_version"]
+          headers: ["node","os"      ,"kernel"        ,"container runtime"        ,"kubelet"        ,"kubeproxy"        ,"internal IP","pod CIDR"]
+          columns: ["node","os_image","kernel_version","container_runtime_version","kubelet_version","kubeproxy_version","internal_ip","pod_cidr"]
+          key: node
+        - expr: floor((time()-node_boot_time_seconds{node=~".*"})/8640)/10
+          headers: ["uptime(d)"]
+          columns: ["VALUE"]
+          key: node
+        - expr: floor((time()-kube_node_created{node=~".*"})/8640)/10
+          headers: ["age(d)"]
+          columns: ["VALUE"]
           key: node
     - panels:
       - title: node load
@@ -353,8 +361,8 @@ data:
       - title: kubelet log
         type: logs
         targets:
-        - expr: node{node="$node",process="kubelet"}
+        - expr: node{node=~"$node",process="kubelet"}
       - title: containerd log
         type: logs
         targets:
-        - expr: node{node="$node",process="containerd"}
+        - expr: node{node=~"$node",process="containerd"}

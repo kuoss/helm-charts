@@ -1,5 +1,5 @@
-install:
-	helm uninstall -n logmon logmon; helm install -n logmon logmon charts/logmon/ -f charts/logmon/values.yaml -f docs/values.test.yaml
+upgrade:
+	hack/upgrade.sh
 
 template:
 	helm template -n logmon logmon charts/logmon/ -f charts/logmon/values.yaml -f docs/values.test.yaml

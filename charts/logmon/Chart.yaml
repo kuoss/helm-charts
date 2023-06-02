@@ -11,9 +11,8 @@ sources:
   - https://github.com/kuoss/lethe
   - https://github.com/kuoss/venti
   - https://github.com/prometheus/alertmanager
-  - https://github.com/prometheus/prometheus
-  - https://github.com/prometheus/pushgateway
   - https://github.com/prometheus/node_exporter
+  - https://github.com/prometheus/prometheus
 type: application
 dependencies:
   - name: prometheus
