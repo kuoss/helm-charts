@@ -228,12 +228,8 @@ data:
       - title: etcd
         type: logs
         targets:
-        - expr: node{process="etcd"}
+        - expr: node{node=~".*",process="etcd"}
     - panels:
-      - title: audit
-        type: logs
-        targets:
-        - expr: audit
       - title: event
         type: logs
         targets:
