@@ -10,7 +10,7 @@
 {{- if .Values.imageRepository }}
 {{- printf "%s" .Values.imageRepository }}
 {{- else }}
-{{- printf "ghcr.io/fluent" }}
+{{- printf "cr.fluentbit.io/fluent" }}
 {{- end }}
 {{- end }}
 

@@ -16,11 +16,11 @@ sources:
 type: application
 dependencies:
   - name: prometheus
-    version: "22.6.*"
+    version: "22.6.3"
     repository: https://prometheus-community.github.io/helm-charts
     condition: prometheus.enabled
   - name: fluent-bit
-    version: "0.29.*"
+    version: "0.30.4"
     repository: https://fluent.github.io/helm-charts
     condition: fluent-bit.enabled
 keywords:

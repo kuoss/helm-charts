@@ -58,6 +58,17 @@ prometheus:
         - prometheus.kuoss.org
         secretName: tls-kuoss-org
 
+lethe:
+  ingress:
+    enabled: true
+    ingressClassName: private
+    hosts:
+    - lethe.kuoss.org
+    tls:
+    - hosts:
+      - lethe.kuoss.org
+      secretName: tls-kuoss-org
+
 venti:
   ingress:
     enabled: true

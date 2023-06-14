@@ -1,6 +1,4 @@
 fluent-bit:
-  image:
-    tag: 2.1.3-debug
   flush: 1
   logLevel: info
   metricsPort: 2020
@@ -96,6 +94,28 @@ prometheus:
     nameOverride: "prometheus"
 
 lethe:
+  service:
+    enabled: true
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+    externalIPs: []
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 6060
+    sessionAffinity: None
+    type: ClusterIP
+
+  ingress:
+    enabled: false
+    annotations: {}
+    extraLabels: {}
+    hosts: []
+    path: /
+    pathType: Prefix
+    extraPaths: []
+    tls: []
+
   extraConfigmapLabels: {}
   persistentVolume:
     enabled: true
@@ -132,12 +152,8 @@ venti:
     servicePort: 3030
     sessionAffinity: None
     type: ClusterIP
-    statefulsetReplica:
-      enabled: false
-      replica: 0
   ingress:
     enabled: false
-    # ingressClassName: nginx
     annotations: {}
     extraLabels: {}
     hosts: []

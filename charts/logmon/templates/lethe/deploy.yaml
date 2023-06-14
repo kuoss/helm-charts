@@ -3,17 +3,19 @@ kind: Deployment
 metadata:
   name: {{ template "lethe.fullname" . }}
   namespace: {{ template "logmon.namespace" . }}
+  labels:
+    {{- include "lethe.labels" . | nindent 4 }}
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: lethe
+      {{- include "lethe.matchLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: lethe
+        {{- include "lethe.labels" . | nindent 8 }}
     spec:
       terminationGracePeriodSeconds: 0
       nodeSelector:
@@ -29,7 +31,7 @@ spec:
         - name: storage-volume
           mountPath: /data
       - name: writer
-        image: {{ include "fluentBit.imageRepository" . }}/fluent-bit:1.9.3
+        image: {{ include "fluentBit.imageRepository" . }}/fluent-bit:2.1.3
         resources:
           {{- toYaml .Values.lethe.resources | nindent 10 }}
         volumeMounts:
