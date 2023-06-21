@@ -46,8 +46,20 @@ prometheus:
       - volumeattachments
 
   server:
+    retention: 15d
+    extraFlags:
+    - web.enable-lifecycle
+    - storage.tsdb.retention.size=7GB
     persistentVolume:
       enabled: false
+      size: 10Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 200m
+        memory: 800Mi
     ingress:
       enabled: true
       ingressClassName: private
@@ -59,6 +71,18 @@ prometheus:
         secretName: tls-kuoss-org
 
 lethe:
+  persistentVolume:
+    size: 1Gi
+  retention:
+    time: 15d
+    size: 500m
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 400m
+      memory: 800Mi
   ingress:
     enabled: true
     ingressClassName: private
@@ -70,6 +94,13 @@ lethe:
       secretName: tls-kuoss-org
 
 venti:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 400m
+      memory: 800Mi
   ingress:
     enabled: true
     ingressClassName: private

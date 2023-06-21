@@ -16,7 +16,7 @@ spec:
         app: eventrouter
     spec:
       containers:
-      - image: {{ include "eventRouter.imageRepository" . }}/eventrouter:v0.3
+      - image: {{ include "eventRouter.imageRepository" . }}/eventrouter:v0.3.1
         name: eventrouter
         resources:
           limits:

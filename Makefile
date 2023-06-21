@@ -1,16 +1,14 @@
-upgrade:
-	hack/upgrade.sh
+
+
+test_deploy:
+	hack/test_deploy.sh
+
+update_dependency:
+	cd charts/logmon; helm dependency update; helm dependency build
+
 
 template:
 	helm template -n logmon logmon charts/logmon/ -f charts/logmon/values.yaml -f docs/values.test.yaml
 
-
-# Error: INSTALLATION FAILED: Deployment.apps "logmon-venti" is invalid: spec.template.metadata.labels:
-# Invalid value: map[string]string{
-# "app.kubernetes.io/instance":"logmon",
-# "app.kubernetes.io/managed-by":"Helm",
-# "app.kubernetes.io/name":"logmon",
-# "app.kubernetes.io/part-of":"logmon",
-# "app.kubernetes.io/version":"v0.2.1",
-# "helm.sh/chart":"logmon-0.1.0"}: `selector` does not match template `labels`
-# make: *** [Makefile:2: install] Error 1
+images:
+	helm template -n logmon logmon charts/logmon/ -f charts/logmon/values.yaml -f docs/values.test.yaml | grep -oP image:.* | sed 's/"//g' | sort | uniq | grep -v busybox
