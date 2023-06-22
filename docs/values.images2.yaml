@@ -1,0 +1,30 @@
+
+imageRepository: foo/bar
+imageRepositoryAlertmanager: &imageRepositoryAlertmanager foo/bar/alertmanager
+imageRepositoryFluentBit: &imageRepositoryFluentBit foo/bar/fluent-bit
+imageRepositoryKubeStateMetrics: &imageRepositoryKubeStateMetrics foo/bar/kube-state-metrics
+imageRepositoryNodeExporter: &imageRepositoryNodeExporter foo/bar/node-exporter
+imageRepositoryPrometheus: &imageRepositoryPrometheus foo/bar/prometheus
+imageRepositoryPrometheusConfigReloader: &imageRepositoryPrometheusConfigReloader foo/bar/prometheus-config-reloader
+
+fluent-bit:
+  image:
+    repository: *imageRepositoryFluentBit
+prometheus:
+  alertmanager:
+    image:
+      repository: *imageRepositoryAlertmanager
+  configmapReload:
+    prometheus:
+      image:
+        repository: *imageRepositoryPrometheusConfigReloader
+  kube-state-metrics:
+    image:
+      repository: *imageRepositoryKubeStateMetrics
+  prometheus-node-exporter:
+    image:
+      repository: *imageRepositoryNodeExporter
+  server:
+    image:
+      repository: *imageRepositoryPrometheus
+

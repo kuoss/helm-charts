@@ -1,0 +1,24 @@
+
+imageRepository: foo/global
+
+fluent-bit:
+  image:
+    repository: foo/single/fluent-bit
+
+prometheus:
+  alertmanager:
+    image:
+      repository: foo/single/alertmanager
+  configmapReload:
+    prometheus:
+      image:
+        repository: foo/single/prometheus-config-reloader
+  kube-state-metrics:
+    image:
+      repository: foo/single/kube-state-metrics
+  prometheus-node-exporter:
+    image:
+      repository: foo/single/node-exporter
+  server:
+    image:
+      repository: foo/single/prometheus
