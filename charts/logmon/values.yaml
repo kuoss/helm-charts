@@ -1,4 +1,6 @@
 fluent-bit:
+  testFramework:
+    enabled: false
   flush: 1
   logLevel: info
   metricsPort: 2020
