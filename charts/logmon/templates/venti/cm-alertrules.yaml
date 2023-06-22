@@ -6,6 +6,9 @@ metadata:
 data:
   # https://github.com/samber/awesome-prometheus-alerts/tree/ac09fd8a2d6459355fcaf93090a3b6a32575220f/dist/rules
   kubernetes.yml: |
+    datasourceSelector:
+      type: prometheus
+      system: main
     groups:
     - name: Kubernetes
     
@@ -317,7 +320,9 @@ data:
             summary: Kubernetes API server latency (instance {{`{{$labels.instance}}`}})
             description: "Kubernetes API server has a 99th percentile latency of {{`{{$value}}`}} seconds for {{`{{$labels.verb}}`}} {{`{{$labels.resource}}`}}.\n  VALUE = {{`{{$value}}`}}\n  LABELS = {{`{{$labels}}`}}"
   prometheus.yml: |
-    
+    datasourceSelector:
+      type: prometheus
+      system: main
     groups:
     - name: Prometheus
     

@@ -21,7 +21,7 @@ spec:
         kubernetes.io/os: linux
       containers:
       - name: venti
-        image: {{ include "venti.imageRepository" . }}/venti:v0.2.0
+        image: {{ include "venti.imageRepository" . }}/venti:v0.2.1
         resources:
           requests:
             memory: 32Mi
