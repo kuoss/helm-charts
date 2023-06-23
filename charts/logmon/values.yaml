@@ -1,34 +1,4 @@
-### image
-imageRepository: ghcr.io/kuoss
-imageRepositoryAlertmanager: &imageRepositoryAlertmanager quay.io/prometheus/alertmanager
-imageRepositoryFluentBit: &imageRepositoryFluentBit cr.fluentbit.io/fluent/fluent-bit
-imageRepositoryKubeStateMetrics: &imageRepositoryKubeStateMetrics registry.k8s.io/kube-state-metrics/kube-state-metrics
-imageRepositoryNodeExporter: &imageRepositoryNodeExporter quay.io/prometheus/node-exporter
-imageRepositoryPrometheus: &imageRepositoryPrometheus quay.io/prometheus/prometheus
-imageRepositoryPrometheusConfigReloader: &imageRepositoryPrometheusConfigReloader quay.io/prometheus-operator/prometheus-config-reloader
 
-fluent-bit:
-  image:
-    repository: *imageRepositoryFluentBit
-prometheus:
-  alertmanager:
-    image:
-      repository: *imageRepositoryAlertmanager
-  configmapReload:
-    prometheus:
-      image:
-        repository: *imageRepositoryPrometheusConfigReloader
-  kube-state-metrics:
-    image:
-      repository: *imageRepositoryKubeStateMetrics
-  prometheus-node-exporter:
-    image:
-      repository: *imageRepositoryNodeExporter
-  server:
-    image:
-      repository: *imageRepositoryPrometheus
-
-### others
 fluent-bit:
   testFramework:
     enabled: false
@@ -112,17 +82,13 @@ fluent-bit:
           Port                24224
 
 prometheus:
-
   alertmanager:
     persistence:
       enabled: false
-
   prometheus-node-exporter:
     nameOverride: "node-exporter"
-
   prometheus-pushgateway:
     enabled: false
-
   server:
     nameOverride: "prometheus"
 

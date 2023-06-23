@@ -1,11 +1,11 @@
 
-imageRepository: foo/bar
-imageRepositoryAlertmanager: &imageRepositoryAlertmanager foo/bar/alertmanager
-imageRepositoryFluentBit: &imageRepositoryFluentBit foo/bar/fluent-bit
-imageRepositoryKubeStateMetrics: &imageRepositoryKubeStateMetrics foo/bar/kube-state-metrics
-imageRepositoryNodeExporter: &imageRepositoryNodeExporter foo/bar/node-exporter
-imageRepositoryPrometheus: &imageRepositoryPrometheus foo/bar/prometheus
-imageRepositoryPrometheusConfigReloader: &imageRepositoryPrometheusConfigReloader foo/bar/prometheus-config-reloader
+imageRepository: hello/world
+imageRepositoryAlertmanager: &imageRepositoryAlertmanager hello/world/alertmanager
+imageRepositoryFluentBit: &imageRepositoryFluentBit hello/world/fluent-bit
+imageRepositoryKubeStateMetrics: &imageRepositoryKubeStateMetrics hello/world/kube-state-metrics
+imageRepositoryNodeExporter: &imageRepositoryNodeExporter hello/world/node-exporter
+imageRepositoryPrometheus: &imageRepositoryPrometheus hello/world/prometheus
+imageRepositoryPrometheusConfigReloader: &imageRepositoryPrometheusConfigReloader hello/world/prometheus-config-reloader
 
 fluent-bit:
   image:

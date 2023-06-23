@@ -31,7 +31,7 @@ spec:
         - name: storage-volume
           mountPath: /data
       - name: writer
-        image: {{ .Values.imageRepositoryFluentBit }}:2.1.4
+        image: {{ index .Values "fluent-bit" "image" "repository" }}:2.1.4
         resources:
           {{- toYaml .Values.lethe.resources | nindent 10 }}
         volumeMounts:
