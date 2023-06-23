@@ -93,6 +93,13 @@ prometheus:
     nameOverride: "prometheus"
 
 lethe:
+  nodeSelector: {}
+  hostAliases: []
+  dnsConfig: {}
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+
   service:
     enabled: true
     annotations: {}
@@ -140,6 +147,13 @@ lethe:
       memory: 1000Mi
 
 venti:
+  nodeSelector: {}
+  hostAliases: []
+  dnsConfig: {}
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+
   service:
     enabled: true
     annotations: {}
