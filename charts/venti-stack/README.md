@@ -1,6 +1,6 @@
-# Logmon Helm Chart
+# venti-stack
 
-Installs the kuoss-venti-stack stack, a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
+Installs the venti-stack, a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
 
 ## Prerequisites
 
