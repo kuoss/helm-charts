@@ -1,6 +1,6 @@
 apiVersion: v2
 name: venti-stack
-appVersion: 0.1.0
+appVersion: 0.2.1
 version: 0.1.0
 kubeVersion: ">=1.16.0-0"
 description: Logmon is a logging and monitoring system.
