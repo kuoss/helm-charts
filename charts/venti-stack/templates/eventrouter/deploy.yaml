@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "logmon.fullname" . }}-eventrouter
-  namespace: {{ template "logmon.namespace" . }}
+  name: {{ template "venti-stack.fullname" . }}-eventrouter
+  namespace: {{ template "venti-stack.namespace" . }}
   labels:
     app: eventrouter
 spec:

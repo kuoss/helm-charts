@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "lethe.fullname" . }}
-  namespace: {{ template "logmon.namespace" . }}
+  namespace: {{ template "venti-stack.namespace" . }}
   labels:
     {{- include "lethe.labels" . | nindent 4 }}
 spec:

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ template "venti.fullname" .}}-alertrules
-  namespace: {{ template "logmon.namespace" .}}
+  namespace: {{ template "venti-stack.namespace" .}}
 data:
   # https://github.com/samber/awesome-prometheus-alerts/tree/ac09fd8a2d6459355fcaf93090a3b6a32575220f/dist/rules
   kubernetes.yml: |

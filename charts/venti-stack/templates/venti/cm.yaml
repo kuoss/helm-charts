@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ template "venti.fullname" . }}
-  namespace: {{ template "logmon.namespace" . }}
+  namespace: {{ template "venti-stack.namespace" . }}
 data:
   alerting.yml: |
     alertings:
@@ -13,10 +13,10 @@ data:
     datasources:
     - name: prometheus
       type: prometheus
-      url: http://logmon-prometheus-server
+      url: http://venti-stack-prometheus-server
     - name: lethe
       type: lethe
-      url: http://logmon-lethe:6060
+      url: http://venti-stack-lethe:6060
   users.yml: |
     users:
     - username: admin

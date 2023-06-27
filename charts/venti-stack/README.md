@@ -1,6 +1,6 @@
 # Logmon Helm Chart
 
-Installs the kuoss-logmon stack, a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
+Installs the kuoss-venti-stack stack, a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ _See [`helm repo`](https://helm.sh/docs/helm/helm_repo/) for command documentati
 ## Install Helm Chart
 
 ```console
-helm install [RELEASE_NAME] kuoss/logmon
+helm install [RELEASE_NAME] kuoss/venti-stack
 ```
 
 _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
@@ -50,7 +50,7 @@ _See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command doc
 ## Upgrading Chart
 
 ```console
-helm upgrade [RELEASE_NAME] kuoss/logmon
+helm upgrade [RELEASE_NAME] kuoss/venti-stack
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._

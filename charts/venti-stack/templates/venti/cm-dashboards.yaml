@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ template "venti.fullname" . }}-dashboards
-  namespace: {{ template "logmon.namespace" . }}
+  namespace: {{ template "venti-stack.namespace" . }}
 data:
   cluster.yaml: |
     title: Cluster
@@ -144,7 +144,7 @@ data:
       - title: event
         type: logs
         targets:
-        - expr: pod{namespace="logmon",container="eventrouter"}
+        - expr: pod{namespace="venti-stack",container="eventrouter"}
   control_plane.yaml: |
     title: Control Plane
     rows:

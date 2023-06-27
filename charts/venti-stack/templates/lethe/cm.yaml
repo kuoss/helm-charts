@@ -7,7 +7,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
   name: {{ template "lethe.fullname" . }}
-  namespace: {{ template "logmon.namespace" . }}
+  namespace: {{ template "venti-stack.namespace" . }}
 data:
   lethe.yaml: |
     retention:

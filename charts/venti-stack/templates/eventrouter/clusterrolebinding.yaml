@@ -9,4 +9,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ template "eventrouter.fullname" . }}
-  namespace: {{ template "logmon.namespace" . }}
+  namespace: {{ template "venti-stack.namespace" . }}

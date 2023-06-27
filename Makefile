@@ -3,16 +3,16 @@ test_deploy:
 	hack/test_deploy.sh
 
 dependency:
-	cd charts/logmon; helm dependency update; helm dependency build
+	cd charts/venti-stack; helm dependency update; helm dependency build
 
 template:
-	helm template -n logmon logmon charts/logmon/ -f charts/logmon/values.yaml -f docs/values.test.yaml
+	helm template -n venti-stack venti-stack charts/venti-stack/ -f charts/venti-stack/values.yaml -f docs/values.test.yaml
 
 images:
-	helm template -n logmon logmon charts/logmon/ | grep -oP image:.* | sed 's/"//g' | sort | uniq
+	helm template -n venti-stack venti-stack charts/venti-stack/ | grep -oP image:.* | sed 's/"//g' | sort | uniq
 
 images1:
-	helm template -n logmon logmon charts/logmon/ -f charts/logmon/values.yaml -f docs/values.images1.yaml | grep -oP image:.* | sed 's/"//g' | sort | uniq
+	helm template -n venti-stack venti-stack charts/venti-stack/ -f charts/venti-stack/values.yaml -f docs/values.images1.yaml | grep -oP image:.* | sed 's/"//g' | sort | uniq
 
 images2:
-	helm template -n logmon logmon charts/logmon/ -f charts/logmon/values.yaml -f docs/values.images2.yaml | grep -oP image:.* | sed 's/"//g' | sort | uniq
+	helm template -n venti-stack venti-stack charts/venti-stack/ -f charts/venti-stack/values.yaml -f docs/values.images2.yaml | grep -oP image:.* | sed 's/"//g' | sort | uniq

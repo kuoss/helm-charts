@@ -8,7 +8,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "lethe.fullname" . }}
-  namespace: {{ template "logmon.namespace" . }}
+  namespace: {{ template "venti-stack.namespace" . }}
 spec:
   {{- if .Values.lethe.ingress.ingressClassName }}
   ingressClassName: {{ .Values.lethe.ingress.ingressClassName }}
