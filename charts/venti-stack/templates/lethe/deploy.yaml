@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "venti-stack.lethe.fullname" . }}
-  namespace: {{ template "venti-stack.namespace" . }}
   labels:
     {{- include "lethe.labels" . | nindent 4 }}
+  name: {{ template "lethe.fullname" . }}
+  namespace: {{ template "venti-stack.namespace" . }}
 spec:
   replicas: 1
   strategy:
@@ -64,11 +64,11 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: {{ if .Values.lethe.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.lethe.configMapOverrideName }}{{- else }}{{ template "venti-stack.lethe.fullname" . }}{{- end }}
+            name: {{ if .Values.lethe.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.lethe.configMapOverrideName }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
         - name: storage-volume
         {{- if .Values.lethe.persistentVolume.enabled }}
           persistentVolumeClaim:
-            claimName: {{ if .Values.lethe.persistentVolume.existingClaim }}{{ .Values.lethe.persistentVolume.existingClaim }}{{- else }}{{ template "venti-stack.lethe.fullname" . }}{{- end }}
+            claimName: {{ if .Values.lethe.persistentVolume.existingClaim }}{{ .Values.lethe.persistentVolume.existingClaim }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
         {{- else }}
           emptyDir:
           {{- if .Values.lethe.emptyDir.sizeLimit }}

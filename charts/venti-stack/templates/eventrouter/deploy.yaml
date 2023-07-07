@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "venti-stack.eventrouter.fullname" . }}
-  namespace: {{ template "venti-stack.namespace" . }}
   labels:
-    app: eventrouter
+    {{- include "eventrouter.labels" . | nindent 4 }}
+  name: {{ template "eventrouter.fullname" . }}
+  namespace: {{ template "venti-stack.namespace" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eventrouter
+      {{- include "eventrouter.matchLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: eventrouter
+        {{- include "eventrouter.labels" . | nindent 8 }}
     spec:
       containers:
-      - image: {{ include "eventRouter.imageRepository" . }}/eventrouter:v0.3.1
+      - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:v0.3.1
         name: eventrouter
         resources:
           limits:
@@ -30,8 +30,8 @@ spec:
           mountPath: /etc/eventrouter
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: {{ template "venti-stack.eventrouter.fullname" . }}
+      serviceAccountName: {{ template "eventrouter.fullname" . }}
       volumes:
       - name: vol-config
         configMap:
-          name: {{ template "venti-stack.eventrouter.fullname" . }}
+          name: {{ template "eventrouter.fullname" . }}

@@ -1,4 +1,4 @@
-{{- define "eventRouter.imageRepository" -}}
+{{- define "eventrouter.imageRepository" -}}
 {{- if .Values.global.imageRepository }}
 {{- printf "%s" .Values.global.imageRepository }}
 {{- else }}

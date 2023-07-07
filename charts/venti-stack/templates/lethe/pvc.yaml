@@ -4,7 +4,9 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "venti-stack.lethe.fullname" . }}
+  labels:
+    {{- include "lethe.labels" . | nindent 4 }}
+  name: {{ template "lethe.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
 spec:
   accessModes:

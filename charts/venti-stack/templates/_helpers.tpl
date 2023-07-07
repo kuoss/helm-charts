@@ -60,6 +60,7 @@ app.kubernetes.io/component: venti
 {{ include "venti-stack.matchLabels" . }}
 {{- end -}}
 
+
 {{/* venti-stack full name */}}
 {{- define "venti-stack.fullname" -}}
 {{- if .Values.fullnameOverride -}}
@@ -75,17 +76,17 @@ app.kubernetes.io/component: venti
 {{- end -}}
 
 {{/* eventrouter full name */}}
-{{- define "venti-stack.eventrouter.fullname" -}}
+{{- define "eventrouter.fullname" -}}
 {{- printf "%s-eventrouter" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/* lethe full name */}}
-{{- define "venti-stack.lethe.fullname" -}}
+{{- define "lethe.fullname" -}}
 {{- printf "%s-lethe" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/* venti full name */}}
-{{- define "venti-stack.venti.fullname" -}}
+{{- define "venti.fullname" -}}
 {{- printf "%s-venti" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 

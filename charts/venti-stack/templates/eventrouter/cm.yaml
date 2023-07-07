@@ -1,7 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "venti-stack.eventrouter.fullname" . }}
+  labels:
+    {{- include "eventrouter.labels" . | nindent 4 }}
+  name: {{ template "eventrouter.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
 data:
   config.json: |

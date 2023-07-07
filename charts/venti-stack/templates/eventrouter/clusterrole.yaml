@@ -2,8 +2,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app: eventrouter
-  name: {{ template "venti-stack.eventrouter.fullname" . }}
+    {{- include "eventrouter.labels" . | nindent 4 }}
+  name: {{ template "eventrouter.fullname" . }}
 rules:
 - apiGroups: 
   - ""

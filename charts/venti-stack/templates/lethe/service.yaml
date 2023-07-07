@@ -11,7 +11,7 @@ metadata:
 {{- if .Values.lethe.service.labels }}
 {{ toYaml .Values.lethe.service.labels | indent 4 }}
 {{- end }}
-  name: {{ template "venti-stack.lethe.fullname" . }}
+  name: {{ template "lethe.fullname" . }}
   namespace: {{ include "venti-stack.namespace" . }}
 spec:
 {{- if .Values.lethe.service.clusterIP }}
