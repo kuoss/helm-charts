@@ -8,6 +8,47 @@ entries:
           url: https://github.com/kuoss/helm-charts
     apiVersion: v2
     appVersion: 0.2.2
+    created: "2023-07-07T12:19:59.22438717Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 22.6.6
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.30.4
+    description: Logmon is a logging and monitoring system.
+    digest: 9495c6f5d54bb06fabe23d443b92b795a862f5f793bd9816978795a4d17bfbf3
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.5/venti-stack-0.1.5.tgz
+    version: 0.1.5
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+    apiVersion: v2
+    appVersion: 0.2.2
     created: "2023-07-07T11:16:56.694378625Z"
     dependencies:
     - condition: prometheus.enabled
@@ -206,4 +247,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-07T11:16:56.694402427Z"
+generated: "2023-07-07T12:19:59.224418871Z"
