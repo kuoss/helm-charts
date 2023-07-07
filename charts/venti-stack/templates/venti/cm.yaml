@@ -12,6 +12,8 @@ data:
   datasources.yml: |
     datasources:
 {{ toYaml .Values.venti.config.datasources | indent 6 }}
+    discovery:
+{{ toYaml .Values.venti.config.discovery | indent 6 }}
   users.yml: |
     users:
 {{ toYaml .Values.venti.config.users | indent 6 }}
