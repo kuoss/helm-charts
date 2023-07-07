@@ -1,7 +1,7 @@
 apiVersion: v2
 name: venti-stack
 appVersion: 0.2.2
-version: 0.1.2
+version: 0.1.3
 kubeVersion: ">=1.16.0-0"
 description: Logmon is a logging and monitoring system.
 home: https://kuoss.github.io/helm-charts
