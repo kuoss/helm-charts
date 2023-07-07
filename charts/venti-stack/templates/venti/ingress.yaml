@@ -25,7 +25,7 @@ spec:
     - host: {{ first $url }}
       http:
         paths:
-{{ if $extraPaths }}
+{{- if $extraPaths }}
 {{ toYaml $extraPaths | indent 10 }}
 {{- end }}
           - path: {{ $ingressPath }}

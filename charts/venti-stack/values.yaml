@@ -150,10 +150,37 @@ lethe:
 
 venti:
   config:
-    alertings:
-    - name: alertmanager
-      type: alertmanager
-      url: http://vs-alertmanager:9093
+    alerting: {}
+    # kubernetes.yml: |
+    #   datasourceSelector:
+    #     type: prometheus
+    #     system: main
+    #   # https://github.com/samber/awesome-prometheus-alerts/tree/ac09fd8a2d6459355fcaf93090a3b6a32575220f/dist/rules
+    #   groups:
+    #   - name: Kubernetes
+    #     rules:
+    #       - alert: KubernetesNodeReady
+    #         expr: 'kube_node_status_condition{condition="Ready",status="true"} == 0'
+    #         for: 10m
+    #         labels:
+    #           severity: critical
+    #         annotations:
+    #           summary: Kubernetes Node ready (instance {{$labels.instance}})
+    #           description: "Node {{$labels.node}} has been unready for a long time\n  VALUE = {{$value}}\n  LABELS = {{$labels}}"
+    alertings: []
+    # - name: alertmanager
+    #   type: alertmanager
+    #   url: http://vs-alertmanager:9093
+    dashboards: {}
+    # cluster.yaml: |
+    #   title: Cluster
+    #   rows:
+    #   - panels:
+    #     - title: node
+    #       type: piechart
+    #       targets:
+    #       - expr: sum(kube_node_status_condition{status="true"}) by (condition) > 0
+    #         legend: "{{condition}}"
     datasources:
     - name: prometheus
       type: prometheus
