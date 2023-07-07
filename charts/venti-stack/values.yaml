@@ -1,5 +1,4 @@
-global:
-  imageRepository: ghcr.io/kuoss
+imageRepository: ghcr.io/kuoss
 
 fluent-bit:
   testFramework:

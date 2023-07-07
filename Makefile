@@ -9,9 +9,8 @@ template:
 	helm template -n venti-stack vs charts/venti-stack/ -f charts/venti-stack/values.yaml -f docs/values.test.yaml
 
 images:
+	######## default ########
 	helm template -n venti-stack vs charts/venti-stack/ | grep -oP image:.* | sed 's/"//g' | sort | uniq
-
-__images:
 	######## root ########
 	helm template -n venti-stack vs charts/venti-stack/ -f charts/venti-stack/values.yaml -f docs/values.image.root.yaml | grep -oP image:.* | sed 's/"//g' | sort | uniq
 	######## global ########
