@@ -1,0 +1,24 @@
+global:
+  imageRepository: registry/global
+
+fluent-bit:
+  image:
+    repository: registry/single/fluent-bit
+
+prometheus:
+  alertmanager:
+    image:
+      repository: registry/single/alertmanager
+  configmapReload:
+    prometheus:
+      image:
+        repository: registry/single/prometheus-config-reloader
+  kube-state-metrics:
+    image:
+      repository: registry/single/kube-state-metrics
+  prometheus-node-exporter:
+    image:
+      repository: registry/single/node-exporter
+  server:
+    image:
+      repository: registry/single/prometheus

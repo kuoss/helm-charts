@@ -4,7 +4,7 @@ Expand the name of the chart.
 This is suffixed with -alertmanager, which means subtract 13 from longest 63 available
 */}}
 {{- define "venti-stack.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 50 | trimSuffix "-" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
@@ -60,40 +60,34 @@ app.kubernetes.io/component: venti
 {{ include "venti-stack.matchLabels" . }}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-The components in this chart create additional resources that expand the longest created name strings.
-The longest name that gets created adds and extra 37 characters, so truncation should be 63-35=26.
-*/}}
+{{/* venti-stack full name */}}
 {{- define "venti-stack.fullname" -}}
 {{- if .Values.fullnameOverride -}}
-{{- .Values.fullnameOverride | trunc 26 | trimSuffix "-" -}}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 26 | trimSuffix "-" -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 26 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
 
 {{/* eventrouter full name */}}
-{{- define "eventrouter.fullname" -}}
-{{- print (include "venti-stack.fullname" .) "-eventrouter" -}}
-{{- end }}
+{{- define "venti-stack.eventrouter.fullname" -}}
+{{- printf "%s-eventrouter" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 
 {{/* lethe full name */}}
-{{- define "lethe.fullname" -}}
-{{- print (include "venti-stack.fullname" .) "-lethe" -}}
-{{- end }}
+{{- define "venti-stack.lethe.fullname" -}}
+{{- printf "%s-lethe" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 
 {{/* venti full name */}}
-{{- define "venti.fullname" -}}
-{{- print (include "venti-stack.fullname" .) "-venti" -}}
-{{- end }}
+{{- define "venti-stack.venti.fullname" -}}
+{{- printf "%s-venti" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 
 {{/*
 Allow the release namespace to be overridden for multi-namespace deployments in combined charts

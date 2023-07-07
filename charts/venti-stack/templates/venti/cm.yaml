@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "venti.fullname" . }}
+  name: {{ template "venti-stack.venti.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
 data:
   alerting.yml: |

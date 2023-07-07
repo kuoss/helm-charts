@@ -3,7 +3,7 @@ kind: ClusterRole
 metadata:
   labels:
     app: eventrouter
-  name: {{ template "eventrouter.fullname" . }}
+  name: {{ template "venti-stack.eventrouter.fullname" . }}
 rules:
 - apiGroups: 
   - ""

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "venti-stack.fullname" . }}-eventrouter
+  name: {{ template "venti-stack.eventrouter.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
   labels:
     app: eventrouter
@@ -30,8 +30,8 @@ spec:
           mountPath: /etc/eventrouter
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: {{ template "eventrouter.fullname" . }}
+      serviceAccountName: {{ template "venti-stack.eventrouter.fullname" . }}
       volumes:
       - name: vol-config
         configMap:
-          name: {{ template "eventrouter.fullname" . }}
+          name: {{ template "venti-stack.eventrouter.fullname" . }}

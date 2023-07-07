@@ -6,7 +6,7 @@ metadata:
     {{- with .Values.lethe.extraConfigmapLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: {{ template "lethe.fullname" . }}
+  name: {{ template "venti-stack.lethe.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
 data:
   lethe.yaml: |

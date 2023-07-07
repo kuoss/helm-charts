@@ -3,7 +3,7 @@ kind: ClusterRole
 metadata:
   labels:
     app: venti
-  name: {{ template "venti.fullname" . }}
+  name: {{ template "venti-stack.venti.fullname" . }}
 rules:
 - apiGroups:
   - ""

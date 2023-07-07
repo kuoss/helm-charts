@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "venti.fullname" . }}
+  name: {{ template "venti-stack.venti.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
   labels:
     {{- include "venti.labels" . | nindent 4 }}
@@ -15,7 +15,7 @@ spec:
       labels:
         {{- include "venti.labels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ template "venti.fullname" . }}
+      serviceAccountName: {{ template "venti-stack.venti.fullname" . }}
       containers:
       - name: venti
         image: {{ include "venti.imageRepository" . }}/venti:v0.2.2
@@ -65,15 +65,15 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: {{ template "venti.fullname" . }}
+          name: {{ template "venti-stack.venti.fullname" . }}
       - name: dashboards-volume
         configMap:
-          name: {{ template "venti.fullname" . }}-dashboards
+          name: {{ template "venti-stack.venti.fullname" . }}-dashboards
       - name: user-dashboards-volume
         configMap:
-          name: {{ template "venti.fullname" . }}-user-dashboards
+          name: {{ template "venti-stack.venti.fullname" . }}-user-dashboards
           optional: true
       - name: alertrules-volume
         configMap:
-          name: {{ template "venti.fullname" . }}-alertrules
+          name: {{ template "venti-stack.venti.fullname" . }}-alertrules
           optional: true
