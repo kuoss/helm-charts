@@ -6,6 +6,6 @@ metadata:
   name: {{ template "venti.fullname" . }}-dashboards
   namespace: {{ template "venti-stack.namespace" . }}
 data:
-{{- if .Values.venti.config.dashboard }}
-{{ toYaml .Values.venti.config.dashboard | indent 2 }}
+{{- if .Values.venti.config.dashboards }}
+{{ toYaml .Values.venti.config.dashboards | indent 2 }}
 {{- end }}
