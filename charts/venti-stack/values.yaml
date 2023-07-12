@@ -174,16 +174,19 @@ venti:
     #         annotations:
     #           summary: Kubernetes Node ready (instance {{$labels.instance}})
     #           description: "Node {{$labels.node}} has been unready for a long time\n  VALUE = {{$value}}\n  LABELS = {{$labels}}"
-    dashboards: {}
-    # cluster.yaml: |
-    #   title: Cluster
-    #   rows:
-    #   - panels:
-    #     - title: node
-    #       type: piechart
-    #       targets:
-    #       - expr: sum(kube_node_status_condition{status="true"}) by (condition) > 0
-    #         legend: "{{condition}}"
+    dashboards:
+      useDefault: true
+      extraDashboards: {}
+      # cluster.yaml: |
+      #   title: Cluster
+      #   rows:
+      #   - panels:
+      #     - title: node
+      #       type: piechart
+      #       targets:
+      #       - expr: sum(kube_node_status_condition{status="true"}) by (condition) > 0
+      #         legend: "{{condition}}"
+      
     datasources: []
     # - name: prometheus
     #   type: prometheus
