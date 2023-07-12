@@ -18,6 +18,14 @@ spec:
         {{- include "venti.labels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ template "venti.fullname" . }}
+      {{- with .Values.venti.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.venti.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: venti
         image: {{ include "venti.imageRepository" . }}/venti:v0.2.2
@@ -39,31 +47,6 @@ spec:
           mountPath: /app/etc/dashboards/user
         - name: alertrules-volume
           mountPath: /app/etc/alertrules
-    {{- if .Values.venti.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.venti.nodeSelector | indent 8 }}
-    {{- end }}
-    {{- if .Values.venti.hostAliases }}
-      hostAliases:
-{{ toYaml .Values.venti.hostAliases | indent 8 }}
-    {{- end }}
-    {{- if .Values.venti.dnsConfig }}
-      dnsConfig:
-{{ toYaml .Values.venti.dnsConfig | indent 8 }}
-    {{- end }}
-    {{- if .Values.venti.tolerations }}
-      tolerations:
-{{ toYaml .Values.venti.tolerations | indent 8 }}
-    {{- end }}
-    {{- if .Values.venti.affinity }}
-      affinity:
-{{ toYaml .Values.venti.affinity | indent 8 }}
-    {{- end }}
-    {{- with .Values.venti.topologySpreadConstraints }}
-      topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-      terminationGracePeriodSeconds: {{ .Values.venti.terminationGracePeriodSeconds }}
       volumes:
       - name: config-volume
         configMap:

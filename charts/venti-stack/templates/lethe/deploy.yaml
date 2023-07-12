@@ -17,6 +17,14 @@ spec:
       labels:
         {{- include "lethe.labels" . | nindent 8 }}
     spec:
+      {{- with .Values.lethe.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.lethe.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: reader
         image: {{ include "lethe.imageRepository" . }}/lethe:v0.2.1
@@ -36,31 +44,6 @@ spec:
           mountPath: /fluent-bit/etc
         - name: storage-volume
           mountPath: /data
-    {{- if .Values.lethe.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.lethe.nodeSelector | indent 8 }}
-    {{- end }}
-    {{- if .Values.lethe.hostAliases }}
-      hostAliases:
-{{ toYaml .Values.lethe.hostAliases | indent 8 }}
-    {{- end }}
-    {{- if .Values.lethe.dnsConfig }}
-      dnsConfig:
-{{ toYaml .Values.lethe.dnsConfig | indent 8 }}
-    {{- end }}
-    {{- if .Values.lethe.tolerations }}
-      tolerations:
-{{ toYaml .Values.lethe.tolerations | indent 8 }}
-    {{- end }}
-    {{- if .Values.lethe.affinity }}
-      affinity:
-{{ toYaml .Values.lethe.affinity | indent 8 }}
-    {{- end }}
-    {{- with .Values.lethe.topologySpreadConstraints }}
-      topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-      terminationGracePeriodSeconds: {{ .Values.lethe.terminationGracePeriodSeconds }}
       volumes:
         - name: config-volume
           configMap:

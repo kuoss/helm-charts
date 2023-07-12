@@ -15,6 +15,14 @@ spec:
       labels:
         {{- include "eventrouter.labels" . | nindent 8 }}
     spec:
+      {{- with .Values.eventrouter.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.eventrouter.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:v0.3.1
         name: eventrouter
@@ -28,8 +36,6 @@ spec:
         volumeMounts:
         - name: vol-config
           mountPath: /etc/eventrouter
-      nodeSelector:
-        kubernetes.io/os: linux
       serviceAccountName: {{ template "eventrouter.fullname" . }}
       volumes:
       - name: vol-config
