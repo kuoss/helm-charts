@@ -90,12 +90,17 @@ prometheus:
     persistence:
       enabled: false
   prometheus-node-exporter:
+    extraArgs:
+    - --collector.systemd
+    extraHostVolumeMounts:
+    - name: systemd-socket
+      mountPath: /var/run/dbus/system_bus_socket
+      hostPath: /var/run/dbus/system_bus_socket
+      readOnly: true
+      mountPropagation: None
     nameOverride: "node-exporter"
   prometheus-pushgateway:
     enabled: false
-  server:
-    nameOverride: "prometheus"
-
 
 eventrouter:
   nodeSelector: {}
