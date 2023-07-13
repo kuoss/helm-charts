@@ -13,6 +13,9 @@ sources:
   - https://github.com/prometheus/alertmanager
   - https://github.com/prometheus/node_exporter
   - https://github.com/prometheus/prometheus
+maintainers:
+  - name: jmnote
+    email: opcore@gmail.com
 type: application
 dependencies:
   - name: prometheus
