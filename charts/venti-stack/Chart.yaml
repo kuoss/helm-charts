@@ -1,7 +1,7 @@
 apiVersion: v2
 name: venti-stack
 appVersion: 0.2.2
-version: 0.1.11
+version: 0.1.12
 kubeVersion: ">=1.16.0-0"
 description: Logmon is a logging and monitoring system.
 home: https://kuoss.github.io/helm-charts
@@ -13,6 +13,9 @@ sources:
   - https://github.com/prometheus/alertmanager
   - https://github.com/prometheus/node_exporter
   - https://github.com/prometheus/prometheus
+maintainers:
+  - name: jmnote
+    email: opcore@gmail.com
 type: application
 dependencies:
   - name: prometheus

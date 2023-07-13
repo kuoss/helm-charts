@@ -147,7 +147,7 @@ data:
       - title: event
         type: logs
         targets:
-        - expr: pod{namespace="kube-system",pod=~"eventrouter-.*"}
+        - expr: pod{namespace="{{ template "venti-stack.namespace" . }}",container="eventrouter"}
   control_plane.yml: |
     title: Control Plane
     rows:
@@ -233,14 +233,10 @@ data:
         targets:
         - expr: node{node=~".*",process="etcd"}
     - panels:
-      - title: audit
-        type: logs
-        targets:
-        - expr: audit
       - title: event
         type: logs
         targets:
-        - expr: pod{namespace="kube-system",pod=~"eventrouter-.*"}
+        - expr: pod{namespace="{{ template "venti-stack.namespace" . }}",container="eventrouter"}
   ingress.yml: |
     title: Ingress
     rows:

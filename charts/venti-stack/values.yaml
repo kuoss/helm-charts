@@ -60,19 +60,19 @@ fluent-bit:
           Match               kube.*
           script              /fluent-bit/scripts/lethe.lua
           call                kube
-      
+
       [FILTER] # host
           Name                lua
           Match               host.*
           script              /fluent-bit/scripts/lethe.lua
           call                host
-      
+
       [FILTER] # all
           Name                rewrite_tag
           Match_Regex         ^(kube|host)
           Rule                $tag .* $tag false
           Emitter_Name        re_emitted
-   
+
       [FILTER]
           Name                modify
           Match_Regex         ^(pod|node)
@@ -90,12 +90,17 @@ prometheus:
     persistence:
       enabled: false
   prometheus-node-exporter:
+    extraArgs:
+    - --collector.systemd
+    extraHostVolumeMounts:
+    - name: systemd-socket
+      mountPath: /var/run/dbus/system_bus_socket
+      hostPath: /var/run/dbus/system_bus_socket
+      readOnly: true
+      mountPropagation: None
     nameOverride: "node-exporter"
   prometheus-pushgateway:
     enabled: false
-  server:
-    nameOverride: "prometheus"
-
 
 eventrouter:
   nodeSelector: {}
@@ -186,7 +191,7 @@ venti:
       #       targets:
       #       - expr: sum(kube_node_status_condition{status="true"}) by (condition) > 0
       #         legend: "{{condition}}"
-      
+
     datasources: []
     # - name: prometheus
     #   type: prometheus
