@@ -27,7 +27,7 @@ spec:
       {{- end }}
       containers:
       - name: reader
-        image: {{ include "lethe.imageRepository" . }}/lethe:v0.2.2
+        image: {{ include "lethe.imageRepository" . }}/lethe:v0.2.3
         resources:
           {{- toYaml .Values.lethe.resources | nindent 10 }}
         volumeMounts:
