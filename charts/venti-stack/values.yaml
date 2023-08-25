@@ -225,14 +225,14 @@ venti:
     type: ClusterIP
   ingress:
     enabled: false
+    annotations: {}
+    extraLabels: {}
     hosts: []
     # - venti.domain.com
     tls: []
     # - secretName: chart-example-tls
     #   hosts:
     #     - venti.domain.com
-    annotations: {}
-    extraLabels: {}
     path: /
     pathType: Prefix
     extraPaths: []
