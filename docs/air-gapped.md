@@ -64,3 +64,11 @@ helm install venti-stack-0.1.12.tgz -f values.yaml
 ```
 
 After installation, check the pod running status and connect to venti ingress.
+
+
+## (optional) disable node-exporter
+```yaml
+prometheus:
+  prometheus-node-exporter:
+    enabled: false
+```
