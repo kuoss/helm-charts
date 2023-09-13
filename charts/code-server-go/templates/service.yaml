@@ -24,15 +24,9 @@ spec:
   {{- end }}
   {{- end }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.service.servicePort }}
+      targetPort: 8080
       protocol: TCP
       name: http
-      {{- if (and (eq .Values.service.type "NodePort") .Values.service.nodePort) }}
-      nodePort: {{ .Values.service.nodePort }}
-      {{- end }}
-    {{- with .Values.service.extraPorts }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
   selector:
     {{- include "codeservergo.selectorLabels" . | nindent 4 }}
