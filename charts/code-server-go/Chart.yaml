@@ -1,7 +1,7 @@
 apiVersion: v2
 name: code-server-go
 appVersion: 4.16.1
-version: 0.0.1
+version: v0.0.2
 description: code-server-go
 home: https://kuoss.github.io/helm-charts
 icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
