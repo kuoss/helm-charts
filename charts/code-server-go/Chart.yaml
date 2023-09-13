@@ -1,0 +1,23 @@
+apiVersion: v2
+name: code-server-go
+appVersion: 4.16.1
+version: 0.0.1
+description: code-server-go
+home: https://kuoss.github.io/helm-charts
+icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+sources:
+  - https://github.com/coder/code-server
+  - https://github.com/kuoss/code-server-go
+maintainers:
+  - name: jmnote
+    email: opcore@gmail.com
+type: application
+keywords:
+  - code-server
+  - go
+  - golang
+annotations:
+  "artifacthub.io/license": Apache-2.0
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/kuoss/helm-charts

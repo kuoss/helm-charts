@@ -1,0 +1,39 @@
+image:
+  repository: ghcr.io/kuoss/code-server-go
+  tag: 4.16.1-go1.20.8
+  pullPolicy: IfNotPresent
+
+deployment:
+  annotations: {}
+
+service:
+  annotations: {}
+  labels: {}
+  type: ClusterIP
+  port: 9093
+  clusterPort: 9094
+  loadBalancerIP: ""  # Assign ext IP when Service type is LoadBalancer
+  loadBalancerSourceRanges: []  # Only allow access to loadBalancerIP from these IPs
+  # if you want to force a specific nodePort. Must be use with service.type=NodePort
+  # nodePort:
+
+  # Optionally specify extra list of additional ports exposed on both services
+  extraPorts: []
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: codeservergo.domain.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - codeservergo.domain.com
+
+password: hello
