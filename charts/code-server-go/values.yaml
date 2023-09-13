@@ -21,19 +21,13 @@ service:
   extraPorts: []
 
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: codeservergo.domain.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  extraLabels: {}
+  hosts: []
+  path: /
+  pathType: Prefix
+  extraPaths: []
   tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - codeservergo.domain.com
 
 password: hello
