@@ -8,6 +8,33 @@ entries:
           url: https://github.com/kuoss/helm-charts
     apiVersion: v2
     appVersion: 4.16.1
+    created: "2023-09-13T04:48:52.518269947Z"
+    description: code-server-go
+    digest: 046bbd19920675ee3d1447494ec83f3aa9aaee1d94a78a8808795dca9a5bcb4a
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - code-server
+    - go
+    - golang
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: code-server-go
+    sources:
+    - https://github.com/coder/code-server
+    - https://github.com/kuoss/code-server-go
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/code-server-go-v0.0.2/code-server-go-v0.0.2.tgz
+    version: v0.0.2
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+    apiVersion: v2
+    appVersion: 4.16.1
     created: "2023-09-13T04:45:40.666092085Z"
     description: code-server-go
     digest: 7f62250e774056a7518892cc8bdb64701c73b00baccf64740cf85f5767c56ca9
@@ -785,4 +812,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-13T04:45:40.666126988Z"
+generated: "2023-09-13T04:48:52.518359649Z"
