@@ -21,7 +21,7 @@ service:
   extraPorts: []
 
 ingress:
-  enabled: true
+  enabled: false
   annotations: {}
   extraLabels: {}
   hosts: []
