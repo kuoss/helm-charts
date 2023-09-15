@@ -7,10 +7,14 @@ metadata:
   namespace: {{ template "venti-stack.namespace" . }}
 data:
   alerting.yml: |
-    alertings:
-    - name: alertmanager
-      type: alertmanager
-      url: http://{{ template "prometheus.alertmanager.fullname" .Subcharts.prometheus }}:9093
+    alerting:
+      evaluation_interval: 5s
+      alertmanagers:
+      - static_configs:
+        - targets:
+          - http://{{ template "prometheus.alertmanager.fullname" .Subcharts.prometheus }}:9093
+      globalLabels:
+        venti: {{ .Chart.AppVersion }}
   datasources.yml: |
     datasources:
 {{- if .Values.venti.config.datasources }}
