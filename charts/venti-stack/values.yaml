@@ -162,7 +162,10 @@ lethe:
 
 venti:
   config:
-    alerting: {}
+    alerting:
+      evaluationInterval: 5s
+      globalLabels: {}
+    alertRules: {}
     # kubernetes.yml: |
     #   datasourceSelector:
     #     type: prometheus

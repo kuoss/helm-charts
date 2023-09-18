@@ -6,6 +6,6 @@ metadata:
   name: {{ template "venti.fullname" .}}-alertrules
   namespace: {{ template "venti-stack.namespace" .}}
 data:
-{{- if .Values.venti.config.alerting }}
-{{ toYaml .Values.venti.config.alerting | indent 2 }}
+{{- if .Values.venti.config.alertRules }}
+{{ toYaml .Values.venti.config.alertRules | indent 2 }}
 {{- end }}

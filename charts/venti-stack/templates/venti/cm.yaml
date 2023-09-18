@@ -8,13 +8,15 @@ metadata:
 data:
   alerting.yml: |
     alerting:
-      evaluation_interval: 5s
+      evaluation_interval: {{ .Values.venti.config.alerting.evaluationInterval }}
       alertmanagers:
       - static_configs:
         - targets:
           - http://{{ template "prometheus.alertmanager.fullname" .Subcharts.prometheus }}:9093
       globalLabels:
-        venti: {{ .Chart.AppVersion }}
+{{- with .Values.venti.config.alerting.globalLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
   datasources.yml: |
     datasources:
 {{- if .Values.venti.config.datasources }}
