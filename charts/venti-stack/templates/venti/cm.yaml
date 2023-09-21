@@ -6,6 +6,9 @@ metadata:
   name: {{ template "venti.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
 data:
+  venti.yml: |
+    ginMode: {{ .Values.venti.config.global.ginMode }}
+    logLevel: {{ .Values.venti.config.global.logLevel }}
   alerting.yml: |
     alerting:
       evaluation_interval: {{ .Values.venti.config.alerting.evaluationInterval }}

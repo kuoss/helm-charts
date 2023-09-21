@@ -162,6 +162,9 @@ lethe:
 
 venti:
   config:
+    global:
+      ginMode: release
+      logLevel: info
     alerting:
       evaluationInterval: 5s
       globalLabels: {}
