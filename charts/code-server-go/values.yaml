@@ -24,4 +24,4 @@ ingress:
   extraPaths: []
   tls: []
 
-password: hello
+password: kuoss
