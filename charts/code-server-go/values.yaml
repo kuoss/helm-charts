@@ -34,3 +34,13 @@ ingress:
   #      - code-server-go.domain.com
 
 password: kuoss
+
+## Persist data to a persistent volume
+persistence:
+  enabled: true
+  # storageClass: "-"
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  annotations: {}
+  # existingClaim: ""
+  # hostPath: /data
