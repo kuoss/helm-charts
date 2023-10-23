@@ -43,4 +43,5 @@ persistence:
   size: 1Gi
   annotations: {}
   # existingClaim: ""
-  # hostPath: /data
+  # hostPath: /root/go/src
+
