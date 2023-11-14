@@ -28,7 +28,7 @@ spec:
       {{- end }}
       containers:
       - name: venti
-        image: {{ include "venti.imageRepository" . }}/venti:v0.2.17
+        image: {{ include "venti.imageRepository" . }}/venti:{{ .Chart.AppVersion }}
         resources:
           requests:
             memory: 32Mi
