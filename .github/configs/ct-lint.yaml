@@ -1,0 +1,7 @@
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts
+chart-repos:
+  - fluent=https://fluent.github.io/helm-charts
+  - prometheus-community=https://prometheus-community.github.io/helm-charts
