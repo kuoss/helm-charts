@@ -36,9 +36,9 @@ kubectl kustomize --enable-helm . -o ../
 cd ../..
 
 rm -rf */kustomize
-sed -i 's|helm.sh/chart: .*||g'             -i */*.yaml
-sed -i 's|app.kubernetes.io/version: .*||g' -i */*.yaml
-sed -i 's|checksum/config: .*||g'           -i */*.yaml
+sed 's|helm.sh/chart: .*||g'             -i */*.yaml
+sed 's|app.kubernetes.io/version: .*||g' -i */*.yaml
+sed 's|checksum/config: .*||g'           -i */*.yaml
 
 diff --color $PREV/ $CURR/
 
