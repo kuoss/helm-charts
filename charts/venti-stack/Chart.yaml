@@ -1,9 +1,9 @@
 apiVersion: v2
 name: venti-stack
 appVersion: v0.2.18
-version: 0.1.29
+version: 0.1.30
 kubeVersion: ">=1.16.0-0"
-description: Logmon is a logging and monitoring system.
+description: Venti stack is a logging and monitoring system.
 home: https://kuoss.github.io/helm-charts
 icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
 sources:
@@ -19,11 +19,11 @@ maintainers:
 type: application
 dependencies:
   - name: prometheus
-    version: "24.5.0"
+    version: "25.6.0"
     repository: https://prometheus-community.github.io/helm-charts
     condition: prometheus.enabled
   - name: fluent-bit
-    version: "0.30.4"
+    version: "0.40.0"
     repository: https://fluent.github.io/helm-charts
     condition: fluent-bit.enabled
 keywords:

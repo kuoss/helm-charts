@@ -31,24 +31,41 @@ spec:
         resources:
           {{- toYaml .Values.lethe.resources | nindent 10 }}
         volumeMounts:
-        - name: config-volume
+        - name: config
           mountPath: /app/etc
-        - name: storage-volume
+        - name: data
           mountPath: /data
       - name: writer
-        image: {{ index .Values "fluent-bit" "image" "repository" }}:2.1.4
+        args:
+        - --workdir=/fluent-bit/etc
+        - --config=/fluent-bit/etc/conf/fluent-bit.conf
+        command:
+        - /fluent-bit/bin/fluent-bit
+        image: {{ index .Values "fluent-bit" "image" "repository" }}:2.2.0
         resources:
           {{- toYaml .Values.lethe.resources | nindent 10 }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http-probe
+        ports:
+        - containerPort: 2020
+          name: http-probe
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/v1/health
+            port: http-probe
         volumeMounts:
-        - name: config-volume
-          mountPath: /fluent-bit/etc
-        - name: storage-volume
+        - name: config
+          mountPath: /fluent-bit/etc/conf
+        - name: data
           mountPath: /data
       volumes:
-        - name: config-volume
+        - name: config
           configMap:
             name: {{ if .Values.lethe.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.lethe.configMapOverrideName }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
-        - name: storage-volume
+        - name: data
         {{- if .Values.lethe.persistentVolume.enabled }}
           persistentVolumeClaim:
             claimName: {{ if .Values.lethe.persistentVolume.existingClaim }}{{ .Values.lethe.persistentVolume.existingClaim }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
