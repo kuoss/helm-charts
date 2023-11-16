@@ -5,8 +5,6 @@ metadata:
     {{- include "venti.labels" . | nindent 4 }}
   name: {{ template "venti.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
-  labels:
-    {{- include "venti.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
