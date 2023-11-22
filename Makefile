@@ -3,6 +3,8 @@ test_deploy:
 	hack/test_deploy.sh
 
 dependency:
+	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+	helm repo add fluent https://fluent.github.io/helm-charts
 	cd charts/venti-stack; helm dependency update; helm dependency build
 
 template:
