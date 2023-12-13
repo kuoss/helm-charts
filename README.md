@@ -17,6 +17,12 @@ helm repo add kuoss https://kuoss.github.io/helm-charts
 
 You can then run `helm search repo kuoss` to see the charts.
 
+## Charts
+
+### venti-stack
+
+For installation and upgrading instructions see [venti-stack chart readme](https://github.com/vmware-tanzu/helm-charts/blob/main/charts/venti-stack/README.md).
+
 ## Contributing
 
 The source code of all [Kuoss](https://kuoss.github.io) [Helm](https://helm.sh) charts can be found on Github: <https://github.com/kuoss/helm-charts/>
