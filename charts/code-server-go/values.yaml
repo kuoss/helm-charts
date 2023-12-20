@@ -34,6 +34,7 @@ ingress:
   #      - code-server-go.domain.com
 
 password: kuoss
+# serviceAccountName: code-server-go
 
 ## Persist data to a persistent volume
 persistence:
