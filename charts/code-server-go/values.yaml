@@ -45,4 +45,3 @@ persistence:
   annotations: {}
   # existingClaim: ""
   # hostPath: /root/go/src
-
