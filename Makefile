@@ -20,3 +20,6 @@ images:
 
 __names:
 	make template | egrep '^kind:|^  name:'
+
+code-server:
+	hack/code-server.sh

@@ -1,0 +1,33 @@
+apiVersion: v2
+name: code-server
+description: A Helm chart for coder/code-server
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 3.16.0
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+appVersion: 4.20.0
+home: https://kuoss.github.io/helm-charts
+sources:
+  - https://github.com/coder/code-server
+keywords:
+  - code-server
+annotations:
+  "artifacthub.io/license": MIT
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/kuoss/helm-charts
