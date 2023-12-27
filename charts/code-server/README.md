@@ -21,7 +21,7 @@ _See [`helm repo`](https://helm.sh/docs/helm/helm_repo/) for command documentati
 ## Install Helm Chart
 
 ```console
-helm install [RELEASE_NAME] kuoss/code-server-
+helm install [RELEASE_NAME] kuoss/code-server
 ```
 
 _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
