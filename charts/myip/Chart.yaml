@@ -1,7 +1,7 @@
 apiVersion: v2
 name: myip
 appVersion: v0.1.1
-version: 0.1.0
+version: 0.1.1
 description: myip
 home: https://kuoss.github.io/helm-charts
 icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
