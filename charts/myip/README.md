@@ -1,6 +1,6 @@
 # myip
 
-Installs the myip
+Installs the myip, "What's my IP" application
 
 ## Prerequisites
 
