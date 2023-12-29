@@ -346,6 +346,33 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/code-server-go-0.0.1/code-server-go-0.0.1.tgz
     version: 0.0.1
+  myip:
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+    apiVersion: v2
+    appVersion: v0.1.1
+    created: "2023-12-29T11:38:41.522758933Z"
+    description: myip
+    digest: 3afef0a6c20c3e6fd19ff4b9b49a6749204777a4dd7566583f1a3481db63d4b2
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - xff
+    - real-ip
+    - client-ip
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: myip
+    sources:
+    - https://github.com/kuoss/myip
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/myip-0.1.0/myip-0.1.0.tgz
+    version: 0.1.0
   venti-stack:
   - annotations:
       artifacthub.io/license: Apache-2.0
@@ -1807,4 +1834,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-27T03:55:43.975366417Z"
+generated: "2023-12-29T11:38:41.522871422Z"
