@@ -1,0 +1,22 @@
+apiVersion: v2
+name: myip
+appVersion: v0.1.1
+version: 0.1.0
+description: myip
+home: https://kuoss.github.io/helm-charts
+icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+sources:
+  - https://github.com/kuoss/myip
+maintainers:
+  - name: jmnote
+    email: opcore@gmail.com
+type: application
+keywords:
+  - xff
+  - real-ip
+  - client-ip
+annotations:
+  "artifacthub.io/license": Apache-2.0
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/kuoss/helm-charts

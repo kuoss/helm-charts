@@ -1,0 +1,30 @@
+image:
+  repository: ghcr.io/kuoss/myip
+  pullPolicy: IfNotPresent
+
+deployment:
+  annotations: {}
+
+service:
+  annotations: {}
+  labels: {}
+  type: ClusterIP
+  servicePort: 80
+  loadBalancerIP: ""  # Assign ext IP when Service type is LoadBalancer
+  loadBalancerSourceRanges: []  # Only allow access to loadBalancerIP from these IPs
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  extraLabels: {}
+  hosts: []
+  #   - myip.example.com
+  #   - example.com/myip
+  path: /
+  pathType: Prefix
+  tls: []
+  #  - secretName: example-com-tls
+  #    hosts:
+  #      - myip.example.com

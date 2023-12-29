@@ -1,0 +1,37 @@
+{{- if .Values.ingress.enabled }}
+{{- $serviceName := include "myip.fullname" . }}
+{{- $servicePort := .Values.service.servicePort -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    {{- include "myip.labels" . | nindent 4 }}
+  name: {{ template "myip.fullname" . }}
+  namespace: {{ include "myip.namespace" . }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  {{- end -}}
+{{- if .Values.ingress.tls }}
+  tls:
+{{ tpl (toYaml .Values.ingress.tls) $ | indent 2 }}
+{{- end }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+    {{- $url := splitList "/" . }}
+    - host: {{ first $url }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $serviceName }}
+                port:
+                  number: {{ $servicePort }}
+  {{- end -}}
+{{- end -}}

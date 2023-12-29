@@ -1,0 +1,8 @@
+ingress:
+  enabled: true
+  hosts:
+    - myip.example.com
+  tls:
+    - secretName: example-com-tls
+      hosts:
+        - myip.example.com
