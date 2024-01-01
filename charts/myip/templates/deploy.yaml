@@ -29,9 +29,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.serviceAccountName }}
-      serviceAccountName: {{ .Values.serviceAccountName }}
-      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -40,10 +37,9 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        {{- with .Values.env }}
         env:
-        {{- if .Values.proxies }}
-        - name: APP_PROXIES
-          value: {{ .Values.proxies }}
-        {{- end}}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         ports:
         - containerPort: 80

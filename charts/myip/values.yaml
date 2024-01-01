@@ -5,6 +5,12 @@ image:
 deployment:
   annotations: {}
 
+env: []
+  # - name: SOMEVAR
+  #   value: somevalue
+  # - name: APP_PROXIES
+  #   value: 10.0.0.0/8
+
 service:
   annotations: {}
   labels: {}
