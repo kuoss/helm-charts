@@ -1,8 +1,8 @@
 #!/bin/bash
 cd $(dirname $0)
 
-PREV=0.30.4
-CURR=0.40.0
+PREV=0.40.0
+CURR=0.43.0
 
 NAME=fluent-bit
 REPO=https://fluent.github.io/helm-charts

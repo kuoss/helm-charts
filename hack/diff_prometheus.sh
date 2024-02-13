@@ -1,8 +1,8 @@
 #!/bin/bash
 cd $(dirname $0)
 
-PREV=24.5.0
-CURR=25.6.0
+PREV=25.8.0
+CURR=25.11.1
 
 NAME=prometheus
 REPO=https://prometheus-community.github.io/helm-charts
