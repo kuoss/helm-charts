@@ -21,7 +21,7 @@ You can then run `helm search repo kuoss` to see the charts.
 
 ### venti-stack
 
-For installation and upgrading instructions see [venti-stack chart readme](https://github.com/vmware-tanzu/helm-charts/blob/main/charts/venti-stack/README.md).
+For installation and upgrading instructions see [venti-stack chart readme](https://github.com/kuoss/helm-charts/blob/main/charts/venti-stack/README.md).
 
 ## Contributing
 
