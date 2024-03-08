@@ -1,0 +1,2508 @@
+---
+# Source: venti-stack/charts/fluent-bit/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vs-fluent-bit
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: fluent-bit-0.43.0
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.2.2"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: venti-stack/charts/prometheus/charts/alertmanager/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vs-alertmanager
+  labels:
+    helm.sh/chart: alertmanager-1.7.0
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "v0.26.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: venti-stack
+automountServiceAccountToken: true
+---
+# Source: venti-stack/charts/prometheus/charts/kube-state-metrics/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:    
+    helm.sh/chart: kube-state-metrics-5.16.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.10.1"
+  name: vs-kube-state-metrics
+  namespace: venti-stack
+---
+# Source: venti-stack/charts/prometheus/charts/prometheus-node-exporter/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vs-node-exporter
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: prometheus-node-exporter-4.26.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: node-exporter
+    app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "1.7.0"
+---
+# Source: venti-stack/charts/prometheus/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v2.49.1
+    helm.sh/chart: prometheus-25.11.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: prometheus
+  name: vs-prometheus-server
+  namespace: venti-stack
+  annotations:
+    {}
+---
+# Source: venti-stack/templates/eventrouter/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: eventrouter
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-eventrouter
+  namespace: venti-stack
+---
+# Source: venti-stack/templates/venti/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti
+  namespace: venti-stack
+---
+# Source: venti-stack/charts/fluent-bit/templates/configmap-luascripts.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vs-fluent-bit-luascripts
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: fluent-bit-0.43.0
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.2.2"
+    app.kubernetes.io/managed-by: Helm
+data:
+  
+  host.lua: "function host(tag, timestamp, r)\n  local u = os.date(\"%Y-%m-%dT%H:%M:%SZ\")\n  return 1, timestamp, {tag=string.format(\"node/%s/%s_%s.log\",r[\"_HOSTNAME\"],string.sub(u,1,10),string.sub(u,12,13)),\n  row=string.format(\"%s[%s|%s] %s\",u,r[\"_HOSTNAME\"],r[\"SYSLOG_IDENTIFIER\"],r[\"MESSAGE\"])}\nend\n"
+  
+  kube.lua: "function kube(tag, timestamp, r)\n  local u = os.date(\"%Y-%m-%dT%H:%M:%SZ\")\n  return 1, timestamp, {tag=string.format(\"pod/%s/%s_%s.log\",r[\"kubernetes\"][\"namespace_name\"],string.sub(u,1,10),string.sub(u,12,13)),\n  row=string.format(\"%s[%s|%s|%s] %s\",u,r[\"kubernetes\"][\"namespace_name\"],r[\"kubernetes\"][\"pod_name\"],r[\"kubernetes\"][\"container_name\"],r[\"message\"])}\nend\n"
+---
+# Source: venti-stack/charts/fluent-bit/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vs-fluent-bit
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: fluent-bit-0.43.0
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.2.2"
+    app.kubernetes.io/managed-by: Helm
+data:
+  custom_parsers.conf: |
+    [PARSER]
+        Name docker_no_time
+        Format json
+        Time_Keep Off
+        Time_Key time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+    
+  fluent-bit.conf: |
+    [SERVICE]
+        Daemon Off
+        Flush 1
+        Log_Level info
+        Parsers_File /fluent-bit/etc/parsers.conf
+        Parsers_File /fluent-bit/etc/conf/custom_parsers.conf
+        HTTP_Server On
+        HTTP_Listen 0.0.0.0
+        HTTP_Port 2020
+        Health_Check On
+    
+    [INPUT]
+        Name tail
+        Path /var/log/containers/*.log
+        Exclude_Path /var/log/containers/*_fluent-bit-*.log
+        Parser cri
+        Tag kube.*
+        Mem_Buf_Limit 5MB
+        Skip_Long_Lines On
+    
+    [INPUT]
+        Name systemd
+        Tag host.*
+        Systemd_Filter _SYSTEMD_UNIT=kubelet.service
+        Systemd_Filter _SYSTEMD_UNIT=etcd.service
+        Systemd_Filter _SYSTEMD_UNIT=containerd.service
+        Read_From_Tail On
+    
+    [FILTER]
+        Name kubernetes
+        Match kube.*
+        Merge_Log On
+        Keep_Log Off
+        K8S-Logging.Parser On
+        K8S-Logging.Exclude On
+    
+    [FILTER]
+        Name                lua
+        Match               kube.*
+        script              /fluent-bit/scripts/kube.lua
+        call                kube
+    
+    [FILTER]
+        Name                lua
+        Match               host.*
+        script              /fluent-bit/scripts/host.lua
+        call                host
+    
+    [FILTER]
+        Name                rewrite_tag
+        Match_regex         ^(kube|host)
+        Rule                $tag .* $tag false
+        Emitter_Name        re_emitted
+    
+    [FILTER]
+        Name                modify
+        Match_regex         ^(pod|node)
+        Remove              tag
+    
+    [OUTPUT]
+        Name                forward
+        Match_regex         ^(pod|node)
+        Host                vs-lethe
+        Port                24224
+---
+# Source: venti-stack/charts/prometheus/charts/alertmanager/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vs-alertmanager
+  labels:
+    helm.sh/chart: alertmanager-1.7.0
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "v0.26.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: venti-stack
+data:
+  alertmanager.yml: |
+    global: {}
+    receivers:
+    - name: default-receiver
+    route:
+      group_interval: 5m
+      group_wait: 10s
+      receiver: default-receiver
+      repeat_interval: 3h
+    templates:
+    - /etc/alertmanager/*.tmpl
+---
+# Source: venti-stack/charts/prometheus/templates/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v2.49.1
+    helm.sh/chart: prometheus-25.11.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: prometheus
+  name: vs-prometheus-server
+  namespace: venti-stack
+data:
+  allow-snippet-annotations: "false"
+  alerting_rules.yml: |
+    {}
+  alerts: |
+    {}
+  prometheus.yml: |
+    global:
+      evaluation_interval: 1m
+      scrape_interval: 1m
+      scrape_timeout: 10s
+    rule_files:
+    - /etc/config/recording_rules.yml
+    - /etc/config/alerting_rules.yml
+    - /etc/config/rules
+    - /etc/config/alerts
+    scrape_configs:
+    - job_name: prometheus
+      static_configs:
+      - targets:
+        - localhost:9090
+    - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      job_name: kubernetes-apiservers
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        regex: default;kubernetes;https
+        source_labels:
+        - __meta_kubernetes_namespace
+        - __meta_kubernetes_service_name
+        - __meta_kubernetes_endpoint_port_name
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+    - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      job_name: kubernetes-nodes
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - replacement: kubernetes.default.svc:443
+        target_label: __address__
+      - regex: (.+)
+        replacement: /api/v1/nodes/$1/proxy/metrics
+        source_labels:
+        - __meta_kubernetes_node_name
+        target_label: __metrics_path__
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+    - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      job_name: kubernetes-nodes-cadvisor
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - replacement: kubernetes.default.svc:443
+        target_label: __address__
+      - regex: (.+)
+        replacement: /api/v1/nodes/$1/proxy/metrics/cadvisor
+        source_labels:
+        - __meta_kubernetes_node_name
+        target_label: __metrics_path__
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+    - honor_labels: true
+      job_name: kubernetes-service-endpoints
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape
+      - action: drop
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: (.+?)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        - __address__
+        - __meta_kubernetes_service_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: node
+    - honor_labels: true
+      job_name: kubernetes-service-endpoints-slow
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: (.+?)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        - __address__
+        - __meta_kubernetes_service_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: node
+      scrape_interval: 5m
+      scrape_timeout: 30s
+    - honor_labels: true
+      job_name: prometheus-pushgateway
+      kubernetes_sd_configs:
+      - role: service
+      relabel_configs:
+      - action: keep
+        regex: pushgateway
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_probe
+    - honor_labels: true
+      job_name: kubernetes-services
+      kubernetes_sd_configs:
+      - role: service
+      metrics_path: /probe
+      params:
+        module:
+        - http_2xx
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_probe
+      - source_labels:
+        - __address__
+        target_label: __param_target
+      - replacement: blackbox
+        target_label: __address__
+      - source_labels:
+        - __param_target
+        target_label: instance
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+    - honor_labels: true
+      job_name: kubernetes-pods
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+      - action: drop
+        regex: true
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: (\d+);(([A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4})
+        replacement: '[$2]:$1'
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+        - __meta_kubernetes_pod_ip
+        target_label: __address__
+      - action: replace
+        regex: (\d+);((([0-9]+?)(\.|$)){4})
+        replacement: $2:$1
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+        - __meta_kubernetes_pod_ip
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - action: drop
+        regex: Pending|Succeeded|Failed|Completed
+        source_labels:
+        - __meta_kubernetes_pod_phase
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: node
+    - honor_labels: true
+      job_name: kubernetes-pods-slow
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: (\d+);(([A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4})
+        replacement: '[$2]:$1'
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+        - __meta_kubernetes_pod_ip
+        target_label: __address__
+      - action: replace
+        regex: (\d+);((([0-9]+?)(\.|$)){4})
+        replacement: $2:$1
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+        - __meta_kubernetes_pod_ip
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - action: drop
+        regex: Pending|Succeeded|Failed|Completed
+        source_labels:
+        - __meta_kubernetes_pod_phase
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: node
+      scrape_interval: 5m
+      scrape_timeout: 30s
+    alerting:
+      alertmanagers:
+      - kubernetes_sd_configs:
+          - role: pod
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_namespace]
+          regex: venti-stack
+          action: keep
+        - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+          regex: vs
+          action: keep
+        - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+          regex: alertmanager
+          action: keep
+        - source_labels: [__meta_kubernetes_pod_container_port_number]
+          regex: "9093"
+          action: keep
+  recording_rules.yml: |
+    {}
+  rules: |
+    {}
+---
+# Source: venti-stack/templates/eventrouter/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: eventrouter
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-eventrouter
+  namespace: venti-stack
+data:
+  config.json: |
+    {"sink": "stdout"}
+---
+# Source: venti-stack/templates/lethe/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: lethe
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-lethe
+  namespace: venti-stack
+data:
+  lethe.yaml: |
+    retention:
+      size: 500m
+      time: 15d
+    storage:
+      driver: filesystem
+      log_data_path: /data/log
+  fluent-bit.conf: |
+    [SERVICE]
+        Daemon       Off
+        Flush        1
+        Log_Level    info
+        HTTP_Server  On
+        HTTP_Listen  0.0.0.0
+        HTTP_Port    2020
+        Health_Check On
+    [INPUT]
+        Name         forward
+        Listen       0.0.0.0
+        Port         24224
+    [OUTPUT]
+        Name file
+        Match *
+        Path /data/log
+        Mkdir true
+        Format template
+        Template {row}
+---
+# Source: venti-stack/templates/venti/cm-alertrules.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti-alertrules
+  namespace: venti-stack
+data:
+---
+# Source: venti-stack/templates/venti/cm-dashboards.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti-dashboards
+  namespace: venti-stack
+data:
+  cluster.yml: |
+    title: Cluster
+    rows:
+    - panels:
+      - title: time
+        type: stat
+        targets:
+        - expr: time()
+          unit: dateTimeAsLocal
+      - title: apiserver%
+        type: stat
+        targets:
+        - expr: 100 * up{job="kubernetes-apiservers"}
+          thresholds:
+          - values: [80,100]
+            invert: true
+      - title: k8s version
+        type: stat
+        targets:
+        - expr: kubernetes_build_info{job="kubernetes-apiservers"}
+          legend: "{{git_version}}"
+    - panels:
+      - title: node
+        type: piechart
+        targets:
+        - expr: sum(kube_node_status_condition{status="true"}) by (condition) > 0
+          legend: "{{condition}}"
+      - title: namespace
+        type: piechart
+        targets:
+        - expr: sum(kube_namespace_status_phase) by (phase) > 0
+          legend: "{{phase}}"
+      - title: pod
+        type: piechart
+        targets:
+        - expr: sum(kube_pod_status_phase{namespace=~"$namespace",node=~"$node"}) by (phase) > 0
+          legend: "{{phase}}"
+      - title: job
+        type: piechart
+        targets:
+        - expr: sum(kube_job_status_active{namespace=~"$namespace"}) > 0
+          legend: "Active"
+        - expr: sum(kube_job_status_failed{namespace=~"$namespace"}) > 0
+          legend: "Failed"
+        - expr: sum(kube_job_status_succeeded{namespace=~"$namespace"}) > 0
+          legend: "Succeeded"
+      - title: pvc
+        type: piechart
+        targets:
+        - expr: sum(kube_persistentvolumeclaim_status_phase{namespace=~"$namespace"}) by (phase) > 0
+          legend: "{{phase}}"
+      - title: pv
+        type: piechart
+        targets:
+        - expr: sum(kube_persistentvolume_status_phase == 1) by (phase) > 0
+          legend: "{{phase}}"
+    - panels:
+      - title: node load
+        type: time_series
+        targets:
+        - expr: node_load1
+          legend: "{{node}}"
+      - title: node cpu%
+        type: time_series
+        targets:
+        - expr: 100 * sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) by (node) / sum(kube_node_status_allocatable{resource="cpu"}) by (node)
+          legend: "{{node}}"
+        chartOptions:
+          yMax: 100
+      - title: node mem%
+        type: time_series
+        targets:
+        - expr: 100 * (1 - ( node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes ))
+          legend: "{{node}}"
+        chartOptions:
+          yMax: 100
+      - title: node pods
+        type: time_series
+        targets:
+        - expr: sum(kubelet_running_pods) by (instance)
+          legend: "{{instance}}"
+        chartOptions:
+          yMax: 120
+    - panels:
+      - title: node receive (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_network_receive_bytes_total[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node transmit (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_network_transmit_bytes_total[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node disk read (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_disk_read_bytes_total[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node disk write (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_disk_written_bytes_total[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node root fs%
+        type: time_series
+        targets:
+        - expr: 100 * sum( 1-(node_filesystem_avail_bytes{fstype="xfs",mountpoint="/"} / node_filesystem_size_bytes{fstype="xfs",mountpoint="/"}) ) by (node)
+          legend: "{{node}}"
+        chartOptions:
+          yMax: 100
+    - panels:
+      - title: pvc%
+        type: time_series
+        targets:
+        - expr: 100 * max( 1 - kubelet_volume_stats_available_bytes / kubelet_volume_stats_capacity_bytes) by (namespace, persistentvolumeclaim)
+          legend: "{{namespace}}/{{persistentvolumeclaim}}"
+        chartOptions:
+          yMax: 100
+      - title: pvc inodes%
+        type: time_series
+        targets:
+        - expr: kubelet_volume_stats_inodes_used / kubelet_volume_stats_inodes * 100
+          legend: "{{namespace}}/{{persistentvolumeclaim}}"
+        chartOptions:
+          yMax: 100
+      - title: pod cpu(mcores)
+        type: time_series
+        targets:
+        - expr: sum(rate(container_cpu_usage_seconds_total{namespace=~"$namespace", instance=~"$node", container!=""}[5m])) by (namespace, pod) * 1000
+          legend: "{{namespace}}/{{pod}}"
+      - title: pod mem(Mi)
+        type: time_series
+        targets:
+        - expr: sum(container_memory_working_set_bytes{namespace=~"$namespace", instance=~"$node", container!=""}) by (namespace, pod) / 1024 / 1024
+          legend: "{{namespace}}/{{pod}}"
+    - panels:
+      - title: event
+        type: logs
+        targets:
+        - expr: pod{namespace="venti-stack",container="eventrouter"}
+  control_plane.yml: |
+    title: Control Plane
+    rows:
+    - panels:
+      - title: apiserver
+        type: stat
+        targets:
+        - expr: sum(up{job="kubernetes-apiservers"})
+      - title: controller
+        type: stat
+        targets:
+        - expr: sum(kube_pod_status_phase{namespace="kube-system",phase="Running",pod=~"kube-controller-.*"})
+      - title: scheduler
+        type: stat
+        targets:
+        - expr: sum(kube_pod_status_phase{namespace="kube-system",phase="Running",pod=~"kube-scheduler-.*"})
+      - title: etcd
+        type: stat
+        targets:
+        - expr: sum(node_systemd_unit_state{state="active",name="etcd.service"})
+    - panels:
+      - title: cpu(mcores)
+        type: time_series
+        targets:
+        - expr: |
+            rate(container_cpu_usage_seconds_total{namespace="kube-system",pod=~"kube-apiserver-.*",image=""}[5m]) * 1000
+          legend: '{{pod}}'
+      - title: mem(Mi)
+        type: time_series
+        targets:
+        - expr: |
+            container_memory_working_set_bytes{namespace="kube-system",pod=~"kube-apiserver-.*",image=""} / 1024 / 1024
+          legend: '{{pod}}'
+      - title: cpu(mcores)
+        type: time_series
+        targets:
+        - expr: |
+            rate(container_cpu_usage_seconds_total{namespace="kube-system",pod=~"kube-controller-.*",image=""}[5m]) * 1000
+          legend: '{{pod}}'
+      - title: mem(Mi)
+        type: time_series
+        targets:
+        - expr: |
+            container_memory_working_set_bytes{namespace="kube-system",pod=~"kube-controller-.*",image=""} / 1024 / 1024
+          legend: '{{pod}}'
+      - title: cpu(mcores)
+        type: time_series
+        targets:
+        - expr: |
+            rate(container_cpu_usage_seconds_total{namespace="kube-system",pod=~"kube-scheduler-.*",image=""}[5m]) * 1000
+          legend: '{{pod}}'
+      - title: mem(Mi)
+        type: time_series
+        targets:
+        - expr: |
+            container_memory_working_set_bytes{namespace="kube-system",pod=~"kube-scheduler-.*",image=""} / 1024 / 1024
+          legend: '{{pod}}'
+      - title: etcd db size(Mi)
+        type: time_series
+        targets:
+        - expr: max(etcd_db_total_size_in_bytes) by(endpoint) / 1024 / 1024
+          legend: '{{endpoint}}'
+      - title: etcd bookmark
+        type: time_series
+        targets:
+        - expr: 'sum(etcd_bookmark_counts) by (resource,instance)'
+          legend: '{{resource}}-{{instance}}'
+    - panels:
+      - title: apiserver
+        type: logs
+        targets:
+        - expr: pod{namespace="kube-system",pod=~"kube-apiserver-.*"}
+      - title: controller
+        type: logs
+        targets:
+        - expr: pod{namespace="kube-system",pod=~"kube-controller-.*"}
+      - title: scheduler
+        type: logs
+        targets:
+        - expr: pod{namespace="kube-system",pod=~"kube-scheduler-.*"}
+      - title: etcd
+        type: logs
+        targets:
+        - expr: node{node=~".*",process="etcd"}
+    - panels:
+      - title: event
+        type: logs
+        targets:
+        - expr: pod{namespace="venti-stack",container="eventrouter"}
+  ingress.yml: |
+    title: Ingress
+    rows:
+    - panels:
+      - title: cpu(mcores)
+        type: time_series
+        targets:
+        - expr: |
+            rate(container_cpu_usage_seconds_total{pod=~"ingress-nginx-controller-.*",image=""}[5m]) * 1000
+          legend: '{{pod}}'
+      - title: mem(Mi)
+        type: time_series
+        targets:
+        - expr: |
+            container_memory_working_set_bytes{pod=~"ingress-nginx-controller-.*",image=""} / 1024 / 1024
+          legend: '{{pod}}'
+      - title: transmit(Ki)
+        type: time_series
+        targets:
+        - expr: |
+            rate(container_network_transmit_bytes_total{pod=~"ingress-nginx-controller-.*"}[5m]) / 1024
+          legend: '{{pod}}'
+      - title: receive(Ki)
+        type: time_series
+        targets:
+        - expr: |
+            rate(container_network_receive_bytes_total{pod=~"ingress-nginx-controller-.*"}[5m]) / 1024
+          legend: '{{pod}}'
+    - panels:
+      - title: log
+        type: logs
+        targets:
+        - expr: pod{namespace="kube-system",pod=~"ingress-nginx-controller-.*"}
+  node.yml: |
+    title: Node
+    rows:
+    - panels:
+      - title: node
+        type: piechart
+        targets:
+        - expr: sum(kube_node_status_condition{status='true'}) by (condition) > 0
+          legend: "{{condition}}"
+      - title: kubelet state
+        type: piechart
+        targets:
+        - expr: sum(node_systemd_unit_state{name="kubelet.service"}) by (state) > 0
+          legend: "{{state}}"
+    - panels:
+      - title: node info
+        type: table
+        targets:
+        - expr: kube_node_info{node=~".*"}
+          headers: ["Node", "OS"      , "Internal IP" ,"Container Runtime"        ]
+          columns: ["node", "os_image", "internal_ip" ,"container_runtime_version"]
+          key: node
+    - panels:
+      - title: node load
+        type: time_series
+        targets:
+        - expr: node_load1{node=~"$node"}
+          legend: "{{node}}"
+      - title: node cpu%
+        type: time_series
+        targets:
+        - expr: 100 * sum(rate(node_cpu_seconds_total{node=~"$node",mode!="idle",mode!="iowait"}[3m])) by (node) / sum(kube_node_status_allocatable{node=~"$node",resource="cpu"}) by (node)
+          legend: "{{node}}"
+        chartOptions:
+          yMax: 100
+      - title: node mem%
+        type: time_series
+        targets:
+        - expr: 100 * (1 - ( node_memory_MemAvailable_bytes{node=~"$node"} / node_memory_MemTotal_bytes{node=~"$node"}))
+          legend: "{{node}}"
+        chartOptions:
+          yMax: 100
+      - title: node pods
+        type: time_series
+        targets:
+        - expr: sum(kubelet_running_pods{instance=~"$node"}) by (instance)
+          legend: "{{instance}}"
+        chartOptions:
+          yMax: 120
+    - panels:
+      - title: node receive (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_network_receive_bytes_total{node=~"$node"}[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node transmit (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_network_transmit_bytes_total{node=~"$node"}[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node disk read (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_disk_read_bytes_total{node=~"$node"}[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node disk write (Ki/m)
+        type: time_series
+        targets:
+        - expr: sum(rate(node_disk_written_bytes_total{node=~"$node"}[2m])) by (node) / 1024
+          legend: "{{node}}"
+      - title: node root fs%
+        type: time_series
+        targets:
+        - expr: 100 * sum( 1-(node_filesystem_avail_bytes{node=~"$node",fstype="xfs",mountpoint="/"} / node_filesystem_size_bytes{node=~"$node",fstype="xfs",mountpoint="/"}) ) by (node)
+          legend: "{{node}}"
+        chartOptions:
+          yMax: 100
+    - panels:
+      - title: kubelet log
+        type: logs
+        targets:
+        - expr: node{node=~"$node",process="kubelet"}
+      - title: containerd log
+        type: logs
+        targets:
+        - expr: node{node=~"$node",process="containerd"}
+---
+# Source: venti-stack/templates/venti/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti
+  namespace: venti-stack
+data:
+  venti.yml: |
+    ginMode: release
+    logLevel: info
+  alerting.yml: |
+    alerting:
+      evaluation_interval: 5s
+      alertmanagers:
+      - static_configs:
+        - targets:
+          - http://vs-alertmanager:9093
+      globalLabels:
+  datasources.yml: |
+    datasources:
+    - name: prometheus
+      type: prometheus
+      url: http://vs-prometheus-server
+    - name: lethe
+      type: lethe
+      url: http://vs-lethe
+    discovery:
+      enabled: false
+  users.yml: |
+    users:
+    - username: admin
+      hash: $2a$12$VcCDgh2NDk07JGN0rjGbM.Ad41qVR/YFJcgHp0UGns5JDymv..TOG
+      isAdmin: true
+---
+# Source: venti-stack/templates/lethe/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    app.kubernetes.io/component: lethe
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-lethe
+  namespace: venti-stack
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: venti-stack/charts/fluent-bit/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vs-fluent-bit
+  labels:
+    helm.sh/chart: fluent-bit-0.43.0
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.2.2"
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+---
+# Source: venti-stack/charts/prometheus/charts/kube-state-metrics/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:    
+    helm.sh/chart: kube-state-metrics-5.16.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.10.1"
+  name: vs-kube-state-metrics
+rules:
+
+- apiGroups: ["certificates.k8s.io"]
+  resources:
+  - certificatesigningrequests
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - configmaps
+  verbs: ["list", "watch"]
+
+- apiGroups: ["batch"]
+  resources:
+  - cronjobs
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "apps"]
+  resources:
+  - daemonsets
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "apps"]
+  resources:
+  - deployments
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - endpoints
+  verbs: ["list", "watch"]
+
+- apiGroups: ["autoscaling"]
+  resources:
+  - horizontalpodautoscalers
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "networking.k8s.io"]
+  resources:
+  - ingresses
+  verbs: ["list", "watch"]
+
+- apiGroups: ["batch"]
+  resources:
+  - jobs
+  verbs: ["list", "watch"]
+
+- apiGroups: ["coordination.k8s.io"]
+  resources:
+  - leases
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - limitranges
+  verbs: ["list", "watch"]
+
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources:
+    - mutatingwebhookconfigurations
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - namespaces
+  verbs: ["list", "watch"]
+
+- apiGroups: ["networking.k8s.io"]
+  resources:
+  - networkpolicies
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - nodes
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - persistentvolumeclaims
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - persistentvolumes
+  verbs: ["list", "watch"]
+
+- apiGroups: ["policy"]
+  resources:
+    - poddisruptionbudgets
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - pods
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "apps"]
+  resources:
+  - replicasets
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - replicationcontrollers
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - resourcequotas
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - secrets
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - services
+  verbs: ["list", "watch"]
+
+- apiGroups: ["apps"]
+  resources:
+  - statefulsets
+  verbs: ["list", "watch"]
+
+- apiGroups: ["storage.k8s.io"]
+  resources:
+    - storageclasses
+  verbs: ["list", "watch"]
+
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources:
+    - validatingwebhookconfigurations
+  verbs: ["list", "watch"]
+
+- apiGroups: ["storage.k8s.io"]
+  resources:
+    - volumeattachments
+  verbs: ["list", "watch"]
+---
+# Source: venti-stack/charts/prometheus/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v2.49.1
+    helm.sh/chart: prometheus-25.11.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: prometheus
+  name: vs-prometheus-server
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+      - nodes/proxy
+      - nodes/metrics
+      - services
+      - endpoints
+      - pods
+      - ingresses
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "extensions"
+      - "networking.k8s.io"
+    resources:
+      - ingresses/status
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "discovery.k8s.io"
+    resources:
+      - endpointslices
+    verbs:
+      - get
+      - list
+      - watch
+  - nonResourceURLs:
+      - "/metrics"
+    verbs:
+      - get
+---
+# Source: venti-stack/templates/eventrouter/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: eventrouter
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-eventrouter
+rules:
+- apiGroups: 
+  - ""
+  resources:
+  - events
+  verbs:
+  - get
+  - watch
+  - list
+---
+# Source: venti-stack/templates/venti/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - get
+  - list
+---
+# Source: venti-stack/charts/fluent-bit/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vs-fluent-bit
+  labels:
+    helm.sh/chart: fluent-bit-0.43.0
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.2.2"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vs-fluent-bit
+subjects:
+  - kind: ServiceAccount
+    name: vs-fluent-bit
+    namespace: venti-stack
+---
+# Source: venti-stack/charts/prometheus/charts/kube-state-metrics/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:    
+    helm.sh/chart: kube-state-metrics-5.16.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.10.1"
+  name: vs-kube-state-metrics
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vs-kube-state-metrics
+subjects:
+- kind: ServiceAccount
+  name: vs-kube-state-metrics
+  namespace: venti-stack
+---
+# Source: venti-stack/charts/prometheus/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v2.49.1
+    helm.sh/chart: prometheus-25.11.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: prometheus
+  name: vs-prometheus-server
+subjects:
+  - kind: ServiceAccount
+    name: vs-prometheus-server
+    namespace: venti-stack
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vs-prometheus-server
+---
+# Source: venti-stack/templates/eventrouter/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: eventrouter
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-eventrouter
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vs-eventrouter
+subjects:
+- kind: ServiceAccount
+  name: vs-eventrouter
+  namespace: venti-stack
+---
+# Source: venti-stack/templates/venti/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vs-venti
+subjects:
+- kind: ServiceAccount
+  name: vs-venti
+  namespace: venti-stack
+---
+# Source: venti-stack/charts/fluent-bit/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vs-fluent-bit
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: fluent-bit-0.43.0
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.2.2"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    prometheus.io/path: /api/v1/metrics/prometheus
+    prometheus.io/port: "2020"
+    prometheus.io/scrape: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2020
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+---
+# Source: venti-stack/charts/prometheus/charts/alertmanager/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vs-alertmanager
+  labels:
+    helm.sh/chart: alertmanager-1.7.0
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "v0.26.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: venti-stack
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9093
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+---
+# Source: venti-stack/charts/prometheus/charts/alertmanager/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vs-alertmanager-headless
+  labels:
+    helm.sh/chart: alertmanager-1.7.0
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "v0.26.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: venti-stack
+spec:
+  clusterIP: None
+  ports:
+    - port: 9093
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+---
+# Source: venti-stack/charts/prometheus/charts/kube-state-metrics/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vs-kube-state-metrics
+  namespace: venti-stack
+  labels:    
+    helm.sh/chart: kube-state-metrics-5.16.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.10.1"
+  annotations:
+    prometheus.io/scrape: 'true'
+spec:
+  type: "ClusterIP"
+  ports:
+  - name: "http"
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  
+  selector:    
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: vs
+---
+# Source: venti-stack/charts/prometheus/charts/prometheus-node-exporter/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vs-node-exporter
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: prometheus-node-exporter-4.26.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: node-exporter
+    app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "1.7.0"
+  annotations:
+    prometheus.io/scrape: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9100
+      targetPort: 9100
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/instance: vs
+---
+# Source: venti-stack/charts/prometheus/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v2.49.1
+    helm.sh/chart: prometheus-25.11.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: prometheus
+  name: vs-prometheus-server
+  namespace: venti-stack
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+  selector:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+  sessionAffinity: None
+  type: "ClusterIP"
+---
+# Source: venti-stack/templates/lethe/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/path: /api/v1/metrics/prometheus
+    prometheus.io/port: "2020"
+    prometheus.io/scrape: "true"
+  labels:
+    app.kubernetes.io/component: lethe
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-lethe
+  namespace: venti-stack
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 6060
+    - name: metrics
+      port: 2020
+      protocol: TCP
+      targetPort: 2020
+    - name: forward
+      port: 24224
+      protocol: TCP
+      targetPort: 24224
+  selector:
+    app.kubernetes.io/component: lethe
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+  type: "ClusterIP"
+---
+# Source: venti-stack/templates/venti/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti
+  namespace: venti-stack
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 3030
+  selector:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+  type: "ClusterIP"
+---
+# Source: venti-stack/charts/fluent-bit/templates/daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: vs-fluent-bit
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: fluent-bit-0.43.0
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.2.2"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fluent-bit
+      app.kubernetes.io/instance: vs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fluent-bit
+        app.kubernetes.io/instance: vs
+      annotations:
+        checksum/config: 57e3e9f4aa17b9a711f6878b4aa1708c5a064866f4ce69195b0db7e299133395
+        checksum/luascripts: 416d66ccbe5a210cb30ed68e5e99f693063e5e0a6e5f423ea76a7fe34da13029
+    spec:
+      serviceAccountName: vs-fluent-bit
+      hostNetwork: false
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: fluent-bit
+          image: "cr.fluentbit.io/fluent/fluent-bit:2.2.2"
+          imagePullPolicy: Always
+          command:
+            - /fluent-bit/bin/fluent-bit
+          args:
+            - --workdir=/fluent-bit/etc
+            - --config=/fluent-bit/etc/conf/fluent-bit.conf
+          ports:
+            - name: http
+              containerPort: 2020
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
+          volumeMounts:
+            - name: config
+              mountPath: /fluent-bit/etc/conf
+            - name: luascripts
+              mountPath: /fluent-bit/scripts
+            - mountPath: /var/log
+              name: varlog
+            - mountPath: /var/lib/docker/containers
+              name: varlibdockercontainers
+              readOnly: true
+            - mountPath: /etc/machine-id
+              name: etcmachineid
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: vs-fluent-bit
+        - name: luascripts
+          configMap:
+            name: vs-fluent-bit-luascripts
+        - hostPath:
+            path: /var/log
+          name: varlog
+        - hostPath:
+            path: /var/lib/docker/containers
+          name: varlibdockercontainers
+        - hostPath:
+            path: /etc/machine-id
+            type: File
+          name: etcmachineid
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+---
+# Source: venti-stack/charts/prometheus/charts/prometheus-node-exporter/templates/daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: vs-node-exporter
+  namespace: venti-stack
+  labels:
+    helm.sh/chart: prometheus-node-exporter-4.26.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: node-exporter
+    app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "1.7.0"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: node-exporter
+      app.kubernetes.io/instance: vs
+  revisionHistoryLimit: 10
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        helm.sh/chart: prometheus-node-exporter-4.26.0
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: metrics
+        app.kubernetes.io/part-of: node-exporter
+        app.kubernetes.io/name: node-exporter
+        app.kubernetes.io/instance: vs
+        app.kubernetes.io/version: "1.7.0"
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: vs-node-exporter
+      containers:
+        - name: node-exporter
+          image: quay.io/prometheus/node-exporter:v1.7.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - --path.procfs=/host/proc
+            - --path.sysfs=/host/sys
+            - --path.rootfs=/host/root
+            - --path.udev.data=/host/root/run/udev/data
+            - --web.listen-address=[$(HOST_IP)]:9100
+            - --collector.systemd
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          env:
+            - name: HOST_IP
+              value: 0.0.0.0
+          ports:
+            - name: metrics
+              containerPort: 9100
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              httpHeaders:
+              path: /
+              port: 9100
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              httpHeaders:
+              path: /
+              port: 9100
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          volumeMounts:
+            - name: proc
+              mountPath: /host/proc
+              readOnly:  true
+            - name: sys
+              mountPath: /host/sys
+              readOnly: true
+            - name: root
+              mountPath: /host/root
+              mountPropagation: HostToContainer
+              readOnly: true
+            - name: systemd-socket
+              mountPath: /var/run/dbus/system_bus_socket
+              readOnly: true
+              mountPropagation: None
+      hostNetwork: true
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: root
+          hostPath:
+            path: /
+        - name: systemd-socket
+          hostPath:
+            path: /var/run/dbus/system_bus_socket
+---
+# Source: venti-stack/charts/prometheus/charts/kube-state-metrics/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vs-kube-state-metrics
+  namespace: venti-stack
+  labels:    
+    helm.sh/chart: kube-state-metrics-5.16.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "2.10.1"
+spec:
+  selector:
+    matchLabels:      
+      app.kubernetes.io/name: kube-state-metrics
+      app.kubernetes.io/instance: vs
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:        
+        helm.sh/chart: kube-state-metrics-5.16.0
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: metrics
+        app.kubernetes.io/part-of: kube-state-metrics
+        app.kubernetes.io/name: kube-state-metrics
+        app.kubernetes.io/instance: vs
+        app.kubernetes.io/version: "2.10.1"
+    spec:
+      hostNetwork: false
+      serviceAccountName: vs-kube-state-metrics
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: kube-state-metrics
+        args:
+        - --port=8080
+        - --resources=certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpoints,horizontalpodautoscalers,ingresses,jobs,leases,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,secrets,services,statefulsets,storageclasses,validatingwebhookconfigurations,volumeattachments
+        imagePullPolicy: IfNotPresent
+        image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.1
+        ports:
+        - containerPort: 8080
+          name: "http"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            httpHeaders:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            httpHeaders:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+---
+# Source: venti-stack/charts/prometheus/templates/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v2.49.1
+    helm.sh/chart: prometheus-25.11.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: prometheus
+  name: vs-prometheus-server
+  namespace: venti-stack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/instance: vs
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    type: Recreate
+    rollingUpdate: null
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/instance: vs
+        app.kubernetes.io/version: v2.49.1
+        helm.sh/chart: prometheus-25.11.1
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: prometheus
+    spec:
+      enableServiceLinks: true
+      serviceAccountName: vs-prometheus-server
+      containers:
+        - name: prometheus-server-configmap-reload
+          image: "quay.io/prometheus-operator/prometheus-config-reloader:v0.71.2"
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - --watched-dir=/etc/config
+            - --reload-url=http://127.0.0.1:9090/-/reload
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+
+        - name: prometheus-server
+          image: "quay.io/prometheus/prometheus:v2.49.1"
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - --storage.tsdb.retention.time=15d
+            - --config.file=/etc/config/prometheus.yml
+            - --storage.tsdb.path=/data
+            - --web.console.libraries=/etc/prometheus/console_libraries
+            - --web.console.templates=/etc/prometheus/consoles
+            - --web.enable-lifecycle
+            - --storage.tsdb.retention.size=7GB
+          ports:
+            - containerPort: 9090
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 4
+            failureThreshold: 3
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          resources:
+            limits:
+              cpu: 200m
+              memory: 800Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            - name: storage-volume
+              mountPath: /data
+              subPath: ""
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      terminationGracePeriodSeconds: 300
+      volumes:
+        - name: config-volume
+          configMap:
+            name: vs-prometheus-server
+        - name: storage-volume
+          emptyDir:
+            {}
+---
+# Source: venti-stack/templates/eventrouter/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: eventrouter
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-eventrouter
+  namespace: venti-stack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: eventrouter
+      app.kubernetes.io/name: venti-stack
+      app.kubernetes.io/instance: vs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: eventrouter
+        app.kubernetes.io/name: venti-stack
+        app.kubernetes.io/instance: vs
+        app.kubernetes.io/version: v0.2.19
+        helm.sh/chart: venti-stack-0.1.36
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: venti-stack
+    spec:
+      containers:
+      - image: ghcr.io/kuoss/eventrouter:v0.3.3
+        name: eventrouter
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: vol-config
+          mountPath: /etc/eventrouter
+      serviceAccountName: vs-eventrouter
+      volumes:
+      - name: vol-config
+        configMap:
+          name: vs-eventrouter
+---
+# Source: venti-stack/templates/lethe/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: lethe
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-lethe
+  namespace: venti-stack
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: lethe
+      app.kubernetes.io/name: venti-stack
+      app.kubernetes.io/instance: vs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: lethe
+        app.kubernetes.io/name: venti-stack
+        app.kubernetes.io/instance: vs
+        app.kubernetes.io/version: v0.2.19
+        helm.sh/chart: venti-stack-0.1.36
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: venti-stack
+    spec:
+      containers:
+      - name: reader
+        image: ghcr.io/kuoss/lethe:v0.2.5
+        resources:
+          limits:
+            cpu: 400m
+            memory: 800Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: config
+          mountPath: /app/etc
+        - name: data
+          mountPath: /data
+      - name: writer
+        args:
+        - --workdir=/fluent-bit/etc
+        - --config=/fluent-bit/etc/conf/fluent-bit.conf
+        command:
+        - /fluent-bit/bin/fluent-bit
+        image: cr.fluentbit.io/fluent/fluent-bit:2.2.2
+        resources:
+          limits:
+            cpu: 400m
+            memory: 800Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http-probe
+        ports:
+        - containerPort: 2020
+          name: http-probe
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/v1/health
+            port: http-probe
+        volumeMounts:
+        - name: config
+          mountPath: /fluent-bit/etc/conf
+        - name: data
+          mountPath: /data
+      volumes:
+        - name: config
+          configMap:
+            name: vs-lethe
+        - name: data
+          persistentVolumeClaim:
+            claimName: vs-lethe
+---
+# Source: venti-stack/templates/venti/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti
+  namespace: venti-stack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: venti
+      app.kubernetes.io/name: venti-stack
+      app.kubernetes.io/instance: vs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: venti
+        app.kubernetes.io/name: venti-stack
+        app.kubernetes.io/instance: vs
+        app.kubernetes.io/version: v0.2.19
+        helm.sh/chart: venti-stack-0.1.36
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/part-of: venti-stack
+    spec:
+      serviceAccountName: vs-venti
+      containers:
+      - name: venti
+        image: ghcr.io/kuoss/venti:v0.2.19
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 1000m
+        ports:
+        - containerPort: 3030
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/etc
+        - name: dashboards-volume
+          mountPath: /app/etc/dashboards/common
+        - name: user-dashboards-volume
+          mountPath: /app/etc/dashboards/user
+        - name: alertrules-volume
+          mountPath: /app/etc/alertrules
+      volumes:
+      - name: config-volume
+        configMap:
+          name: vs-venti
+      - name: dashboards-volume
+        configMap:
+          name: vs-venti-dashboards
+      - name: user-dashboards-volume
+        configMap:
+          name: vs-venti-user-dashboards
+          optional: true
+      - name: alertrules-volume
+        configMap:
+          name: vs-venti-alertrules
+          optional: true
+---
+# Source: venti-stack/charts/prometheus/charts/alertmanager/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vs-alertmanager
+  labels:
+    helm.sh/chart: alertmanager-1.7.0
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "v0.26.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: venti-stack
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alertmanager
+      app.kubernetes.io/instance: vs
+  serviceName: vs-alertmanager-headless
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: alertmanager
+        app.kubernetes.io/instance: vs
+      annotations:
+        checksum/config: 85b789a3740a5a9701a0d80e7b38dc50b1f2c445cb029fc6c9170e0ab8bd3263
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: vs-alertmanager
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      containers:
+        - name: alertmanager
+          securityContext:
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
+          image: "quay.io/prometheus/alertmanager:v0.26.0"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          args:
+            - --storage.path=/alertmanager
+            - --config.file=/etc/alertmanager/alertmanager.yml
+          ports:
+            - name: http
+              containerPort: 9093
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/alertmanager
+            - name: storage
+              mountPath: /alertmanager
+      volumes:
+        - name: config
+          configMap:
+            name: vs-alertmanager
+        - name: storage
+          emptyDir: {}
+---
+# Source: venti-stack/charts/prometheus/charts/alertmanager/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vs-alertmanager
+  labels:
+    helm.sh/chart: alertmanager-1.7.0
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: "v0.26.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: venti-stack
+spec:
+  ingressClassName: private
+  tls:
+    - hosts:
+        - "alertmanager.kuoss.org"
+      secretName: tls-kuoss-org
+  rules:
+    - host: "alertmanager.kuoss.org"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: vs-alertmanager
+                port:
+                  number: 9093
+---
+# Source: venti-stack/charts/prometheus/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v2.49.1
+    helm.sh/chart: prometheus-25.11.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: prometheus
+  name: vs-prometheus-server
+  namespace: venti-stack
+spec:
+  ingressClassName: private
+  rules:
+    - host: prometheus.kuoss.org
+      http:
+        paths:
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vs-prometheus-server
+                port:
+                  number: 80
+  tls:
+    - hosts:
+      - prometheus.kuoss.org
+      secretName: tls-kuoss-org
+---
+# Source: venti-stack/templates/lethe/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: lethe
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-lethe
+  namespace: venti-stack
+spec:
+  ingressClassName: private
+  tls:
+  - hosts:
+    - lethe.kuoss.org
+    secretName: tls-kuoss-org
+  rules:
+    - host: lethe.kuoss.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vs-lethe
+                port:
+                  number: 80
+---
+# Source: venti-stack/templates/venti/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: venti
+    app.kubernetes.io/name: venti-stack
+    app.kubernetes.io/instance: vs
+    app.kubernetes.io/version: v0.2.19
+    helm.sh/chart: venti-stack-0.1.36
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: venti-stack
+  name: vs-venti
+  namespace: venti-stack
+spec:
+  ingressClassName: private
+  tls:
+  - hosts:
+    - venti.kuoss.org
+    secretName: tls-kuoss-org
+  rules:
+    - host: venti.kuoss.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vs-venti
+                port:
+                  number: 80

@@ -8,7 +8,7 @@ dependency:
 	cd charts/venti-stack; helm dependency update; helm dependency build
 
 template:
-	helm template -n venti-stack vs charts/venti-stack/ -f charts/venti-stack/values.yaml -f docs/values.test.yaml
+	helm template -n venti-stack vs charts/venti-stack/ -f charts/venti-stack/values.yaml -f docs/venti-stack.values.test.yaml > docs/venti-stack.rendered.test.yaml
 
 images:
 	######## default ########

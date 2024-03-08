@@ -1,4 +1,3 @@
-
 prometheus:
   alertmanager:
     ingress:
@@ -13,37 +12,6 @@ prometheus:
       - hosts:
         - alertmanager.kuoss.org
         secretName: tls-kuoss-org
-
-  kube-state-metrics:
-    collectors:
-      - certificatesigningrequests
-      - configmaps
-      - cronjobs
-      - daemonsets
-      - deployments
-      - endpoints
-      #- horizontalpodautoscalers
-      - ingresses
-      - jobs
-      - leases
-      - limitranges
-      - mutatingwebhookconfigurations
-      - namespaces
-      - networkpolicies
-      - nodes
-      - persistentvolumeclaims
-      - persistentvolumes
-      - poddisruptionbudgets
-      - pods
-      - replicasets
-      - replicationcontrollers
-      - resourcequotas
-      - secrets
-      - services
-      - statefulsets
-      - storageclasses
-      - validatingwebhookconfigurations
-      - volumeattachments
 
   server:
     retention: 15d

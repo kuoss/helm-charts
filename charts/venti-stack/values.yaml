@@ -2,26 +2,31 @@ global:
   imageRepository: ghcr.io/kuoss
 
 fluent-bit:
-  flush: 1
-  logLevel: info
-  metricsPort: 2020
+  # https://github.com/fluent/helm-charts/blob/main/charts/fluent-bit/values.yaml
+  testFramework:
+    enabled: false
+  service:
+    annotations:
+      prometheus.io/path: "/api/v1/metrics/prometheus"
+      prometheus.io/port: "2020"
+      prometheus.io/scrape: "true"
   tolerations:
   - effect: NoSchedule
     operator: Exists
-  testFramework:
-    enabled: false
   luaScripts:
-    lethe.lua: |
-      function audit(tag, timestamp, r)
-        local u = string.sub(r["stageTimestamp"],1,19).."Z"
-        return 1, timestamp, {tag=string.format("audit/audit/%s_%s.log",string.sub(u,1,10),string.sub(u,12,13)),
-        row=string.format("%s %s",u,r["log"])}
-      end
+    # audit.lua: |
+    #   function audit(tag, timestamp, r)
+    #     local u = string.sub(r["stageTimestamp"],1,19).."Z"
+    #     return 1, timestamp, {tag=string.format("audit/audit/%s_%s.log",string.sub(u,1,10),string.sub(u,12,13)),
+    #     row=string.format("%s %s",u,r["log"])}
+    #   end
+    kube.lua: |
       function kube(tag, timestamp, r)
         local u = os.date("%Y-%m-%dT%H:%M:%SZ")
         return 1, timestamp, {tag=string.format("pod/%s/%s_%s.log",r["kubernetes"]["namespace_name"],string.sub(u,1,10),string.sub(u,12,13)),
         row=string.format("%s[%s|%s|%s] %s",u,r["kubernetes"]["namespace_name"],r["kubernetes"]["pod_name"],r["kubernetes"]["container_name"],r["message"])}
       end
+    host.lua: |
       function host(tag, timestamp, r)
         local u = os.date("%Y-%m-%dT%H:%M:%SZ")
         return 1, timestamp, {tag=string.format("node/%s/%s_%s.log",r["_HOSTNAME"],string.sub(u,1,10),string.sub(u,12,13)),
@@ -47,7 +52,7 @@ fluent-bit:
           Read_From_Tail On
 
     filters: |
-      [FILTER] # kube
+      [FILTER]
           Name kubernetes
           Match kube.*
           Merge_Log On
@@ -58,34 +63,35 @@ fluent-bit:
       [FILTER]
           Name                lua
           Match               kube.*
-          script              /fluent-bit/scripts/lethe.lua
+          script              /fluent-bit/scripts/kube.lua
           call                kube
 
-      [FILTER] # host
+      [FILTER]
           Name                lua
           Match               host.*
-          script              /fluent-bit/scripts/lethe.lua
+          script              /fluent-bit/scripts/host.lua
           call                host
 
-      [FILTER] # all
+      [FILTER]
           Name                rewrite_tag
-          Match_Regex         ^(kube|host)
+          Match_regex         ^(kube|host)
           Rule                $tag .* $tag false
           Emitter_Name        re_emitted
 
       [FILTER]
           Name                modify
-          Match_Regex         ^(pod|node)
+          Match_regex         ^(pod|node)
           Remove              tag
 
     outputs: |
       [OUTPUT]
           Name                forward
-          Match               *
+          Match_regex         ^(pod|node)
           Host                {{ .Release.Name }}-lethe
           Port                24224
 
 prometheus:
+  # https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/values.yaml
   alertmanager:
     persistence:
       enabled: false
@@ -116,7 +122,10 @@ lethe:
 
   service:
     enabled: true
-    annotations: {}
+    annotations:
+      prometheus.io/path: "/api/v1/metrics/prometheus"
+      prometheus.io/port: "2020"
+      prometheus.io/scrape: "true"
     labels: {}
     clusterIP: ""
     externalIPs: []
