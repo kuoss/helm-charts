@@ -1,3 +1,9 @@
+fluent-bit:
+  service:
+    annotations:
+      prometheus.io/path: "/api/v1/metrics/prometheus"
+      prometheus.io/port: "2020"
+      prometheus.io/scrape: "true"
 
 prometheus:
   alertmanager:
@@ -92,6 +98,11 @@ lethe:
     - hosts:
       - lethe.kuoss.org
       secretName: tls-kuoss-org
+  service:
+    annotations:
+      prometheus.io/path: "/api/v1/metrics/prometheus"
+      prometheus.io/port: "2020"
+      prometheus.io/scrape: "true"
 
 venti:
   resources:

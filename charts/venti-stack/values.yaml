@@ -2,14 +2,17 @@ global:
   imageRepository: ghcr.io/kuoss
 
 fluent-bit:
-  flush: 1
-  logLevel: info
-  metricsPort: 2020
+  # https://github.com/fluent/helm-charts/blob/main/charts/fluent-bit/values.yaml
+  testFramework:
+    enabled: false
+  service:
+    annotations: {}
+    # prometheus.io/path: "/api/v1/metrics/prometheus"
+    # prometheus.io/port: "2020"
+    # prometheus.io/scrape: "true"
   tolerations:
   - effect: NoSchedule
     operator: Exists
-  testFramework:
-    enabled: false
   luaScripts:
     lethe.lua: |
       function audit(tag, timestamp, r)
@@ -28,6 +31,17 @@ fluent-bit:
         row=string.format("%s[%s|%s] %s",u,r["_HOSTNAME"],r["SYSLOG_IDENTIFIER"],r["MESSAGE"])}
       end
   config:
+    service: |
+      [SERVICE]
+          Daemon Off
+          Flush {{ .Values.flush }}
+          Log_Level {{ .Values.logLevel }}
+          Parsers_File /fluent-bit/etc/parsers.conf
+          Parsers_File /fluent-bit/etc/conf/custom_parsers.conf
+          HTTP_Server On
+          HTTP_Listen 0.0.0.0
+          HTTP_Port {{ .Values.metricsPort }}
+          Health_Check On
     inputs: |
       [INPUT]
           Name tail
@@ -47,7 +61,7 @@ fluent-bit:
           Read_From_Tail On
 
     filters: |
-      [FILTER] # kube
+      [FILTER]
           Name kubernetes
           Match kube.*
           Merge_Log On
@@ -81,11 +95,12 @@ fluent-bit:
     outputs: |
       [OUTPUT]
           Name                forward
-          Match               *
+          Match               ^(pod|node)
           Host                {{ .Release.Name }}-lethe
           Port                24224
 
 prometheus:
+  # https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/values.yaml
   alertmanager:
     persistence:
       enabled: false
@@ -117,6 +132,9 @@ lethe:
   service:
     enabled: true
     annotations: {}
+    # prometheus.io/path: "/api/v1/metrics/prometheus"
+    # prometheus.io/port: "2020"
+    # prometheus.io/scrape: "true"
     labels: {}
     clusterIP: ""
     externalIPs: []
