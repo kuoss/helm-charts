@@ -14,35 +14,25 @@ fluent-bit:
   - effect: NoSchedule
     operator: Exists
   luaScripts:
-    lethe.lua: |
-      function audit(tag, timestamp, r)
-        local u = string.sub(r["stageTimestamp"],1,19).."Z"
-        return 1, timestamp, {tag=string.format("audit/audit/%s_%s.log",string.sub(u,1,10),string.sub(u,12,13)),
-        row=string.format("%s %s",u,r["log"])}
-      end
+    # audit.lua: |
+    #   function audit(tag, timestamp, r)
+    #     local u = string.sub(r["stageTimestamp"],1,19).."Z"
+    #     return 1, timestamp, {tag=string.format("audit/audit/%s_%s.log",string.sub(u,1,10),string.sub(u,12,13)),
+    #     row=string.format("%s %s",u,r["log"])}
+    #   end
+    kube.lua: |
       function kube(tag, timestamp, r)
         local u = os.date("%Y-%m-%dT%H:%M:%SZ")
         return 1, timestamp, {tag=string.format("pod/%s/%s_%s.log",r["kubernetes"]["namespace_name"],string.sub(u,1,10),string.sub(u,12,13)),
         row=string.format("%s[%s|%s|%s] %s",u,r["kubernetes"]["namespace_name"],r["kubernetes"]["pod_name"],r["kubernetes"]["container_name"],r["message"])}
       end
+    host.lua: |
       function host(tag, timestamp, r)
         local u = os.date("%Y-%m-%dT%H:%M:%SZ")
         return 1, timestamp, {tag=string.format("node/%s/%s_%s.log",r["_HOSTNAME"],string.sub(u,1,10),string.sub(u,12,13)),
         row=string.format("%s[%s|%s] %s",u,r["_HOSTNAME"],r["SYSLOG_IDENTIFIER"],r["MESSAGE"])}
       end
   config:
-    service: |
-      [SERVICE]
-          Daemon Off
-          Flush {{ .Values.flush }}
-          Log_Level {{ .Values.logLevel }}
-          Parsers_File /fluent-bit/etc/parsers.conf
-          Parsers_File /fluent-bit/etc/conf/custom_parsers.conf
-          HTTP_Server On
-          HTTP_Listen 0.0.0.0
-          HTTP_Port {{ .Values.metricsPort }}
-          Health_Check On
-
     inputs: |
       [INPUT]
           Name tail
@@ -73,30 +63,30 @@ fluent-bit:
       [FILTER]
           Name                lua
           Match               kube.*
-          script              /fluent-bit/scripts/lethe.lua
+          script              /fluent-bit/scripts/kube.lua
           call                kube
 
-      [FILTER] # host
+      [FILTER]
           Name                lua
           Match               host.*
-          script              /fluent-bit/scripts/lethe.lua
+          script              /fluent-bit/scripts/host.lua
           call                host
 
-      [FILTER] # all
+      [FILTER]
           Name                rewrite_tag
-          Match_Regex         ^(kube|host)
+          Match_regex         ^(kube|host)
           Rule                $tag .* $tag false
           Emitter_Name        re_emitted
 
       [FILTER]
           Name                modify
-          Match_Regex         ^(pod|node)
+          Match_regex         ^(pod|node)
           Remove              tag
 
     outputs: |
       [OUTPUT]
           Name                forward
-          Match               ^(pod|node)
+          Match_regex         ^(pod|node)
           Host                {{ .Release.Name }}-lethe
           Port                24224
 
