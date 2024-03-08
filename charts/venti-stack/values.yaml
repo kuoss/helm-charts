@@ -6,10 +6,10 @@ fluent-bit:
   testFramework:
     enabled: false
   service:
-    annotations: {}
-    # prometheus.io/path: "/api/v1/metrics/prometheus"
-    # prometheus.io/port: "2020"
-    # prometheus.io/scrape: "true"
+    annotations:
+      prometheus.io/path: "/api/v1/metrics/prometheus"
+      prometheus.io/port: "2020"
+      prometheus.io/scrape: "true"
   tolerations:
   - effect: NoSchedule
     operator: Exists
@@ -122,10 +122,10 @@ lethe:
 
   service:
     enabled: true
-    annotations: {}
-    # prometheus.io/path: "/api/v1/metrics/prometheus"
-    # prometheus.io/port: "2020"
-    # prometheus.io/scrape: "true"
+    annotations:
+      prometheus.io/path: "/api/v1/metrics/prometheus"
+      prometheus.io/port: "2020"
+      prometheus.io/scrape: "true"
     labels: {}
     clusterIP: ""
     externalIPs: []
