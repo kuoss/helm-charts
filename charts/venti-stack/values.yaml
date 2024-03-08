@@ -42,6 +42,7 @@ fluent-bit:
           HTTP_Listen 0.0.0.0
           HTTP_Port {{ .Values.metricsPort }}
           Health_Check On
+
     inputs: |
       [INPUT]
           Name tail
