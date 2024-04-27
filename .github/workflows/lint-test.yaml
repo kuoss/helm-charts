@@ -1,4 +1,5 @@
 # https://github.com/helm/chart-testing-action?tab=readme-ov-file#example-workflow
+# https://github.com/helm/charts-repo-actions-demo/blob/main/.github/workflows/lint-test.yaml
 name: Lint and Test Charts
 
 on: pull_request
@@ -8,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -23,7 +24,7 @@ jobs:
           check-latest: true
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2.6
 
       - name: Run chart-testing (list-changed)
         id: list-changed
