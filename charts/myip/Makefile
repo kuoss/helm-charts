@@ -6,3 +6,9 @@ example:
 
 lint:
 	helm lint .
+
+schema:
+	# helm plugin install https://github.com/losisin/helm-values-schema-json.git
+	helm schema -input values.yaml
+
+checks: example lint
