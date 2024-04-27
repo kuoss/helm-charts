@@ -33,8 +33,17 @@ jobs:
           helm repo add fluent               https://fluent.github.io/helm-charts
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 
+      - name: Import GPG key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --dearmor --output keyring.gpg
+          echo "${{ secrets.GPG_PASSPHRASE }}" > passphrase-file.txt
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
+          CR_KEY: jmnote <opcore@gmail.com>
+          CR_KEYRING: keyring.gpg
+          CR_PASSPHRASE_FILE: passphrase-file.txt
+          CR_SIGN: true
           CR_SKIP_EXISTING: true
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
