@@ -3,3 +3,6 @@ template:
 
 example:
 	helm template -n myip -f hack/values.example.yaml .
+
+lint:
+	helm lint .

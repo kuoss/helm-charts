@@ -1,7 +1,7 @@
 apiVersion: v2
 name: myip
 appVersion: v0.1.3
-version: 0.1.4
+version: 0.1.5
 description: MyIP is a "What's my IP" application.
 home: https://kuoss.github.io/helm-charts
 icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
@@ -13,6 +13,7 @@ maintainers:
 type: application
 keywords:
   - xff
+  - my-ip
   - real-ip
   - client-ip
 annotations:
