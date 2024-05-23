@@ -1,5 +1,5 @@
-# https://github.com/helm/chart-releaser-action?tab=readme-ov-file#example-workflow
-# https://github.com/helm/charts-repo-actions-demo/blob/main/.github/workflows/release.yaml
+# https://github.com/helm/chart-releaser-action?tab=readme-ov-file#example-workflow 2024-05-23
+
 name: Release Charts
 
 on:
@@ -26,7 +26,9 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4
+          env:
+            GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Add dependency chart repos
         run: |
@@ -44,9 +46,9 @@ jobs:
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_KEY: jmnote <opcore@gmail.com>
           CR_KEYRING: keyring.gpg
           CR_PASSPHRASE_FILE: passphrase-file.txt
           CR_SIGN: true
           CR_SKIP_EXISTING: true
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
