@@ -1,7 +1,7 @@
 apiVersion: v2
 name: venti-stack
 appVersion: v0.2.20
-version: 0.2.0
+version: 0.2.1
 kubeVersion: ">=1.16.0-0"
 description: Venti stack is a logging and monitoring system.
 home: https://kuoss.github.io/helm-charts
@@ -23,7 +23,7 @@ dependencies:
     repository: https://prometheus-community.github.io/helm-charts
     condition: prometheus.enabled
   - name: fluent-bit
-    version: "0.46.7"
+    version: "0.46.7" # app 3.0.4
     repository: https://fluent.github.io/helm-charts
     condition: fluent-bit.enabled
 keywords:
