@@ -10,7 +10,14 @@ metadata:
   namespace: {{ template "venti-stack.namespace" . }}
 spec:
   accessModes:
-  - ReadWriteOnce
+{{ toYaml .Values.lethe.persistentVolume.accessModes | indent 4 }}
+{{- if .Values.lethe.persistentVolume.storageClass }}
+{{- if (eq "-" .Values.lethe.persistentVolume.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.lethe.persistentVolume.storageClass }}"
+{{- end }}
+{{- end }}
   resources:
     requests:
       storage: {{ .Values.lethe.persistentVolume.size }}

@@ -148,11 +148,14 @@ lethe:
   extraConfigmapLabels: {}
   persistentVolume:
     enabled: true
+    accessModes:
+      - ReadWriteOnce
     labels: {}
     annotations: {}
     existingClaim: ""
     mountPath: /data
     size: 8Gi
+    # storageClass: "-"
 
   emptyDir:
     sizeLimit: ""

@@ -82,7 +82,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-eventrouter
@@ -97,7 +97,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti
@@ -597,7 +597,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-eventrouter
@@ -615,7 +615,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-lethe
@@ -658,7 +658,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti-alertrules
@@ -674,7 +674,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti-dashboards
@@ -1039,7 +1039,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti
@@ -1081,14 +1081,14 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-lethe
   namespace: venti-stack
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -1331,7 +1331,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-eventrouter
@@ -1354,7 +1354,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti
@@ -1440,7 +1440,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-eventrouter
@@ -1462,7 +1462,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti
@@ -1643,7 +1643,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-lethe
@@ -1677,7 +1677,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti
@@ -2102,7 +2102,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-eventrouter
@@ -2121,7 +2121,7 @@ spec:
         app.kubernetes.io/name: venti-stack
         app.kubernetes.io/instance: vs
         app.kubernetes.io/version: v0.2.20
-        helm.sh/chart: venti-stack-0.2.0
+        helm.sh/chart: venti-stack-0.2.2
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/part-of: venti-stack
     spec:
@@ -2153,7 +2153,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-lethe
@@ -2174,7 +2174,7 @@ spec:
         app.kubernetes.io/name: venti-stack
         app.kubernetes.io/instance: vs
         app.kubernetes.io/version: v0.2.20
-        helm.sh/chart: venti-stack-0.2.0
+        helm.sh/chart: venti-stack-0.2.2
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/part-of: venti-stack
     spec:
@@ -2199,7 +2199,7 @@ spec:
         - --config=/fluent-bit/etc/conf/fluent-bit.conf
         command:
         - /fluent-bit/bin/fluent-bit
-        image: cr.fluentbit.io/fluent/fluent-bit:2.2.2
+        image: cr.fluentbit.io/fluent/fluent-bit:3.0.4
         resources:
           limits:
             cpu: 400m
@@ -2241,7 +2241,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti
@@ -2260,7 +2260,7 @@ spec:
         app.kubernetes.io/name: venti-stack
         app.kubernetes.io/instance: vs
         app.kubernetes.io/version: v0.2.20
-        helm.sh/chart: venti-stack-0.2.0
+        helm.sh/chart: venti-stack-0.2.2
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/part-of: venti-stack
     spec:
@@ -2452,7 +2452,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-lethe
@@ -2484,7 +2484,7 @@ metadata:
     app.kubernetes.io/name: venti-stack
     app.kubernetes.io/instance: vs
     app.kubernetes.io/version: v0.2.20
-    helm.sh/chart: venti-stack-0.2.0
+    helm.sh/chart: venti-stack-0.2.2
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/part-of: venti-stack
   name: vs-venti
