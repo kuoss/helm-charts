@@ -41,17 +41,17 @@ service:
 
 ingress:
   enabled: false
-  #annotations:
-  #  kubernetes.io/tls-acme: "true"
-  #hosts:
-  #  - host: code-server.example.loc
-  #    paths:
-  #      - /
+  # annotations:
+  #   kubernetes.io/tls-acme: "true"
+  # hosts:
+  # - host: code-server.example.loc
+  #   paths:
+  #   - /
   ingressClassName: ""
-  #tls:
-  #  - secretName: code-server
-  #    hosts:
-  #      - code-server.example.loc
+  # tls:
+  # - secretName: code-server
+  #   hosts:
+  #   - code-server.example.loc
 
 # Optional additional arguments
 extraArgs: []
@@ -136,25 +136,25 @@ lifecycle:
   #      - -c
   #      - curl -s -L SOME_SCRIPT | bash
 
-## Enable an Specify container in extraContainers.
-## This is meant to allow adding code-server dependencies, like docker-dind.
+# Enable an Specify container in extraContainers.
+# This is meant to allow adding code-server dependencies, like docker-dind.
 extraContainers: |
 # If docker-dind is used, DOCKER_HOST env is mandatory to set in "extraVars"
-#- name: docker-dind
-#  image: docker:19.03-dind
-#  imagePullPolicy: IfNotPresent
-#  resources:
-#    requests:
-#      cpu: 250m
-#      memory: 256M
-#  securityContext:
-#    privileged: true
-#    procMount: Default
-#  env:
-#  - name: DOCKER_TLS_CERTDIR
-#    value: ""
-#  - name: DOCKER_DRIVER
-#    value: "overlay2"
+# - name: docker-dind
+#   image: docker:19.03-dind
+#   imagePullPolicy: IfNotPresent
+#   resources:
+#     requests:
+#       cpu: 250m
+#       memory: 256M
+#   securityContext:
+#     privileged: true
+#     procMount: Default
+#   env:
+#   - name: DOCKER_TLS_CERTDIR
+#     value: ""
+#   - name: DOCKER_DRIVER
+#     value: "overlay2"
 
 extraInitContainers: |
 # - name: customization
