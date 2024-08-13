@@ -6,6 +6,14 @@ metadata:
     {{- include "ingress-annotator.labels" . | nindent 4 }}
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingresses
