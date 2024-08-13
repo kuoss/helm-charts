@@ -1,0 +1,78 @@
+# Default values for ingress-annotator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/kuoss/ingress-annotator
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+service:
+  type: ClusterIP
+  port: 8443
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 500m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 10m
+  #   memory: 64Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+rules: {}
+  # Example Rule 1: OAuth2 Proxy Configuration
+  # Uncomment and customize the settings below to enable OAuth2 proxy
+  # oauth2-proxy:
+  #   namespace: "dev1,dev2"  # Target namespaces for this rule (comma-separated)
+  #   annotations:
+  #     nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
+  #     nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
+
+  # Example Rule 2: Private Ingress Configuration
+  # Uncomment and customize the settings below to enforce IP whitelist on specific ingresses
+  # private:
+  #   namespace: "dev*"  # Target namespaces (supports wildcards)
+  #   ingress: "*-priv"  # Target ingress names (supports wildcards)
+  #   annotations:
+  #     nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24,10.0.0.0/16"
+
+  # Additional rules can be added below following the same pattern
+  # Each rule should have a unique key and specify the necessary namespaces, ingresses, and annotations

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-annotator-rules
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ingress-annotator.labels" . | nindent 4 }}
+data:
+  {{- range $key, $value := .Values.rules }}
+  {{ $key }}: |
+    {{- range $lineKey, $lineValue := $value }}
+    {{ $lineKey }}: "{{ $lineValue }}"
+    {{- end }}
+  {{- end }}
