@@ -8,6 +8,27 @@ entries:
           url: https://github.com/kuoss/helm-charts
     apiVersion: v2
     appVersion: 4.20.0
+    created: "2024-08-13T11:41:48.523408345Z"
+    deprecated: true
+    description: A Helm chart for coder/code-server
+    digest: 2fd2864fb2d28d1b3cad908e4cbc8d37cfb119663d177aa6d52b41614126ac49
+    home: https://kuoss.github.io/helm-charts
+    keywords:
+    - code-server
+    name: code-server
+    sources:
+    - https://github.com/coder/code-server
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/code-server-3.16.1/code-server-3.16.1.tgz
+    version: 3.16.1
+  - annotations:
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+    apiVersion: v2
+    appVersion: 4.20.0
     created: "2023-12-27T03:55:43.975281197Z"
     description: A Helm chart for coder/code-server
     digest: f9b0ec364adc5e6515b0f2500845943bf9e072d21864affda5492356a846c110
@@ -2325,4 +2346,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-13T11:01:28.773486141Z"
+generated: "2024-08-13T11:41:48.523553516Z"
