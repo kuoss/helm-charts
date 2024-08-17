@@ -365,6 +365,31 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/code-server-go-0.0.4/code-server-go-0.0.4.tgz
     version: 0.0.4
+  ingress-annotator:
+  - apiVersion: v2
+    appVersion: v0.1.6
+    created: "2024-08-17T19:25:02.714053344Z"
+    description: A Kubernetes utility to dynamically manage ingress annotations based
+      on predefined rules set in a ConfigMap.
+    digest: 2ddcf508b2edc80d75e43e30a1eb9860347da53fcf787a5a8d0503430d0c3ecf
+    home: https://github.com/kuoss/ingress-annotator
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - ingress
+    - annotations
+    - kubernetes
+    - configmap
+    kubeVersion: '>=1.18.0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: ingress-annotator
+    sources:
+    - https://github.com/kuoss/ingress-annotator
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/ingress-annotator-0.1.0/ingress-annotator-0.1.0.tgz
+    version: 0.1.0
   myip:
   - annotations:
       artifacthub.io/license: Apache-2.0
@@ -2346,4 +2371,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-13T11:41:48.523553516Z"
+generated: "2024-08-17T19:25:02.714154112Z"
