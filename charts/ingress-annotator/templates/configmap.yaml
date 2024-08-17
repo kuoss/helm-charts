@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ingress-annotator-rules
+  name: ingress-annotator
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "ingress-annotator.labels" . | nindent 4 }}

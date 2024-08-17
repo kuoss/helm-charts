@@ -3,7 +3,7 @@ name: ingress-annotator
 description: A Kubernetes utility to dynamically manage ingress annotations based on predefined rules set in a ConfigMap.
 type: application
 version: 0.1.0
-appVersion: "v0.1.3"
+appVersion: "v0.1.4"
 kubeVersion: ">=1.18.0"
 home: https://github.com/kuoss/ingress-annotator
 sources:
