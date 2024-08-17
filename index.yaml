@@ -368,6 +368,30 @@ entries:
   ingress-annotator:
   - apiVersion: v2
     appVersion: v0.1.6
+    created: "2024-08-17T20:16:31.704631806Z"
+    description: A Kubernetes utility to dynamically manage ingress annotations based
+      on predefined rules set in a ConfigMap.
+    digest: 7bb4226532ff9918b7528c55d9d260b075a0b008eb4f18f35ed7023671184273
+    home: https://github.com/kuoss/ingress-annotator
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - ingress
+    - annotations
+    - kubernetes
+    - configmap
+    kubeVersion: '>=1.18.0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: ingress-annotator
+    sources:
+    - https://github.com/kuoss/ingress-annotator
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/ingress-annotator-0.1.1/ingress-annotator-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: v0.1.6
     created: "2024-08-17T19:25:02.714053344Z"
     description: A Kubernetes utility to dynamically manage ingress annotations based
       on predefined rules set in a ConfigMap.
@@ -2371,4 +2395,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-17T19:25:02.714154112Z"
+generated: "2024-08-17T20:16:31.704771649Z"
