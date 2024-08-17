@@ -28,9 +28,10 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-service:
-  type: ClusterIP
-  port: 8081
+metrics:
+  service:
+    type: ClusterIP
+    port: 8081
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
