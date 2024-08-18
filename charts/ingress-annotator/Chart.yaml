@@ -1,20 +1,27 @@
 apiVersion: v2
 name: ingress-annotator
-description: A Kubernetes utility to dynamically manage ingress annotations based on predefined rules set in a ConfigMap.
-type: application
-version: 0.1.1
 appVersion: "v0.1.6"
-kubeVersion: ">=1.18.0"
+version: 0.1.2
+kubeVersion: ">=1.19.0-0"
+description: A Kubernetes utility to dynamically manage ingress annotations using rules from a ConfigMap.
 home: https://github.com/kuoss/ingress-annotator
+icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
 sources:
   - https://github.com/kuoss/ingress-annotator
 maintainers:
   - name: jmnote
     email: opcore@gmail.com
-icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+type: application
+dependencies: []
 keywords:
   - ingress
   - annotations
   - kubernetes
   - configmap
-dependencies: []
+annotations:
+  "artifacthub.io/license": Apache-2.0
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/kuoss/helm-charts
+    - name: Upstream Project
+      url: https://github.com/kuoss/ingress-annotator
