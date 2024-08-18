@@ -5,8 +5,6 @@
 ![Release Charts](https://github.com/kuoss/helm-charts/workflows/Release%20Charts/badge.svg?branch=main)
 [![Releases downloads](https://img.shields.io/github/downloads/kuoss/helm-charts/total.svg)](https://github.com/kuoss/helm-charts/releases)
 
-This functionality is in beta and is subject to change. The code is provided as-is with no warranties. Beta features are not subject to the support SLA of official GA features.
-
 ## Usage
 
 [Helm](https://helm.sh) must be installed to use the charts.
@@ -16,15 +14,30 @@ Once Helm is set up properly, add the repo as follows:
 
 ```console
 helm repo add kuoss https://kuoss.github.io/helm-charts
+helm repo update
 ```
 
 You can then run `helm search repo kuoss` to see the charts.
 
 ## Charts
 
+### ingress-annotator
+
+The `ingress-annotator` Helm chart is a Kubernetes utility designed to dynamically manage ingress annotations based on predefined rules set in a ConfigMap. This chart deploys the ingress-annotator application, which monitors and updates ingress resources with specified annotations to enforce various configurations like OAuth2 proxy integration, IP whitelisting, and more.
+
+For installation and upgrading instructions, see the [ingress-annotator chart readme](https://github.com/kuoss/helm-charts/blob/main/charts/ingress-annotator/README.md).
+
+### myip
+
+The `myip` Helm chart deploys a simple "What's my IP" application. This chart allows you to run a service that returns the IP address of the client making the request.
+
+For installation and upgrading instructions, see the [myip chart readme](https://github.com/kuoss/helm-charts/blob/main/charts/myip/README.md).
+
 ### venti-stack
 
-For installation and upgrading instructions see [venti-stack chart readme](https://github.com/kuoss/helm-charts/blob/main/charts/venti-stack/README.md).
+The `venti-stack` Helm chart installs a comprehensive collection of Kubernetes manifests designed to provide an easy-to-operate, end-to-end solution for cluster logging, monitoring, and visualization.
+
+For installation and upgrading instructions, see the [venti-stack chart readme](https://github.com/kuoss/helm-charts/blob/main/charts/venti-stack/README.md).
 
 ## Contributing
 
@@ -35,7 +48,6 @@ We'd love to have you contribute! Please refer to our [contribution guidelines](
 
 ## License
 
-<!-- Keep full URL links to repo files because this README syncs from main to gh-pages.  -->
 [Apache 2.0 License](https://github.com/kuoss/helm-charts/blob/main/LICENSE).
 
 ## Helm charts build status
