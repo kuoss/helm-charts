@@ -21,7 +21,7 @@ You can then run `helm search repo kuoss` to see the charts.
 
 ## Charts
 
-| Chart Name                                                                                      | Description                                                                                                           |
+| Chart                                                                                           | Description                                                                                                           |
 |-------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | [ingress-annotator](https://github.com/kuoss/helm-charts/tree/main/charts/ingress-annotator)    | A Kubernetes utility to dynamically manage ingress annotations based on predefined rules set in a ConfigMap.          |
 | [myip](https://github.com/kuoss/helm-charts/tree/main/charts/myip)                              | Deploys a simple "What's my IP" application that returns the IP address of the client making the request.              |
