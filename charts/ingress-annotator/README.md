@@ -1,32 +1,35 @@
-# ingress-annotator Helm Chart
-
-## Introduction
+# ingress-annotator
 
 The `ingress-annotator` Helm chart is a Kubernetes utility designed to dynamically manage ingress annotations based on predefined rules set in a ConfigMap. This chart deploys the `ingress-annotator` application, which monitors and updates ingress resources with specified annotations to enforce various configurations like OAuth2 proxy integration, IP whitelisting, and more.
 
-## Get Helm Repository Info
+## Prerequisites
+
+- Kubernetes 1.19+
+- Helm 3+
+
+## Get Repository Info
 
 ```console
 helm repo add kuoss https://kuoss.github.io/helm-charts
 helm repo update
 ```
 
-## Install Helm Chart
+## Install Chart
 
 To install the chart with the release name `my-release`:
 
 ```bash
-helm install my-release ingress-annotator
+helm install [RELEASE_NAME] kuoss/ingress-annotator
 ```
 
 The command deploys `ingress-annotator` on the Kubernetes cluster using the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
-## Uninstall Helm Chart
+## Uninstall Chart
 
 To uninstall/delete the `my-release` deployment:
 
 ```bash
-helm uninstall my-release
+helm uninstall [RELEASE_NAME]
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
