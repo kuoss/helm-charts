@@ -1,14 +1,14 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ include "ingress-annotator.fullname" . }}
+  name: {{ include "ingress-annotator.fullname" . }}-leader-election-rolebinding
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "ingress-annotator.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ include "ingress-annotator.fullname" . }}
+  name: {{ include "ingress-annotator.fullname" . }}-leader-election-role
 subjects:
 - kind: ServiceAccount
   name: {{ include "ingress-annotator.serviceAccountName" . }}
