@@ -58,15 +58,7 @@ tolerations: []
 
 affinity: {}
 
-rules:
-  oauth2-proxy:
-    nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
-    nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
-  private:
-    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24,10.0.0.0/16"
-
-
-# rules: {}
+rules: {}
   # Example Rule 1: OAuth2 Proxy Configuration
   # Uncomment and customize the settings below to enable OAuth2 proxy
   # oauth2-proxy:
