@@ -1,0 +1,138 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "replicaCount": {
+            "type": "integer"
+        },
+        "image": {
+            "type": "object",
+            "properties": {
+                "repository": {
+                    "type": "string"
+                },
+                "pullPolicy": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                }
+            }
+        },
+        "imagePullSecrets": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "nameOverride": {
+            "type": "string"
+        },
+        "fullnameOverride": {
+            "type": "string"
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean"
+                },
+                "annotations": {
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "podAnnotations": {
+            "type": "object"
+        },
+        "podSecurityContext": {
+            "type": "object",
+            "properties": {
+                "fsGroup": {
+                    "type": "integer"
+                }
+            }
+        },
+        "metrics": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "port": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "resources": {
+            "type": "object",
+            "properties": {
+                "limits": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "type": "string"
+                        },
+                        "memory": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "requests": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "type": "string"
+                        },
+                        "memory": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "autoscaling": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "minReplicas": {
+                    "type": "integer"
+                },
+                "maxReplicas": {
+                    "type": "integer"
+                },
+                "targetCPUUtilizationPercentage": {
+                    "type": "integer"
+                },
+                "targetMemoryUtilizationPercentage": {
+                    "type": "integer"
+                }
+            }
+        },
+        "nodeSelector": {
+            "type": "object"
+        },
+        "tolerations": {
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
+        },
+        "affinity": {
+            "type": "object"
+        },
+        "rules": {
+            "type": "object"
+        }
+    }
+}
