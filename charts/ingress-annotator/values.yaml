@@ -62,18 +62,10 @@ rules: {}
   # Example Rule 1: OAuth2 Proxy Configuration
   # Uncomment and customize the settings below to enable OAuth2 proxy
   # oauth2-proxy:
-  #   namespace: "dev1,dev2"  # Target namespaces for this rule (comma-separated)
-  #   annotations:
-  #     nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
-  #     nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
+  #   nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
+  #   nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
 
   # Example Rule 2: Private Ingress Configuration
   # Uncomment and customize the settings below to enforce IP whitelist on specific ingresses
   # private:
-  #   namespace: "dev*"  # Target namespaces (supports wildcards)
-  #   ingress: "*-priv"  # Target ingress names (supports wildcards)
-  #   annotations:
-  #     nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24,10.0.0.0/16"
-
-  # Additional rules can be added below following the same pattern
-  # Each rule should have a unique key and specify the necessary namespaces, ingresses, and annotations
+  #   nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24,10.0.0.0/16"

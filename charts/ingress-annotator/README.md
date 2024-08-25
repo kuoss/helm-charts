@@ -16,8 +16,6 @@ helm repo update
 
 ## Install Chart
 
-To install the chart with the release name `my-release`:
-
 ```bash
 helm install [RELEASE_NAME] kuoss/ingress-annotator
 ```
@@ -25,8 +23,6 @@ helm install [RELEASE_NAME] kuoss/ingress-annotator
 The command deploys `ingress-annotator` on the Kubernetes cluster using the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 ## Uninstall Chart
-
-To uninstall/delete the `my-release` deployment:
 
 ```bash
 helm uninstall [RELEASE_NAME]
@@ -73,10 +69,8 @@ To configure the ingress for OAuth2 proxy:
 ```yaml
 rules:
   oauth2-proxy:
-    namespace: "dev1,dev2"
-    annotations:
-      nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
-      nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
+    nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
 ```
 
 #### Private Ingress Configuration
@@ -86,10 +80,7 @@ To enforce IP whitelist on specific ingresses:
 ```yaml
 rules:
   private:
-    namespace: "dev*"
-    ingress: "*-priv"
-    annotations:
-      nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24,10.0.0.0/16"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24,10.0.0.0/16"
 ```
 
 ## Custom Values
