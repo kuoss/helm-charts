@@ -88,7 +88,7 @@ rules:
 Override the default values by specifying them in a `values.yaml` file:
 
 ```bash
-helm install my-release ingress-annotator -f values.yaml
+helm install [RELEASE_NAME] ingress-annotator -f values.yaml
 ```
 
 Alternatively, specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
