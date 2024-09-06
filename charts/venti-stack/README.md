@@ -1,5 +1,7 @@
 # venti-stack
 
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen)](https://kuoss.github.io/venti-stack/)
+
 Installs the venti-stack, a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
 
 ## Prerequisites
