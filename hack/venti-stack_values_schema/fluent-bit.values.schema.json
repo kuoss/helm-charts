@@ -1,0 +1,300 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "kind": {
+            "type": "string",
+            "enum": [
+                "DaemonSet",
+                "Deployment"
+            ],
+            "description": "The type of Kubernetes object to create (DaemonSet or Deployment)."
+        },
+        "replicaCount": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The number of replicas for the Deployment, only applicable if kind=Deployment."
+        },
+        "image": {
+            "type": "object",
+            "properties": {
+                "repository": {
+                    "type": "string",
+                    "description": "Image repository for fluent-bit."
+                },
+                "tag": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Tag of the image to pull. Set to '-' to not use the default value."
+                },
+                "digest": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Digest of the image."
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "enum": [
+                        "Always",
+                        "IfNotPresent",
+                        "Never"
+                    ],
+                    "description": "Image pull policy."
+                }
+            },
+            "required": [
+                "repository"
+            ]
+        },
+        "testFramework": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable test framework."
+                },
+                "namespace": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Namespace for the test framework."
+                },
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "repository": {
+                            "type": "string",
+                            "description": "Image repository for test framework."
+                        },
+                        "pullPolicy": {
+                            "type": "string",
+                            "enum": [
+                                "Always",
+                                "IfNotPresent",
+                                "Never"
+                            ],
+                            "description": "Image pull policy."
+                        },
+                        "tag": {
+                            "type": "string",
+                            "description": "Tag of the test framework image."
+                        },
+                        "digest": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "description": "Digest of the image."
+                        }
+                    },
+                    "required": [
+                        "repository",
+                        "tag"
+                    ]
+                }
+            },
+            "required": [
+                "enabled",
+                "image"
+            ]
+        },
+        "imagePullSecrets": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "A list of secret names for pulling images."
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether to create a new service account."
+                },
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations for the service account."
+                },
+                "name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Name of the service account. If not set, a name will be generated."
+                }
+            },
+            "required": [
+                "create"
+            ]
+        },
+        "rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether to create RBAC resources."
+                },
+                "nodeAccess": {
+                    "type": "boolean",
+                    "description": "Whether to allow access to node resources."
+                },
+                "eventsAccess": {
+                    "type": "boolean",
+                    "description": "Whether to allow access to events."
+                }
+            },
+            "required": [
+                "create"
+            ]
+        },
+        "podSecurityPolicy": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "description": "Whether to create PodSecurityPolicy resources."
+                },
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations for the PodSecurityPolicy."
+                }
+            },
+            "required": [
+                "create"
+            ]
+        },
+        "openShift": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether to enable OpenShift specific configurations."
+                },
+                "securityContextConstraints": {
+                    "type": "object",
+                    "properties": {
+                        "create": {
+                            "type": "boolean",
+                            "description": "Whether to create security context constraints."
+                        },
+                        "name": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "description": "Name of the security context constraints."
+                        },
+                        "annotations": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "description": "Annotations for the security context constraints."
+                        },
+                        "existingName": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "description": "Use existing security context constraints."
+                        }
+                    },
+                    "required": [
+                        "create"
+                    ]
+                }
+            }
+        },
+        "hostNetwork": {
+            "type": "boolean",
+            "description": "Whether to enable host networking."
+        },
+        "dnsPolicy": {
+            "type": "string",
+            "enum": [
+                "ClusterFirst",
+                "Default",
+                "ClusterFirstWithHostNet",
+                "None"
+            ],
+            "description": "DNS policy for the pods."
+        },
+        "securityContext": {
+            "type": "object",
+            "description": "Security context for the pod.",
+            "properties": {
+                "runAsNonRoot": {
+                    "type": "boolean",
+                    "description": "Whether to run the container as a non-root user."
+                },
+                "readOnlyRootFilesystem": {
+                    "type": "boolean",
+                    "description": "Whether to mount the root filesystem as read-only."
+                }
+            }
+        },
+        "service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "ClusterIP",
+                        "NodePort",
+                        "LoadBalancer"
+                    ],
+                    "description": "Type of the Kubernetes service."
+                },
+                "port": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "description": "Port for the service."
+                },
+                "annotations": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Annotations for the service."
+                },
+                "externalIPs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "ipv4"
+                    },
+                    "description": "External IPs for the service."
+                }
+            },
+            "required": [
+                "type",
+                "port"
+            ]
+        }
+    },
+    "required": [
+        "kind",
+        "image",
+        "testFramework",
+        "serviceAccount",
+        "rbac",
+        "podSecurityPolicy",
+        "hostNetwork",
+        "dnsPolicy",
+        "securityContext",
+        "service"
+    ]
+}

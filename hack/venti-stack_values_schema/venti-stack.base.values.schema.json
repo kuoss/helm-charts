@@ -1,0 +1,504 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "global": {
+            "type": "object",
+            "properties": {
+                "imageRepository": {
+                    "type": "string",
+                    "default": "ghcr.io/kuoss"
+                }
+            }
+        },
+        "prometheus": {},
+        "fluent-bit": {},
+        "eventrouter": {
+            "type": "object",
+            "properties": {
+                "nodeSelector": {
+                    "type": "object",
+                    "default": {}
+                },
+                "tolerations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                }
+            }
+        },
+        "lethe": {
+            "type": "object",
+            "properties": {
+                "nodeSelector": {
+                    "type": "object",
+                    "default": {}
+                },
+                "hostAliases": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                },
+                "dnsConfig": {
+                    "type": "object",
+                    "default": {}
+                },
+                "tolerations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                },
+                "affinity": {
+                    "type": "object",
+                    "default": {}
+                },
+                "topologySpreadConstraints": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                },
+                "service": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "annotations": {
+                            "type": "object",
+                            "default": {
+                                "prometheus.io/path": "/api/v1/metrics/prometheus",
+                                "prometheus.io/port": "2020",
+                                "prometheus.io/scrape": "true"
+                            }
+                        },
+                        "labels": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "clusterIP": {
+                            "type": "string",
+                            "default": ""
+                        },
+                        "externalIPs": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        },
+                        "loadBalancerIP": {
+                            "type": "string",
+                            "default": ""
+                        },
+                        "loadBalancerSourceRanges": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        },
+                        "servicePort": {
+                            "type": "integer",
+                            "default": 80
+                        },
+                        "sessionAffinity": {
+                            "type": "string",
+                            "enum": [
+                                "None",
+                                "ClientIP"
+                            ],
+                            "default": "None"
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "ClusterIP",
+                                "NodePort",
+                                "LoadBalancer"
+                            ],
+                            "default": "ClusterIP"
+                        }
+                    }
+                },
+                "ingress": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "annotations": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "extraLabels": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "hosts": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        },
+                        "path": {
+                            "type": "string",
+                            "default": "/"
+                        },
+                        "pathType": {
+                            "type": "string",
+                            "enum": [
+                                "Prefix",
+                                "Exact"
+                            ],
+                            "default": "Prefix"
+                        },
+                        "extraPaths": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            },
+                            "default": []
+                        },
+                        "tls": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            },
+                            "default": []
+                        }
+                    }
+                },
+                "extraConfigmapLabels": {
+                    "type": "object",
+                    "default": {}
+                },
+                "persistentVolume": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "accessModes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "ReadWriteOnce",
+                                    "ReadOnlyMany",
+                                    "ReadWriteMany"
+                                ]
+                            },
+                            "default": [
+                                "ReadWriteOnce"
+                            ]
+                        },
+                        "labels": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "annotations": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "existingClaim": {
+                            "type": "string",
+                            "default": ""
+                        },
+                        "mountPath": {
+                            "type": "string",
+                            "default": "/data"
+                        },
+                        "size": {
+                            "type": "string",
+                            "default": "8Gi"
+                        }
+                    }
+                },
+                "emptyDir": {
+                    "type": "object",
+                    "properties": {
+                        "sizeLimit": {
+                            "type": "string",
+                            "default": ""
+                        }
+                    }
+                },
+                "retention": {
+                    "type": "object",
+                    "properties": {
+                        "size": {
+                            "type": "string",
+                            "default": "7g"
+                        },
+                        "time": {
+                            "type": "string",
+                            "default": "15d"
+                        }
+                    }
+                },
+                "resources": {
+                    "type": "object",
+                    "properties": {
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string",
+                                    "default": "100m"
+                                },
+                                "memory": {
+                                    "type": "string",
+                                    "default": "100Mi"
+                                }
+                            }
+                        },
+                        "limits": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string",
+                                    "default": "1000m"
+                                },
+                                "memory": {
+                                    "type": "string",
+                                    "default": "1000Mi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "venti": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "type": "object",
+                    "properties": {
+                        "global": {
+                            "type": "object",
+                            "properties": {
+                                "ginMode": {
+                                    "type": "string",
+                                    "default": "release"
+                                },
+                                "logLevel": {
+                                    "type": "string",
+                                    "default": "info"
+                                }
+                            }
+                        },
+                        "alerting": {
+                            "type": "object",
+                            "properties": {
+                                "evaluationInterval": {
+                                    "type": "string",
+                                    "default": "5s"
+                                },
+                                "globalLabels": {
+                                    "type": "object",
+                                    "default": {}
+                                }
+                            }
+                        },
+                        "alertRules": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "dashboards": {
+                            "type": "object",
+                            "properties": {
+                                "useDefault": {
+                                    "type": "boolean",
+                                    "default": true
+                                },
+                                "extraDashboards": {
+                                    "type": "object",
+                                    "default": {}
+                                }
+                            }
+                        },
+                        "datasources": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            },
+                            "default": []
+                        },
+                        "discovery": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            }
+                        },
+                        "users": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            },
+                            "default": []
+                        }
+                    }
+                },
+                "nodeSelector": {
+                    "type": "object",
+                    "default": {}
+                },
+                "hostAliases": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                },
+                "dnsConfig": {
+                    "type": "object",
+                    "default": {}
+                },
+                "tolerations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                },
+                "affinity": {
+                    "type": "object",
+                    "default": {}
+                },
+                "topologySpreadConstraints": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    },
+                    "default": []
+                },
+                "service": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "annotations": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "labels": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "clusterIP": {
+                            "type": "string",
+                            "default": ""
+                        },
+                        "externalIPs": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        },
+                        "loadBalancerIP": {
+                            "type": "string",
+                            "default": ""
+                        },
+                        "loadBalancerSourceRanges": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        },
+                        "servicePort": {
+                            "type": "integer",
+                            "default": 80
+                        },
+                        "sessionAffinity": {
+                            "type": "string",
+                            "enum": [
+                                "None",
+                                "ClientIP"
+                            ],
+                            "default": "None"
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "ClusterIP",
+                                "NodePort",
+                                "LoadBalancer"
+                            ],
+                            "default": "ClusterIP"
+                        }
+                    }
+                },
+                "ingress": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "annotations": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "extraLabels": {
+                            "type": "object",
+                            "default": {}
+                        },
+                        "hosts": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": []
+                        },
+                        "tls": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            },
+                            "default": []
+                        },
+                        "path": {
+                            "type": "string",
+                            "default": "/"
+                        },
+                        "pathType": {
+                            "type": "string",
+                            "enum": [
+                                "Prefix",
+                                "Exact"
+                            ],
+                            "default": "Prefix"
+                        },
+                        "extraPaths": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            },
+                            "default": []
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
