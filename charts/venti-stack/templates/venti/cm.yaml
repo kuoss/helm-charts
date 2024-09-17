@@ -15,7 +15,9 @@ data:
       alertmanagers:
       - static_configs:
         - targets:
+{{- if and .Values.prometheus.enabled .Values.prometheus.alertmanager.enabled }}
           - http://{{ template "prometheus.alertmanager.fullname" .Subcharts.prometheus }}:9093
+{{- end }}
       globalLabels:
 {{- with .Values.venti.config.alerting.globalLabels }}
 {{ toYaml . | indent 8 }}
@@ -25,9 +27,11 @@ data:
 {{- if .Values.venti.config.datasources }}
 {{ toYaml .Values.venti.config.datasources | indent 6 }}
 {{- else }}
+{{- if and .Values.prometheus.enabled .Values.prometheus.server.enabled }}
     - name: prometheus
       type: prometheus
       url: http://{{ template "prometheus.server.fullname" .Subcharts.prometheus }}
+{{- end }}
     - name: lethe
       type: lethe
       url: http://{{ template "lethe.fullname" . }}
