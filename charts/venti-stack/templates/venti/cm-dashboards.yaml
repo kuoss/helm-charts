@@ -1,3 +1,4 @@
+{{- if .Values.venti.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -360,3 +361,4 @@ data:
 {{- if .Values.venti.config.dashboards.extraDashboards }}
 {{ toYaml .Values.venti.config.dashboards.extraDashboards | indent 2 }}
 {{- end }}
+{{- end -}}

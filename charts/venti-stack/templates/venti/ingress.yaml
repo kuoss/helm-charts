@@ -1,3 +1,4 @@
+{{- if .Values.venti.enabled -}}
 {{- if .Values.venti.ingress.enabled -}}
 {{- $serviceName := include "venti.fullname" . }}
 {{- $servicePort := .Values.venti.service.servicePort -}}
@@ -36,4 +37,5 @@ spec:
                 port:
                   number: {{ $servicePort }}
   {{- end -}}
+{{- end -}}
 {{- end -}}
