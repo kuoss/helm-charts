@@ -109,6 +109,7 @@ prometheus:
     enabled: false
 
 eventrouter:
+  enabled: true
   nodeSelector: {}
   tolerations: []
 

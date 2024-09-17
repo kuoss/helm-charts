@@ -1,3 +1,4 @@
+{{- if .Values.eventrouter.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,3 +42,4 @@ spec:
       - name: vol-config
         configMap:
           name: {{ template "eventrouter.fullname" . }}
+{{- end -}}

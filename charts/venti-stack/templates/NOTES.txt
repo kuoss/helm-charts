@@ -1,5 +1,12 @@
-{{ $.Chart.Name }} has been installed. Check its status by running:
+{{ .Chart.Name }} has been successfully installed!
 
-  kubectl -n {{ $.Release.Namespace }} get pod -l app.kubernetes.io/instance={{ $.Release.Name }}
+To verify its status, you can run the following commands:
 
-Visit https://github.com/kuoss/helm-charts for further information.
+  # Wait for the pods to be in the ready state
+  kubectl -n {{ .Release.Namespace }} wait pod -l app.kubernetes.io/instance={{ .Release.Name }} --for=condition=ready
+
+  # Get the current status of the pods
+  kubectl -n {{ .Release.Namespace }} get pod -l app.kubernetes.io/instance={{ .Release.Name }}
+
+For more details, visit the official repository at:
+https://github.com/kuoss/helm-charts
