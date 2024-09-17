@@ -1032,6 +1032,10 @@
     "eventrouter": {
       "type": "object",
       "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
         "nodeSelector": {
           "type": "object",
           "default": {}
