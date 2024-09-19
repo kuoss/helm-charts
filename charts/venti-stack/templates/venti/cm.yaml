@@ -28,7 +28,7 @@ data:
 {{- if .Values.venti.config.datasources }}
 {{ toYaml .Values.venti.config.datasources | indent 6 }}
 {{- else }}
-{{- if and .Values.prometheus.enabled .Values.prometheus.server.enabled }}
+{{- if .Values.prometheus.enabled }}
     - name: prometheus
       type: prometheus
       url: http://{{ template "prometheus.server.fullname" .Subcharts.prometheus }}
