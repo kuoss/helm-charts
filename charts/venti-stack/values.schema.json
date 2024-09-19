@@ -12,6 +12,9 @@
       }
     },
     "prometheus": {
+      "enabled": {
+        "type": "boolean"
+      },
       "alertRelabelConfigs": {
         "type": "object"
       },
