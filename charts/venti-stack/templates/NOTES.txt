@@ -3,7 +3,7 @@
 To verify its status, you can run the following commands:
 
   # Wait for the pods to be in the ready state
-  kubectl -n {{ .Release.Namespace }} wait pod -l app.kubernetes.io/instance={{ .Release.Name }} --for=condition=ready
+  kubectl -n {{ .Release.Namespace }} wait pod -l app.kubernetes.io/instance={{ .Release.Name }} --for=condition=ready --timeout=5m
 
   # Get the current status of the pods
   kubectl -n {{ .Release.Namespace }} get pod -l app.kubernetes.io/instance={{ .Release.Name }}
