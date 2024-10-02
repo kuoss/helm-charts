@@ -913,6 +913,50 @@ entries:
           url: https://github.com/kuoss/helm-charts
     apiVersion: v2
     appVersion: v0.2.20
+    created: "2024-10-02T07:04:25.781984219Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 25.11.1
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.46.7
+    description: Venti stack is a logging and monitoring system.
+    digest: 55b7940c9138113418522cf8649a7608cbdc650f70df5686ed809fbdfb1eeda7
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.2.11/venti-stack-0.2.11.tgz
+    version: 0.2.11
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+    apiVersion: v2
+    appVersion: v0.2.20
     created: "2024-09-21T13:19:29.306429404Z"
     dependencies:
     - condition: prometheus.enabled
@@ -3026,4 +3070,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-21T13:19:29.306752156Z"
+generated: "2024-10-02T07:04:25.782184244Z"
