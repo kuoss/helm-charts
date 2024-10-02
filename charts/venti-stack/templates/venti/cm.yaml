@@ -20,7 +20,10 @@ data:
           - http://{{ template "prometheus.alertmanager.fullname" .Subcharts.prometheus }}:9093
 {{- end }}
       globalLabels:
-{{- with .Values.venti.config.alerting.globalLabels }}
+{{- if .Values.venti.config.alerting.globalLabels.addChartLabel }}
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+{{- end }}
+{{- with .Values.venti.config.alerting.globalLabels.extraLabels }}
 {{ toYaml . | indent 8 }}
 {{- end }}
   datasources.yml: |

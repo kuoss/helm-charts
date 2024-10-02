@@ -1336,7 +1336,16 @@
                 },
                 "globalLabels": {
                   "type": "object",
-                  "default": {}
+                  "properties": {
+                    "addChartLabel": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "extraLabels": {
+                      "type": "object",
+                      "default": {}
+                    }
+                  }
                 }
               }
             },

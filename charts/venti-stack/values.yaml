@@ -182,7 +182,9 @@ venti:
       logLevel: info
     alerting:
       evaluationInterval: 5s
-      globalLabels: {}
+      globalLabels:
+        addChartLabel: true
+        extraLabels: {}
     alertRules: {}
     # kubernetes.yml: |
     #   datasourceSelector:
