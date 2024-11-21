@@ -41,7 +41,7 @@ spec:
         - --config=/fluent-bit/etc/conf/fluent-bit.conf
         command:
         - /fluent-bit/bin/fluent-bit
-        image: {{ index .Values "fluent-bit" "image" "repository" }}:3.1.7
+        image: {{ index .Values "fluent-bit" "image" "repository" }}:3.1.9
         resources:
           {{- toYaml .Values.lethe.resources | nindent 10 }}
         livenessProbe:
