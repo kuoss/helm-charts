@@ -911,6 +911,52 @@ entries:
       artifacthub.io/links: |
         - name: Chart Source
           url: https://github.com/kuoss/helm-charts
+      fluentBitVersion: 3.2.6
+      letheVersion: v0.2.10
+    apiVersion: v2
+    appVersion: v0.2.23
+    created: "2025-02-19T06:39:57.225895189Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 27.3.1
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.48.6
+    description: Venti stack is a logging and monitoring system.
+    digest: 62b6c51737e6c863f9a2873e5c54e357db6f9ca2f2e6cc3c4ac8b22494c5a42d
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.2.15/venti-stack-0.2.15.tgz
+    version: 0.2.15
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
     apiVersion: v2
     appVersion: v0.2.22
     created: "2024-11-26T03:23:21.117160149Z"
@@ -3202,4 +3248,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-26T03:23:21.117405024Z"
+generated: "2025-02-19T06:39:57.226107155Z"
