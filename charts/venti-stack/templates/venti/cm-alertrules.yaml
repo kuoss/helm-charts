@@ -7,7 +7,83 @@ metadata:
   name: {{ template "venti.fullname" .}}-alertrules
   namespace: {{ template "venti-stack.namespace" .}}
 data:
-{{- if .Values.venti.config.alertRules }}
-{{ toYaml .Values.venti.config.alertRules | indent 2 }}
+{{- if .Values.venti.config.alertRules.defaultGroups.enabled }}
+  defaultGroups.yml: |
+    datasourceSelector:
+      type: prometheus
+      system: main
+    groups:
+    {{- if .Values.venti.config.alertRules.defaultGroups.kubernetes.enabled }}
+    - name: kubernetes
+      rules:
+      {{- range .Values.venti.config.alertRules.defaultGroups.kubernetes.rules }}
+      - alert: {{.alert}}
+        expr: {{.expr}}
+        for: {{.for}}
+        labels:
+          severity: {{.severity}}
+        annotations:
+          summary: {{.summary}}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.venti.config.alertRules.defaultGroups.node.enabled }}
+    - name: node
+      rules:
+      {{- range .Values.venti.config.alertRules.defaultGroups.node.rules }}
+      - alert: {{.alert}}
+        expr: {{.expr}}
+        for: {{.for}}
+        labels:
+          severity: {{.severity}}
+        annotations:
+          summary: {{.summary}}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.venti.config.alertRules.defaultGroups.prometheus.enabled }}
+    - name: prometheus
+      rules:
+      {{- range .Values.venti.config.alertRules.defaultGroups.prometheus.rules }}
+      - alert: {{.alert}}
+        expr: {{.expr}}
+        for: {{.for}}
+        labels:
+          severity: {{.severity}}
+        annotations:
+          summary: {{.summary}}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.venti.config.alertRules.defaultGroups.vcustom.enabled }}
+    - name: vcustom
+      rules:
+      {{- range .Values.venti.config.alertRules.defaultGroups.vcustom.rules }}
+      - alert: {{.alert}}
+        expr: {{.expr}}
+        for: {{.for}}
+        labels:
+          severity: {{.severity}}
+        annotations:
+          summary: {{.summary}}
+      {{- end }}
+    {{- end }}
+{{- end }}
+{{- if .Values.venti.config.alertRules.extraGroups }}
+  extraGroups.yml: |
+    datasourceSelector:
+      type: prometheus
+      system: main
+    groups:
+    {{- range .Values.venti.config.alertRules.extraGroups }}
+    - name: {{.name}}
+      rules:
+      {{- range .rules }}
+      - alert: {{.alert}}
+        expr: {{.expr}}
+        for: {{.for}}
+        labels:
+          severity: {{.severity}}
+        annotations:
+          summary: {{.summary}}
+      {{- end }}
+    {{- end }}
 {{- end }}
 {{- end -}}
