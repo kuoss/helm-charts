@@ -11,8 +11,8 @@ fluent-bit:
       prometheus.io/port: "2020"
       prometheus.io/scrape: "true"
   tolerations:
-  - effect: NoSchedule
-    operator: Exists
+    - effect: NoSchedule
+      operator: Exists
   luaScripts:
     kube.lua: |
       function kube(tag, timestamp, r)
@@ -92,13 +92,13 @@ prometheus:
       enabled: false
   prometheus-node-exporter:
     extraArgs:
-    - --collector.systemd
+      - --collector.systemd
     extraHostVolumeMounts:
-    - name: systemd-socket
-      mountPath: /var/run/dbus/system_bus_socket
-      hostPath: /var/run/dbus/system_bus_socket
-      readOnly: true
-      mountPropagation: None
+      - name: systemd-socket
+        mountPath: /var/run/dbus/system_bus_socket
+        hostPath: /var/run/dbus/system_bus_socket
+        readOnly: true
+        mountPropagation: None
     nameOverride: "node-exporter"
   prometheus-pushgateway:
     enabled: false
@@ -182,7 +182,7 @@ venti:
     alertRules:
       defaultGroups:
         enabled: true
-        
+
         # https://github.com/samber/awesome-prometheus-alerts/tree/master/dist/rules/kubernetes
         kubernetes:
           enabled: true
@@ -432,7 +432,7 @@ venti:
               for: 2m
               severity: warning
               summary: Kubernetes API server latency (instance {{ $labels.instance }})
-        
+
         # https://github.com/samber/awesome-prometheus-alerts/tree/master/dist/rules/host-and-hardware
         node:
           enabled: true
@@ -689,7 +689,7 @@ venti:
               for: 4h
               severity: info
               summary: node={{ $labels.node }} value={{ $value }}
-        
+
         # https://github.com/samber/awesome-prometheus-alerts/tree/master/dist/rules/prometheus-self-monitoring
         prometheus:
           enabled: true
