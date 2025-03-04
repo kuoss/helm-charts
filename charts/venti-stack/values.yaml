@@ -892,7 +892,7 @@ venti:
               summary: instance={{ $labels.instance }} value={{ $value }}
 
         vcustom:
-          enabled: false
+          enabled: true
           rules:
             v01:
               alert: v01-VentiPodCreated
