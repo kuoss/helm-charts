@@ -1,3 +1,4 @@
+# https://github.com/helm/chart-testing-action?tab=readme-ov-file#example-workflow
 name: Lint and Test Charts
 
 on: pull_request
