@@ -18,3 +18,6 @@ __names:
 
 code-server:
 	hack/code-server.sh
+
+alertrules:
+	cd hack; ./alertrules.py
