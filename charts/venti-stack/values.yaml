@@ -39,9 +39,9 @@ fluent-bit:
           Name              tail
           Path              /var/log/containers/*.log
           Exclude_Path      /var/log/containers/*_fluent-bit-*.log
-          Parser            containerd
           Tag               kube_<namespace>_<pod>_<container>
           Tag_Regex         (?<pod>[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*)_(?<namespace>[^_]+)_(?<container>.+)-
+          Parser            containerd
           Mem_Buf_Limit     5MB
           Skip_Long_Lines   On
 
