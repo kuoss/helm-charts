@@ -17,25 +17,33 @@ fluent-bit:
     kube.lua: |
       function kube(tag, timestamp, r)
         local u = os.date("%Y-%m-%dT%H:%M:%SZ")
-        return 1, timestamp, {tag=string.format("pod/%s/%s_%s.log",r["kubernetes"]["namespace_name"],string.sub(u,1,10),string.sub(u,12,13)),
-        row=string.format("%s[%s|%s|%s] %s",u,r["kubernetes"]["namespace_name"],r["kubernetes"]["pod_name"],r["kubernetes"]["container_name"],r["message"])}
+        local n,p,c = tag:match("^kube_([^%.]+)_([^%.]+)_([^%.]+)$")
+        return 1, timestamp, {tag="pod/"..n.."/"..string.sub(u,1,10).."_"..string.sub(u,12,13)..".log", row=u.."["..n.."|"..p.."|"..c.."] "..r["log"]}
       end
     host.lua: |
       function host(tag, timestamp, r)
         local u = os.date("%Y-%m-%dT%H:%M:%SZ")
-        return 1, timestamp, {tag=string.format("node/%s/%s_%s.log",r["_HOSTNAME"],string.sub(u,1,10),string.sub(u,12,13)),
-        row=string.format("%s[%s|%s] %s",u,r["_HOSTNAME"],r["SYSLOG_IDENTIFIER"],r["MESSAGE"])}
+        return 1, timestamp, {tag="node/"..r["_HOSTNAME"].."/"..string.sub(u,1,10).."_"..string.sub(u,12,13)..".log", row=u.."["..r["_HOSTNAME"].."|"..r["SYSLOG_IDENTIFIER"].."] "..r["MESSAGE"]}
       end
   config:
+    customParsers: |
+      [PARSER]
+          Name              containerd
+          Format            regex
+          Regex             ^(?<time>.+) (?<stream>stdout|stderr) [^ ]* (?<log>.*)$
+          Time_Key          time
+          Time_Format       %Y-%m-%dT%H:%M:%S.%L%z
+
     inputs: |
       [INPUT]
-          Name tail
-          Path /var/log/containers/*.log
-          Exclude_Path /var/log/containers/*_fluent-bit-*.log
-          Parser cri
-          Tag kube.*
-          Mem_Buf_Limit 5MB
-          Skip_Long_Lines On
+          Name              tail
+          Path              /var/log/containers/*.log
+          Exclude_Path      /var/log/containers/*_fluent-bit-*.log
+          Parser            containerd
+          Tag               kube_<namespace>_<pod>_<container>
+          Tag_Regex         (?<pod>[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*)_(?<namespace>[^_]+)_(?<container>.+)-
+          Mem_Buf_Limit     5MB
+          Skip_Long_Lines   On
 
       [INPUT]
           Name systemd
@@ -47,16 +55,8 @@ fluent-bit:
 
     filters: |
       [FILTER]
-          Name kubernetes
-          Match kube.*
-          Merge_Log On
-          Keep_Log Off
-          K8S-Logging.Parser On
-          K8S-Logging.Exclude On
-
-      [FILTER]
           Name                lua
-          Match               kube.*
+          Match               kube_*
           script              /fluent-bit/scripts/kube.lua
           call                kube
 
