@@ -46,12 +46,12 @@ fluent-bit:
           Skip_Long_Lines   On
 
       [INPUT]
-          Name systemd
-          Tag host.*
-          Systemd_Filter _SYSTEMD_UNIT=kubelet.service
-          Systemd_Filter _SYSTEMD_UNIT=etcd.service
-          Systemd_Filter _SYSTEMD_UNIT=containerd.service
-          Read_From_Tail On
+          Name              systemd
+          Tag               host.*
+          Systemd_Filter    _SYSTEMD_UNIT=kubelet.service
+          Systemd_Filter    _SYSTEMD_UNIT=etcd.service
+          Systemd_Filter    _SYSTEMD_UNIT=containerd.service
+          Read_From_Tail    On
 
     filters: |
       [FILTER]
