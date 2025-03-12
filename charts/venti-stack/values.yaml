@@ -48,9 +48,9 @@ fluent-bit:
       [INPUT]
           Name              systemd
           Tag               host.*
-          Systemd_Filter    _SYSTEMD_UNIT=kubelet.service
-          Systemd_Filter    _SYSTEMD_UNIT=etcd.service
           Systemd_Filter    _SYSTEMD_UNIT=containerd.service
+          Systemd_Filter    _SYSTEMD_UNIT=etcd.service
+          Systemd_Filter    _SYSTEMD_UNIT=kubelet.service
           Read_From_Tail    On
 
     filters: |
