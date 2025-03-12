@@ -46,43 +46,43 @@ fluent-bit:
           Skip_Long_Lines   On
 
       [INPUT]
-          Name systemd
-          Tag host.*
-          Systemd_Filter _SYSTEMD_UNIT=kubelet.service
-          Systemd_Filter _SYSTEMD_UNIT=etcd.service
-          Systemd_Filter _SYSTEMD_UNIT=containerd.service
-          Read_From_Tail On
+          Name              systemd
+          Tag               host.*
+          Systemd_Filter    _SYSTEMD_UNIT=containerd.service
+          Systemd_Filter    _SYSTEMD_UNIT=etcd.service
+          Systemd_Filter    _SYSTEMD_UNIT=kubelet.service
+          Read_From_Tail    On
 
     filters: |
       [FILTER]
-          Name                lua
-          Match               kube_*
-          script              /fluent-bit/scripts/kube.lua
-          call                kube
+          Name              lua
+          Match             kube_*
+          script            /fluent-bit/scripts/kube.lua
+          call              kube
 
       [FILTER]
-          Name                lua
-          Match               host.*
-          script              /fluent-bit/scripts/host.lua
-          call                host
+          Name              lua
+          Match             host.*
+          script            /fluent-bit/scripts/host.lua
+          call              host
 
       [FILTER]
-          Name                rewrite_tag
-          Match_regex         ^(kube|host)
-          Rule                $tag .* $tag false
-          Emitter_Name        re_emitted
+          Name              rewrite_tag
+          Match_regex       ^(kube|host)
+          Rule              $tag .* $tag false
+          Emitter_Name      re_emitted
 
       [FILTER]
-          Name                modify
-          Match_regex         ^(pod|node)
-          Remove              tag
+          Name              modify
+          Match_regex       ^(pod|node)
+          Remove            tag
 
     outputs: |
       [OUTPUT]
-          Name                forward
-          Match_regex         ^(pod|node)
-          Host                {{ .Release.Name }}-lethe
-          Port                24224
+          Name              forward
+          Match_regex       ^(pod|node)
+          Host              {{ .Release.Name }}-lethe
+          Port              24224
 
 prometheus:
   enabled: true
