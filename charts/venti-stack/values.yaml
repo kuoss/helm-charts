@@ -55,34 +55,34 @@ fluent-bit:
 
     filters: |
       [FILTER]
-          Name                lua
-          Match               kube_*
-          script              /fluent-bit/scripts/kube.lua
-          call                kube
+          Name              lua
+          Match             kube_*
+          script            /fluent-bit/scripts/kube.lua
+          call              kube
 
       [FILTER]
-          Name                lua
-          Match               host.*
-          script              /fluent-bit/scripts/host.lua
-          call                host
+          Name              lua
+          Match             host.*
+          script            /fluent-bit/scripts/host.lua
+          call              host
 
       [FILTER]
-          Name                rewrite_tag
-          Match_regex         ^(kube|host)
-          Rule                $tag .* $tag false
-          Emitter_Name        re_emitted
+          Name              rewrite_tag
+          Match_regex       ^(kube|host)
+          Rule              $tag .* $tag false
+          Emitter_Name      re_emitted
 
       [FILTER]
-          Name                modify
-          Match_regex         ^(pod|node)
-          Remove              tag
+          Name              modify
+          Match_regex       ^(pod|node)
+          Remove            tag
 
     outputs: |
       [OUTPUT]
-          Name                forward
-          Match_regex         ^(pod|node)
-          Host                {{ .Release.Name }}-lethe
-          Port                24224
+          Name              forward
+          Match_regex       ^(pod|node)
+          Host              {{ .Release.Name }}-lethe
+          Port              24224
 
 prometheus:
   enabled: true
