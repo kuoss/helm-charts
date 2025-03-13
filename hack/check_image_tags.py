@@ -8,7 +8,7 @@ import sys
 def collect_images():
     # Run the helm command
     result = subprocess.run(
-        ["helm", "template", "-n", "venti-stack", "vs", "../charts/venti-stack/", "-f", "../charts/venti-stack/values.yaml", "-f", "../docs/venti-stack.values.test.yaml"],
+        ["helm", "template", "-n", "venti-stack", "vs", "charts/venti-stack/", "-f", "charts/venti-stack/values.yaml", "-f", "docs/venti-stack.values.test.yaml"],
         capture_output=True, text=True
     )
 

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-cd $(dirname $0)
+cd $(dirname $0)/..
 
-./check_image_tags.py
+hack/check_image_tags.py
 if [ $? -eq 0 ]; then
     echo "✅ check_image_tags: Success"
 else
