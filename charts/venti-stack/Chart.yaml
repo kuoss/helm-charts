@@ -38,5 +38,5 @@ annotations:
   "artifacthub.io/links": |
     - name: Chart Source
       url: https://github.com/kuoss/helm-charts
-  fluentBitVersion: 3.2.6
+  fluentBitVersion: 3.2.7
   letheVersion: v0.2.11

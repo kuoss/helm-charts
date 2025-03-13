@@ -42,7 +42,7 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
         run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
-      - name: checks
+      - name: Make checks
         run: make checks
 
       - name: Create kind cluster
