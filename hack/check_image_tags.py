@@ -8,10 +8,15 @@ import os
 
 def collect_images():
     # Run the helm command
-    result = subprocess.run(
-        ["helm", "template", "-n", "venti-stack", "vs", "../charts/venti-stack/", "-f", "../charts/venti-stack/values.yaml", "-f", "../docs/venti-stack.values.test.yaml"],
-        capture_output=True, text=True
-    )
+    try:
+        result = subprocess.run(
+            ["helm", "template", "-n", "venti-stack", "vs", "../charts/venti-stack/", "-f", "../charts/venti-stack/values.yaml", "-f", "../docs/venti-stack.values.test.yaml"],
+            capture_output=True, text=True, check=True
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing Helm command: {e}", file=sys.stderr)
+        print(f"Standard Error: {e.stderr}", file=sys.stderr)
+        sys.exit(1)
 
     # Use regular expressions to extract image lines
     images = re.findall(r'image:\s*(?:"|\'?)([^"\'\s]*)', result.stdout)
