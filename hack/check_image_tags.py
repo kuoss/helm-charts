@@ -54,6 +54,7 @@ def check_and_display_images(images):
         for img in inconsistent_images:
             print(img)
         sys.exit(1)
+
 print('checks...')
 images = collect_images()
 check_and_display_images(images)
