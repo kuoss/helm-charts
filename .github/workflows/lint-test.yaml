@@ -17,22 +17,22 @@ jobs:
         with:
           version: v3.17.0
 
-      - uses: actions/setup-python@v5.3.0
-        with:
-          python-version: '3.x'
-          check-latest: true
-
       - name: Add helm repos for subcharts
         run: |
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo add fluent https://fluent.github.io/helm-charts
 
-      - name: checks
-        run: |
-          make checks
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: '3.x'
+          check-latest: true
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.7.0
+
+      - name: checks
+        run: |
+          make checks
 
       - name: Run chart-testing (list-changed)
         id: list-changed
