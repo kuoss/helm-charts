@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd $(dirname $0)
-find
+find ../charts
 
 ./check_image_tags.py
 if [ $? -eq 0 ]; then
