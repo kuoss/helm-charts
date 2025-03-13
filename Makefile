@@ -21,3 +21,6 @@ code-server:
 
 alertrules:
 	cd hack; ./alertrules.py
+
+checks:
+	sh hack/checks.sh
