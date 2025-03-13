@@ -54,9 +54,6 @@ def check_and_display_images(images):
         for img in inconsistent_images:
             print(img)
         sys.exit(1)
-
 print('checks...')
-print('pwd:', os.getcwd())
 images = collect_images()
-print('images:', images)
 check_and_display_images(images)
