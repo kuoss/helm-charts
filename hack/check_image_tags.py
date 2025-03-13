@@ -4,6 +4,7 @@ import subprocess
 import re
 from collections import defaultdict
 import sys
+import os
 
 def collect_images():
     # Run the helm command
@@ -50,5 +51,7 @@ def check_and_display_images(images):
         sys.exit(1)
 
 print('checks...')
+print('pwd:', os.getcwd())
 images = collect_images()
+print('images:', images)
 check_and_display_images(images)
