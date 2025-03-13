@@ -49,6 +49,6 @@ def check_and_display_images(images):
             print(img)
         sys.exit(1)
 
-if __name__ == "__main__":
-    images = collect_images()
-    check_and_display_images(images)
+print('checks...')
+images = collect_images()
+check_and_display_images(images)
