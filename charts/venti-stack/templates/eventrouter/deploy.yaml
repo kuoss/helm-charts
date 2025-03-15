@@ -20,12 +20,13 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ template "eventrouter.fullname" . }}
       {{- with .Values.eventrouter.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-      - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:v0.4.7
+      - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:v0.4.10
         name: eventrouter
         resources:
           limits:
@@ -34,12 +35,4 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
-        volumeMounts:
-        - name: vol-config
-          mountPath: /etc/eventrouter
-      serviceAccountName: {{ template "eventrouter.fullname" . }}
-      volumes:
-      - name: vol-config
-        configMap:
-          name: {{ template "eventrouter.fullname" . }}
 {{- end -}}
