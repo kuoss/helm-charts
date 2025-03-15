@@ -25,7 +25,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-      - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:v0.4.0
+      - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:v0.4.7
         name: eventrouter
         resources:
           limits:
