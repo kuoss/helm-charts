@@ -70,7 +70,7 @@ rules: []
   #     nginx.ingress.kubernetes.io/whitelist-source-range:
   #       - 192.168.1.0/24
   #       - 10.0.0.0/16
-  
+  #
   # - description: Enable OAuth2 authentication
   #   selector:
   #     include: "production"
