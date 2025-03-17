@@ -731,6 +731,33 @@ entries:
         - name: Chart Source
           url: https://github.com/kuoss/helm-charts
     apiVersion: v2
+    appVersion: v0.1.6
+    created: "2025-03-17T12:10:00.121736025Z"
+    description: MyIP is a "What's my IP" application.
+    digest: 6a796dba6bfdda180e487bd499715242665e354eecd651890e94b98ebb683d49
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - xff
+    - my-ip
+    - real-ip
+    - client-ip
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: myip
+    sources:
+    - https://github.com/kuoss/myip
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/myip-0.2.0/myip-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+    apiVersion: v2
     appVersion: v0.1.4
     created: "2024-04-27T13:13:39.507947891Z"
     description: MyIP is a "What's my IP" application.
@@ -3555,4 +3582,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-17T10:49:51.187310781Z"
+generated: "2025-03-17T12:10:00.121948792Z"
