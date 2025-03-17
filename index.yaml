@@ -374,6 +374,37 @@ entries:
         - name: Upstream Project
           url: https://github.com/kuoss/ingress-annotator
     apiVersion: v2
+    appVersion: v0.2.2
+    created: "2025-03-17T10:49:51.186857355Z"
+    description: Dynamically manages Kubernetes Ingress annotations based on ConfigMap
+      rules, ensuring consistency and automation.
+    digest: 116b39359aae662ac83dbf0f910804604d76fed7b3bd8b934c2a1473241676c4
+    home: https://github.com/kuoss/ingress-annotator
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - ingress
+    - annotations
+    - kubernetes
+    - configmap
+    kubeVersion: '>=1.19.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: ingress-annotator
+    sources:
+    - https://github.com/kuoss/ingress-annotator
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/ingress-annotator-0.2.0/ingress-annotator-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+        - name: Upstream Project
+          url: https://github.com/kuoss/ingress-annotator
+    apiVersion: v2
     appVersion: v0.1.11
     created: "2024-08-28T17:09:13.720762774Z"
     description: A Kubernetes utility to dynamically manage ingress annotations using
@@ -3524,4 +3555,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-15T19:56:54.216644445Z"
+generated: "2025-03-17T10:49:51.187310781Z"
