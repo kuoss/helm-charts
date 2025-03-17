@@ -132,7 +132,41 @@
             "type": "object"
         },
         "rules": {
-            "type": "object"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "selector": {
+                        "type": "object",
+                        "properties": {
+                            "include": {
+                                "type": "string"
+                            },
+                            "exclude": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "annotations": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "listAnnotations": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

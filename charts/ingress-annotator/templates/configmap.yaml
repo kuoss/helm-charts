@@ -7,9 +7,23 @@ metadata:
     {{- include "ingress-annotator.labels" . | nindent 4 }}
 data:
   rules: |
-    {{- range $key, $value := .Values.rules }}
-    {{ $key }}:
-      {{- range $lineKey, $lineValue := $value }}
-      {{ $lineKey }}: "{{ $lineValue }}"
+    {{- range $rule := .Values.rules }}
+    - description: {{ $rule.description | quote }}
+      selector:
+        include: {{ $rule.selector.include | quote }}
+      {{- if $rule.annotations }}
+      annotations:
+        {{- range $key, $value := $rule.annotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      {{- end }}
+      {{- if $rule.listAnnotations }}
+      listAnnotations:
+        {{- range $key, $value := $rule.listAnnotations }}
+        {{ $key }}:
+          {{- range $item := $value }}
+          - {{ $item | quote }}
+          {{- end }}
+        {{- end }}
       {{- end }}
     {{- end }}

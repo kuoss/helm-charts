@@ -1,2 +1,4 @@
-1. Get the pod status by running these commands:
-  kubectl get pod --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "ingress-annotator.name" . }},app.kubernetes.io/instance={{ .Release.Name }}"
+
+To verify that ingress-annotator has started, run:
+
+  kubectl get deploy -w --namespace {{ .Release.Namespace }} {{ include "ingress-annotator.fullname" . }}
