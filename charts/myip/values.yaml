@@ -6,8 +6,8 @@ deployment:
   annotations: {}
 
 env: []
-  # - name: SOMEVAR
-  #   value: somevalue
+  # - name: APP_ADDR
+  #   value: :80
   # - name: APP_PROXIES
   #   value: 10.0.0.0/8
 
