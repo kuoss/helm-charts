@@ -58,14 +58,22 @@ tolerations: []
 
 affinity: {}
 
-rules: {}
-  # You can define custom annotation rules here to manage annotations at the
-  # Ingress or Namespace level. Referencing these rules in annotations helps
-  # centralize and automate their management, ensuring consistent configuration
-  # across your Kubernetes environment.
-  # Examples include settings for OAuth2 proxy or IP range restrictions.
-  # oauth2-proxy:
-  #   nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
-  #   nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
-  # private:
-  #   nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24,10.0.0.0/16"
+rules: []
+  # This section defines custom rules for managing annotations in Ingress resources.
+  # Each rule consists of a description, a selector, and a set of annotations.
+  # These rules provide a centralized way to manage configurations like IP whitelisting or authentication.
+  #
+  # - description: Allow traffic only from specific IP ranges
+  #   selector:
+  #     include: "development,staging"
+  #   listAnnotations:
+  #     nginx.ingress.kubernetes.io/whitelist-source-range:
+  #       - 192.168.1.0/24
+  #       - 10.0.0.0/16
+  #
+  # - description: Enable OAuth2 authentication
+  #   selector:
+  #     include: "production"
+  #   annotations:
+  #     nginx.ingress.kubernetes.io/auth-signin: "https://oauth2-proxy.example.com/oauth2/start?rd=https://$host$request_uri"
+  #     nginx.ingress.kubernetes.io/auth-url: "https://oauth2-proxy.example.com/oauth2/auth"
