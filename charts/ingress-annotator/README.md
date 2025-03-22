@@ -1,5 +1,7 @@
 # ingress-annotator
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/ingress-annotator)](https://artifacthub.io/packages/helm/kuoss/ingress-annotator)
+
 The `ingress-annotator` Helm chart is a Kubernetes utility that automates the management of annotations across Ingress resources. By leveraging a ConfigMap-driven approach, it ensures consistent, dynamic, and conflict-free annotation application.
 
 ## Prerequisites
