@@ -2,7 +2,7 @@
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/kuoss)](https://artifacthub.io/packages/search?org=kuoss)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![Release Charts](https://github.com/kuoss/helm-charts/workflows/Release%20Charts/badge.svg?branch=main)
+![Release Charts](https://github.com/kuoss/helm-charts/workflows/release.yaml/badge.svg?branch=main)
 [![Releases downloads](https://img.shields.io/github/downloads/kuoss/helm-charts/total.svg)](https://github.com/kuoss/helm-charts/releases)
 
 ## Usage
