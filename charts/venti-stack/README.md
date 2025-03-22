@@ -1,6 +1,6 @@
 # venti-stack
 
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/kuoss)](https://artifacthub.io/packages/helm/kuoss/venti-stack)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/venti-stack)](https://artifacthub.io/packages/helm/kuoss/venti-stack)
 [![Git Repo](https://img.shields.io/badge/Git_Repo-venti-blue.svg?logo=github)](https://github.com/kuoss/venti)
 
 Installs the venti-stack, a collection of Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster logging, monitoring and visualizing.
