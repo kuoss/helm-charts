@@ -1,5 +1,8 @@
 # myip
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/myip)](https://artifacthub.io/packages/helm/kuoss/myip)
+[![Git Repo](https://img.shields.io/badge/Git_Repo-myip-blue.svg?logo=github)](https://github.com/kuoss/myip)
+
 Installs the myip, "What's my IP" application
 
 ## Prerequisites
