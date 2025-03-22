@@ -35,7 +35,3 @@ Please refer to our [contribution guidelines](https://github.com/kuoss/helm-char
 ## License
 
 This project is licensed under the [Apache 2.0 License](https://github.com/kuoss/helm-charts/blob/main/LICENSE). This means you can freely use, modify, and distribute the code, provided that you include the original license and copyright notice in any copies or substantial portions of the software.
-
-## Helm Charts Build Status
-
-![Release Charts](https://github.com/kuoss/helm-charts/workflows/Release%20Charts/badge.svg?branch=main)
