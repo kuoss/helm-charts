@@ -5,7 +5,7 @@ version: 0.2.1
 kubeVersion: ">=1.19.0-0"
 description: Dynamically manages Kubernetes Ingress annotations based on ConfigMap rules, ensuring consistency and automation.
 home: https://github.com/kuoss/ingress-annotator
-icon: https://avatars.githubusercontent.com/u/110170011
+icon: https://raw.githubusercontent.com/kuoss/docs/main/static/kuoss_logo.png
 sources:
   - https://github.com/kuoss/ingress-annotator
 maintainers:

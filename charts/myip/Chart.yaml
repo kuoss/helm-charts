@@ -4,7 +4,7 @@ appVersion: v0.1.6
 version: 0.2.1
 description: MyIP is a "What's my IP" application.
 home: https://kuoss.github.io/helm-charts
-icon: https://avatars.githubusercontent.com/u/110170011
+icon: https://raw.githubusercontent.com/kuoss/docs/main/static/kuoss_logo.png
 sources:
   - https://github.com/kuoss/myip
 maintainers:
