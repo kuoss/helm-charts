@@ -34,7 +34,7 @@ jobs:
           fi
 
       - name: Add helm repos for subcharts
-        if: steps.list-changed.outputs.changed == 'true' && contains(steps.list-changed.outputs.changed, 'venti-stack')
+        if: steps.list-changed.outputs.changed == 'true'
         run: |
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo add fluent https://fluent.github.io/helm-charts
@@ -44,7 +44,7 @@ jobs:
         run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
       - name: Make checks
-        if: steps.list-changed.outputs.changed == 'true' && contains(steps.list-changed.outputs.changed, 'venti-stack')
+        if: steps.list-changed.outputs.changed == 'true'
         run: make checks
 
       - name: Create kind cluster
