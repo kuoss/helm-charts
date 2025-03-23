@@ -1,11 +1,11 @@
 apiVersion: v2
 name: ingress-annotator
 appVersion: v0.2.2
-version: 0.2.0
+version: 0.2.1
 kubeVersion: ">=1.19.0-0"
 description: Dynamically manages Kubernetes Ingress annotations based on ConfigMap rules, ensuring consistency and automation.
 home: https://github.com/kuoss/ingress-annotator
-icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+icon: https://avatars.githubusercontent.com/u/110170011
 sources:
   - https://github.com/kuoss/ingress-annotator
 maintainers:
