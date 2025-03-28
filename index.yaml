@@ -974,6 +974,53 @@ entries:
       letheVersion: v0.2.11
     apiVersion: v2
     appVersion: v0.2.24
+    created: "2025-03-28T05:45:00.772767502Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 27.5.1
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.48.8
+    description: Venti stack is a logging and monitoring system.
+    digest: 0b1592daecef872b3a736f2351c5737d2ce42010c088af806c162146d225227a
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.3.8/venti-stack-0.3.8.tgz
+    version: 0.3.8
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+      eventrouterVersion: v0.4.11
+      fluentBitVersion: 3.2.7
+      letheVersion: v0.2.11
+    apiVersion: v2
+    appVersion: v0.2.24
     created: "2025-03-28T05:21:00.528024432Z"
     dependencies:
     - condition: prometheus.enabled
@@ -3676,4 +3723,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-28T05:21:00.52822748Z"
+generated: "2025-03-28T05:45:00.773068943Z"
