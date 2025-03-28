@@ -10,7 +10,7 @@ def collect_images():
     # Run the helm command
     try:
         result = subprocess.run(
-            ["helm", "template", "-n", "venti-stack", "vs", "../charts/venti-stack/", "-f", "../charts/venti-stack/values.yaml", "-f", "../docs/venti-stack.values.test.yaml"],
+            ["helm", "template", "-n", "lethe-stack", "vs", "../charts/lethe-stack/", "-f", "../charts/lethe-stack/values.yaml"],
             capture_output=True, text=True, check=True
         )
     except subprocess.CalledProcessError as e:

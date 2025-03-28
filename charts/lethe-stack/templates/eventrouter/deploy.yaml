@@ -1,0 +1,33 @@
+{{- if .Values.eventrouter.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "eventrouter.labels" . | nindent 4 }}
+  name: {{ template "eventrouter.fullname" . }}
+  namespace: {{ template "lethe-stack.namespace" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "eventrouter.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eventrouter.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.eventrouter.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ template "eventrouter.fullname" . }}
+      {{- with .Values.eventrouter.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:{{ .Chart.Annotations.eventrouterVersion }}
+        name: eventrouter
+        resources:
+          {{- toYaml .Values.eventrouter.resources | nindent 10 }}
+{{- end -}}

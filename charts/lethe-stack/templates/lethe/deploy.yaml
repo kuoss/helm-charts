@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "lethe.labels" . | nindent 4 }}
+  name: {{ template "lethe.fullname" . }}
+  namespace: {{ template "lethe-stack.namespace" . }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "lethe.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "lethe.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.lethe.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.lethe.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: reader
+        image: {{ include "lethe.imageRepository" . }}/lethe:{{ .Chart.AppVersion }}
+        resources:
+          {{- toYaml .Values.lethe.resources | nindent 10 }}
+        volumeMounts:
+        - name: config
+          mountPath: /app/etc
+        - name: data
+          mountPath: /data
+      - name: writer
+        args:
+        - --workdir=/fluent-bit/etc
+        - --config=/fluent-bit/etc/conf/fluent-bit.conf
+        command:
+        - /fluent-bit/bin/fluent-bit
+        image: {{ index .Values "fluent-bit" "image" "repository" }}:{{ .Chart.Annotations.fluentBitVersion }}
+        resources:
+          {{- toYaml .Values.lethe.resources | nindent 10 }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http-probe
+        ports:
+        - containerPort: 2020
+          name: http-probe
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/v1/health
+            port: http-probe
+        volumeMounts:
+        - name: config
+          mountPath: /fluent-bit/etc/conf
+        - name: data
+          mountPath: /data
+      volumes:
+        - name: config
+          configMap:
+            name: {{ if .Values.lethe.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.lethe.configMapOverrideName }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
+        - name: data
+        {{- if .Values.lethe.persistentVolume.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.lethe.persistentVolume.existingClaim }}{{ .Values.lethe.persistentVolume.existingClaim }}{{- else }}{{ template "lethe.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir:
+          {{- if .Values.lethe.emptyDir.sizeLimit }}
+            sizeLimit: {{ .Values.lethe.emptyDir.sizeLimit }}
+          {{- else }}
+            {}
+          {{- end -}}
+        {{- end -}}

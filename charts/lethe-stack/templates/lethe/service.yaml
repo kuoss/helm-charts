@@ -1,0 +1,52 @@
+{{- if .Values.lethe.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.lethe.service.annotations }}
+  annotations:
+{{ toYaml .Values.lethe.service.annotations | indent 4 }}
+{{- end }}
+  labels:
+    {{- include "lethe.labels" . | nindent 4 }}
+{{- if .Values.lethe.service.labels }}
+{{ toYaml .Values.lethe.service.labels | indent 4 }}
+{{- end }}
+  name: {{ template "lethe.fullname" . }}
+  namespace: {{ include "lethe-stack.namespace" . }}
+spec:
+{{- if .Values.lethe.service.clusterIP }}
+  clusterIP: {{ .Values.lethe.service.clusterIP }}
+{{- end }}
+{{- if .Values.lethe.service.externalIPs }}
+  externalIPs:
+{{ toYaml .Values.lethe.service.externalIPs | indent 4 }}
+{{- end }}
+{{- if .Values.lethe.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.lethe.service.loadBalancerIP }}
+{{- end }}
+{{- if .Values.lethe.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+  {{- range $cidr := .Values.lethe.service.loadBalancerSourceRanges }}
+    - {{ $cidr }}
+  {{- end }}
+{{- end }}
+  ports:
+    - name: http
+      port: {{ .Values.lethe.service.servicePort }}
+      protocol: TCP
+      targetPort: 6060
+    {{- if .Values.lethe.service.nodePort }}
+      nodePort: {{ .Values.lethe.service.nodePort }}
+    {{- end }}
+    - name: metrics
+      port: 2020
+      protocol: TCP
+      targetPort: 2020
+    - name: forward
+      port: 24224
+      protocol: TCP
+      targetPort: 24224
+  selector:
+    {{- include "lethe.matchLabels" . | nindent 4 }}
+  type: "{{ .Values.lethe.service.type }}"
+{{- end -}}
