@@ -1,0 +1,39 @@
+{{- if .Values.lethe.ingress.enabled -}}
+{{- $serviceName := include "lethe.fullname" . }}
+{{- $servicePort := .Values.lethe.service.servicePort -}}
+{{- $ingressPath := .Values.lethe.ingress.path -}}
+{{- $ingressPathType := .Values.lethe.ingress.pathType -}}
+{{- $extraPaths := .Values.lethe.ingress.extraPaths -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    {{- include "lethe.labels" . | nindent 4 }}
+  name: {{ template "lethe.fullname" . }}
+  namespace: {{ template "lethe-stack.namespace" . }}
+spec:
+  {{- if .Values.lethe.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.lethe.ingress.ingressClassName }}
+  {{- end -}}
+{{- if .Values.lethe.ingress.tls }}
+  tls:
+{{ tpl (toYaml .Values.lethe.ingress.tls) $ | indent 2 }}
+{{- end }}
+  rules:
+  {{- range .Values.lethe.ingress.hosts }}
+    {{- $url := splitList "/" . }}
+    - host: {{ first $url }}
+      http:
+        paths:
+{{- if $extraPaths }}
+{{ toYaml $extraPaths | indent 10 }}
+{{- end }}
+          - path: {{ $ingressPath }}
+            pathType: {{ $ingressPathType }}
+            backend:
+              service:
+                name: {{ $serviceName }}
+                port:
+                  number: {{ $servicePort }}
+  {{- end -}}
+{{- end -}}

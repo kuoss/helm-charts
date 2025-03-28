@@ -1,0 +1,26 @@
+{{- if not .Values.lethe.enabled -}}
+{{- if .Values.lethe.persistentVolume.enabled -}}
+{{- if not .Values.lethe.persistentVolume.existingClaim -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    {{- include "lethe.labels" . | nindent 4 }}
+  name: {{ template "lethe.fullname" . }}
+  namespace: {{ template "lethe-stack.namespace" . }}
+spec:
+  accessModes:
+{{ toYaml .Values.lethe.persistentVolume.accessModes | indent 4 }}
+{{- if .Values.lethe.persistentVolume.storageClass }}
+{{- if (eq "-" .Values.lethe.persistentVolume.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.lethe.persistentVolume.storageClass }}"
+{{- end }}
+{{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.lethe.persistentVolume.size }}
+{{- end -}}
+{{- end -}}
+{{- end -}}
