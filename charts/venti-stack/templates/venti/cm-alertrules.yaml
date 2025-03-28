@@ -9,6 +9,8 @@ metadata:
 data:
 {{- if .Values.venti.config.alertRules.defaultGroups.enabled }}
   defaultGroups.yml: |
+    commonLabels:
+      rulefile: defaultGroups.yml
     datasourceSelector:
       type: prometheus
       system: main
