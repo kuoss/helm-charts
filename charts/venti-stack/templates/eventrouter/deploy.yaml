@@ -29,10 +29,5 @@ spec:
       - image: {{ include "eventrouter.imageRepository" . }}/eventrouter:{{ .Chart.Annotations.eventrouterVersion }}
         name: eventrouter
         resources:
-          limits:
-            cpu: 100m
-            memory: 200Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
+          {{- toYaml .Values.eventrouter.resources | nindent 10 }}
 {{- end -}}
