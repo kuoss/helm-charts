@@ -19,6 +19,7 @@ data:
     - name: kubernetes
       rules:
       {{- range .Values.venti.config.alertRules.defaultGroups.kubernetes.rules }}
+      {{- if .enabled }}
       - alert: {{.alert}}
         expr: {{.expr}}
         for: {{.for}}
@@ -26,12 +27,14 @@ data:
           severity: {{.severity}}
         annotations:
           summary: {{.summary}}
+      {{- end }}
       {{- end }}
     {{- end }}
     {{- if .Values.venti.config.alertRules.defaultGroups.node.enabled }}
     - name: node
       rules:
       {{- range .Values.venti.config.alertRules.defaultGroups.node.rules }}
+      {{- if .enabled }}
       - alert: {{.alert}}
         expr: {{.expr}}
         for: {{.for}}
@@ -39,12 +42,14 @@ data:
           severity: {{.severity}}
         annotations:
           summary: {{.summary}}
+      {{- end }}
       {{- end }}
     {{- end }}
     {{- if .Values.venti.config.alertRules.defaultGroups.prometheus.enabled }}
     - name: prometheus
       rules:
       {{- range .Values.venti.config.alertRules.defaultGroups.prometheus.rules }}
+      {{- if .enabled }}
       - alert: {{.alert}}
         expr: {{.expr}}
         for: {{.for}}
@@ -53,11 +58,13 @@ data:
         annotations:
           summary: {{.summary}}
       {{- end }}
+      {{- end }}
     {{- end }}
     {{- if .Values.venti.config.alertRules.defaultGroups.vcustom.enabled }}
     - name: vcustom
       rules:
       {{- range .Values.venti.config.alertRules.defaultGroups.vcustom.rules }}
+      {{- if .enabled }}
       - alert: {{.alert}}
         expr: {{.expr}}
         for: {{.for}}
@@ -65,6 +72,7 @@ data:
           severity: {{.severity}}
         annotations:
           summary: {{.summary}}
+      {{- end }}
       {{- end }}
     {{- end }}
 {{- end }}
