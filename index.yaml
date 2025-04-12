@@ -1010,6 +1010,53 @@ entries:
       letheVersion: v0.2.11
     apiVersion: v2
     appVersion: v0.2.24
+    created: "2025-04-12T06:40:21.826475334Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 27.5.1
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.48.8
+    description: Venti stack is a logging and monitoring system.
+    digest: 4efd9ffd4f4b76deb17284d8c3ce23384a4396a84e6566646b42f2427cc1dd68
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.3.10/venti-stack-0.3.10.tgz
+    version: 0.3.10
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+      eventrouterVersion: v0.4.11
+      fluentBitVersion: 3.2.7
+      letheVersion: v0.2.11
+    apiVersion: v2
+    appVersion: v0.2.24
     created: "2025-04-11T07:11:26.182123668Z"
     dependencies:
     - condition: prometheus.enabled
@@ -3806,4 +3853,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-04-11T07:11:26.182637969Z"
+generated: "2025-04-12T06:40:21.826760316Z"
