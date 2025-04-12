@@ -933,7 +933,7 @@ venti:
               alert: v05-NodeDiskCount
               enabled: true
               expr: sum(node_disk_info{device=~"sd.|vd."}) by (node) > 23
-              for: 0m
+              for: 2m
               severity: warning
               summary: node={{ $labels.node }} value={{ $value }}
             v06:
