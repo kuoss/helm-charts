@@ -5,6 +5,7 @@ test_deploy:
 dependency:
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 	helm repo add fluent https://fluent.github.io/helm-charts
+	cd charts/lethe-stack; helm dependency update; helm dependency build
 	cd charts/venti-stack; helm dependency update; helm dependency build
 
 template:
@@ -16,11 +17,12 @@ images:
 __names:
 	make template | egrep '^kind:|^  name:'
 
-code-server:
-	hack/code-server.sh
-
 alertrules:
 	cd hack; ./alertrules.py
 
-checks:
+lint: dependency
+	helm lint charts/lethe-stack
+	helm lint charts/venti-stack
+
+checks: lint
 	sh hack/checks.sh
