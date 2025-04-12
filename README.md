@@ -23,6 +23,7 @@ You can then run `helm search repo kuoss` to see the charts.
 | Chart                                                                                           | Description                                                                                                           |
 |-------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | [ingress-annotator](https://github.com/kuoss/helm-charts/tree/main/charts/ingress-annotator)    | A Kubernetes utility to dynamically manage ingress annotations based on predefined rules set in a ConfigMap.          |
+| [lethe-stack](https://github.com/kuoss/helm-charts/tree/main/charts/lethe-stack)                | Installs a comprehensive collection of Kubernetes manifests for logging in a cluster.   |
 | [myip](https://github.com/kuoss/helm-charts/tree/main/charts/myip)                              | Deploys a simple "What's my IP" application that returns the IP address of the client making the request.              |
 | [venti-stack](https://github.com/kuoss/helm-charts/tree/main/charts/venti-stack)                | Installs a comprehensive collection of Kubernetes manifests for logging, monitoring, and visualization in a cluster.   |
 
