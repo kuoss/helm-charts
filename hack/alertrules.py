@@ -56,13 +56,12 @@ for section in sections:
             enabled = False
 
         description = rule['annotations']['description']
-        description = description.replace('\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}', '')
-        description += ' ({{ $value }})'
+        description = description.replace('\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}', '') + ' ({{ $value }})'
         
-        info = rule['annotations']['summary'] 
-        info = info.split('(')[-1].split(')')[0]
+        summary_info = rule['annotations']['summary'] 
+        summary_info = summary_info.split('(')[-1].split(')')[0]
         
-        summary = f'({info}) {description}'
+        summary = f'({summary_info}) {description}'
         summary = summary.replace('"', '')
         summary = summary.replace(':', '')
                 
