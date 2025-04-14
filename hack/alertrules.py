@@ -50,15 +50,27 @@ for section in sections:
         if prefix == 'n':
             alert_name = alert_name.replace('Host', 'Node')
 
+        # Disable rules with 'predict_linear' in the expression
         enabled = True
         if 'predict_linear' in rule['expr']:
             enabled = False
 
+        description = rule['annotations']['description']
+        description = description.replace('\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}', '')
+        description += ' ({{ $value }})'
+        
+        info = rule['annotations']['summary'] 
+        info = info.split('(')[-1].split(')')[0]
+        
+        summary = f'({info}) {description}'
+        summary = summary.replace('"', '')
+        summary = summary.replace(':', '')
+                
         transformed_data = {
-            'alert': f"{key}-{alert_name}",
+            'alert': f'{key}-{alert_name}',
             'expr': rule['expr'],
             'severity': rule['labels']['severity'],
-            'summary': rule['annotations']['summary'] + '. ' + rule['annotations']['description'],
+            'summary': summary,
             'enabled': enabled,
         }
         
