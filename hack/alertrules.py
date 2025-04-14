@@ -67,10 +67,10 @@ for section in sections:
                 
         transformed_data = {
             'alert': f'{key}-{alert_name}',
+            'enabled': enabled,
             'expr': rule['expr'],
             'severity': rule['labels']['severity'],
             'summary': summary,
-            'enabled': enabled,
         }
         
         # Add 'for' if it exists in the rule
