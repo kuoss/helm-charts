@@ -49,12 +49,12 @@ for section in sections:
         alert_name = rule['alert']
         if prefix == 'n':
             alert_name = alert_name.replace('Host', 'Node')
-        
+
         transformed_data = {
             'alert': f"{key}-{alert_name}",
             'expr': rule['expr'],
             'severity': rule['labels']['severity'],
-            'enabled': True  # Add enabled field
+            'enabled': True
         }
         
         # Adjust summary based on prefix
@@ -68,6 +68,10 @@ for section in sections:
         # Add 'for' if it exists in the rule
         if 'for' in rule:
             transformed_data['for'] = rule['for']
+
+        # Disable rules with 'predict_linear' in the expression
+        if 'predict_linear' in rule['expr']:
+            transformed_data['enabled'] = False
 
         # Store the transformed rule in the appropriate section
         awesome_rules[section['name']]['rules'][key] = transformed_data
@@ -98,3 +102,4 @@ with open(output_filename, 'w') as outfile:
     yaml.dump(output_data, outfile, width=float("inf"), default_flow_style=False)
 
 print(f"Transformation and saving completed successfully. Output saved to {output_filename}.")
+

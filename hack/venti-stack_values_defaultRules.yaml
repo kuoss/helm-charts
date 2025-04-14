@@ -86,7 +86,7 @@ venti:
               summary: Kubernetes Volume out of disk space (instance {{ $labels.instance }})
             k12:
               alert: k12-KubernetesVolumeFullInFourDays
-              enabled: true
+              enabled: false
               expr: predict_linear(kubelet_volume_stats_available_bytes[6h:5m], 4 * 24 * 3600) < 0
               for: 0m
               severity: critical
@@ -306,7 +306,7 @@ venti:
               summary: node={{ $labels.node }} value={{ $value }}
             n08:
               alert: n08-NodeDiskMayFillIn24Hours
-              enabled: true
+              enabled: false
               expr: predict_linear(node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"}[1h], 86400) <= 0 and node_filesystem_avail_bytes > 0
               for: 2m
               severity: warning
@@ -327,11 +327,11 @@ venti:
               summary: node={{ $labels.node }} value={{ $value }}
             n11:
               alert: n11-NodeInodesMayFillIn24Hours
-              enabled: true
+              enabled: false
               expr: predict_linear(node_filesystem_files_free{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"}[1h], 86400) <= 0 and node_filesystem_files_free > 0
               for: 2m
               severity: warning
-              summary: node={{ $labels.node }} value={{ $value }}
+              summary: node={{ $labels.nod e }} value={{ $value }}
             n12:
               alert: n12-NodeUnusualDiskReadLatency
               enabled: true
