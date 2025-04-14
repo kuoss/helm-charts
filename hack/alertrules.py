@@ -50,28 +50,23 @@ for section in sections:
         if prefix == 'n':
             alert_name = alert_name.replace('Host', 'Node')
 
+        enabled = True
+        if 'predict_linear' in rule['expr']:
+            enabled = False
+
         transformed_data = {
             'alert': f"{key}-{alert_name}",
             'expr': rule['expr'],
             'severity': rule['labels']['severity'],
-            'enabled': True
+            'summary': rule['annotations']['summary'] + '. ' + rule['annotations']['description'],
+            'enabled': enabled,
         }
-        
-        # Adjust summary based on prefix
-        if prefix == 'n':
-            transformed_data['summary'] = 'node={{ $labels.node }} value={{ $value }}'
-        elif prefix == 'p':
-            transformed_data['summary'] = 'instance={{ $labels.instance }} value={{ $value }}'
-        else:
-            transformed_data['summary'] = rule['annotations']['summary']
         
         # Add 'for' if it exists in the rule
         if 'for' in rule:
             transformed_data['for'] = rule['for']
 
         # Disable rules with 'predict_linear' in the expression
-        if 'predict_linear' in rule['expr']:
-            transformed_data['enabled'] = False
 
         # Store the transformed rule in the appropriate section
         awesome_rules[section['name']]['rules'][key] = transformed_data
