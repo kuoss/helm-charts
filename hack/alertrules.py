@@ -49,21 +49,29 @@ for section in sections:
         alert_name = rule['alert']
         if prefix == 'n':
             alert_name = alert_name.replace('Host', 'Node')
+
+        # Disable rules with 'predict_linear' in the expression
+        enabled = True
+        if 'predict_linear' in rule['expr']:
+            enabled = False
+
+        description = rule['annotations']['description']
+        description = description.replace('\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}', '') + ' ({{ $value }})'
         
+        summary_info = rule['annotations']['summary'] 
+        summary_info = summary_info.split('(')[-1].split(')')[0]
+        
+        summary = f'({summary_info}) {description}'
+        summary = summary.replace('"', '')
+        summary = summary.replace(':', '')
+                
         transformed_data = {
-            'alert': f"{key}-{alert_name}",
+            'alert': f'{key}-{alert_name}',
+            'enabled': enabled,
             'expr': rule['expr'],
             'severity': rule['labels']['severity'],
-            'enabled': True  # Add enabled field
+            'summary': summary,
         }
-        
-        # Adjust summary based on prefix
-        if prefix == 'n':
-            transformed_data['summary'] = 'node={{ $labels.node }} value={{ $value }}'
-        elif prefix == 'p':
-            transformed_data['summary'] = 'instance={{ $labels.instance }} value={{ $value }}'
-        else:
-            transformed_data['summary'] = rule['annotations']['summary']
         
         # Add 'for' if it exists in the rule
         if 'for' in rule:
@@ -98,3 +106,4 @@ with open(output_filename, 'w') as outfile:
     yaml.dump(output_data, outfile, width=float("inf"), default_flow_style=False)
 
 print(f"Transformation and saving completed successfully. Output saved to {output_filename}.")
+
