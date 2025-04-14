@@ -78,8 +78,6 @@ for section in sections:
         if 'for' in rule:
             transformed_data['for'] = rule['for']
 
-        # Disable rules with 'predict_linear' in the expression
-
         # Store the transformed rule in the appropriate section
         awesome_rules[section['name']]['rules'][key] = transformed_data
 
