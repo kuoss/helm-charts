@@ -519,7 +519,7 @@ venti:
               expr: predict_linear(node_filesystem_files_free{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"}[1h], 86400) <= 0 and node_filesystem_files_free > 0
               for: 2m
               severity: warning
-              summary: node={{ $labels.nod e }} value={{ $value }}
+              summary: node={{ $labels.node }} value={{ $value }}
             n12:
               alert: n12-NodeUnusualDiskReadLatency
               enabled: true
