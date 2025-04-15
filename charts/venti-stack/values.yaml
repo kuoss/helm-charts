@@ -903,42 +903,42 @@ venti:
               expr: time() - (kube_pod_created{namespace="kube-system",pod=~".*-venti-.*"}) < 320
               for: 0m
               severity: info
-              summary: pod={{ $labels.namespace }}/{{ $labels.pod }}
+              summary: Venti pod {{ $labels.namespace }}/{{ $labels.pod }} created within the last 5 minutes ({{ $value }})
             v02:
               alert: v02-Monday0000UTC
               enabled: true
               expr: day_of_week()==1 and vector(1)*time()%86400 < 140
               for: 0m
               severity: info
-              summary: Monday 00:00 UTC
+              summary: Alert triggered for Monday at 00:00 UTC ({{ $value }})
             v03:
               alert: v03-ReleasedPv
               enabled: true
               expr: kube_persistentvolume_status_phase{phase="Released"} == 1
               for: 1h
               severity: info
-              summary: pv={{ $labels.persistentvolume }}
+              summary: PersistentVolume {{ $labels.persistentvolume }} is in the Released state ({{ $value }})
             v04:
               alert: v04-TerminatingPod
               enabled: true
               expr: kube_pod_deletion_timestamp
               for: 1h
               severity: info
-              summary: pod={{ $labels.namespace }}/{{ $labels.pod }}
+              summary: Pod {{ $labels.namespace }}/{{ $labels.pod }} is terminating ({{ $value }})
             v05:
               alert: v05-NodeDiskCount
               enabled: true
               expr: sum(node_disk_info{device=~"sd.|vd."}) by (node) > 23
               for: 5m
               severity: warning
-              summary: node={{ $labels.node }} value={{ $value }}
+              summary: Node {{ $labels.node }} has many disks ({{ $value }})
             v06:
               alert: v06-NodePodPressure
               enabled: true
               expr: kubelet_running_pods > 99
               for: 0m
               severity: warning
-              summary: node={{ $labels.instance }} value={{ $value }}
+              summary: Node {{ $labels.instance }} is under pod pressure ({{ $value }})
 
       extraGroups: []
       # - name: example
