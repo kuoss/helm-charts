@@ -21,22 +21,26 @@ spec:
     - -c
     - |
       SECONDS=0
+      LETHE_NAME={{ template "lethe.fullname" . }}
+      LETHE_PORT={{ .Values.lethe.service.servicePort }}
+      LETHE_NAMESPACE={{ .Release.Namespace }}
+      TEST_TIMEOUT={{ .Values.testFramework.timeout }}
+
       LETHE_URI="http://${LETHE_NAME}:${LETHE_PORT}"
       QUERY="pod{namespace=\"${LETHE_NAMESPACE}\",pod=~\"${LETHE_NAME}\"}"
       END=$(date +%s)
       START=$((END - 300))
 
       echo "=== Test Variables ==="
-      echo "LETHE_URI:        ${LETHE_URI}"
-      echo "QUERY:            ${QUERY}"
-      echo "START:            ${START}"
-      echo "END:              ${END}"
-      echo "RETRY_COUNT:      ${RETRY_COUNT}"
-      echo "RETRY_INTERVAL:   ${RETRY_INTERVAL}"
+      echo "LETHE_URI:      ${LETHE_URI}"
+      echo "QUERY:          ${QUERY}"
+      echo "START:          ${START}"
+      echo "END:            ${END}"
+      echo "TEST_TIMEOUT:   ${TEST_TIMEOUT}"
       echo "========================"
 
-      for i in $(seq 1 "$RETRY_COUNT"); do
-        echo "Attempt $i..."
+      while [ "$SECONDS" -lt "$TEST_TIMEOUT" ]; do
+        echo "Attempt (elapsed ${SECONDS}s)..."
         RESPONSE=$(curl -sG --fail "${LETHE_URI}/api/v1/query_range" \
           --data-urlencode "start=${START}" \
           --data-urlencode "end=${END}" \
@@ -48,27 +52,14 @@ spec:
 
         if [ -n "$RESPONSE" ] && echo "$RESPONSE" | grep -qF '"result":' && ! echo "$RESPONSE" | grep -qF '"result":[]'; then
           echo "✅ Log line found"
-          echo "⏱️  Elapsed time: ${SECONDS}s"
           exit 0
         fi
 
-        echo "Log line not found. Sleeping ${RETRY_INTERVAL}s..."
-        sleep "$RETRY_INTERVAL"
+        echo "Log line not found. Sleeping 3s..."
+        sleep 3
       done
 
-      echo "❌ Expected log line not found after $RETRY_COUNT attempts"
-      echo "⏱️  Elapsed time: ${SECONDS}s"
+      echo "❌ Expected log line not found within ${TEST_TIMEOUT}s"
       exit 1
-    env:
-    - name: LETHE_NAME
-      value: {{ template "lethe.fullname" . }}
-    - name: LETHE_PORT
-      value: "{{ .Values.lethe.service.servicePort }}"
-    - name: LETHE_NAMESPACE
-      value: {{ .Release.Namespace }}
-    - name: RETRY_COUNT
-      value: {{ .Values.testFramework.retryCount | quote }}
-    - name: RETRY_INTERVAL
-      value: {{ .Values.testFramework.retryIntervalSeconds | quote }}
   restartPolicy: Never
 {{- end }}
