@@ -1,6 +1,13 @@
 global:
   imageRepository: ghcr.io/kuoss
 
+testFramework:
+  enabled: true
+  image:
+    repository: alpine/curl
+    pullPolicy: Always
+    tag: latest
+
 eventrouter:
   enabled: true
   nodeSelector: {}
@@ -49,10 +56,10 @@ fluent-bit:
     inputs: |
       [INPUT]
           Name              tail
-          Path              /var/log/containers/*.log
-          Exclude_Path      /var/log/containers/*_fluent-bit-*.log
           Tag               kube_<namespace>_<pod>_<container>
           Tag_Regex         (?<pod>[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*)_(?<namespace>[^_]+)_(?<container>.+)-
+          Path              /var/log/containers/*.log
+          Exclude_Path      /var/log/containers/*_fluent-bit-*.log
           Parser            containerd
           Mem_Buf_Limit     5MB
           Skip_Long_Lines   On
@@ -148,10 +155,10 @@ lethe:
     size: 7g
     time: 15d
 
-  resources:
-    requests:
-      cpu: 100m
-      memory: 100Mi
-    limits:
-      cpu: 1000m
-      memory: 1000Mi
+  resources: {}
+    # limits:
+    #   cpu: 500m
+    #   memory: 512Mi
+    # requests:
+    #   cpu: 500m
+    #   memory: 512Mi

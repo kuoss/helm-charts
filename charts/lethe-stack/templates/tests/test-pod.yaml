@@ -1,0 +1,72 @@
+{{- if .Values.testFramework.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ template "lethe-stack.fullname" . }}-test
+  namespace: {{ .Release.Namespace }}
+  labels:
+    helm.sh/chart: {{ include "lethe-stack.chart" . }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  containers:
+  - name: test
+    image: {{ .Values.testFramework.image.repository }}:{{ .Values.testFramework.image.tag }}
+    imagePullPolicy: {{ .Values.testFramework.image.pullPolicy }}
+    command:
+    - sh
+    - -c
+    - |
+      LETHE_NAME={{ template "lethe.fullname" . }}
+      LETHE_PORT={{ .Values.lethe.service.servicePort }}
+      TEST_TIMEOUT=60
+
+      LETHE_URI="http://${LETHE_NAME}:${LETHE_PORT}"
+      QUERY="pod{namespace=\"kube-system\"}"
+      QUERY_END=$(date +%s)
+      QUERY_START=$((QUERY_END - 600))
+
+      echo "=== Test Variables ==="
+      echo "LETHE_URI:      ${LETHE_URI}"
+      echo "QUERY:          ${QUERY}"
+      echo "QUERY_START:    ${QUERY_START}"
+      echo "QUERY_END:      ${QUERY_END}"
+      echo "TEST_TIMEOUT:   ${TEST_TIMEOUT}"
+      echo "========================"
+
+      START_TIME=$(date +%s)
+      while true; do
+        NOW=$(date +%s)
+        ELAPSED=$((NOW - START_TIME))
+
+        if [ "$ELAPSED" -ge "$TEST_TIMEOUT" ]; then
+          echo "❌ Timeout (${TEST_TIMEOUT}s) reached without finding log"
+          exit 1
+        fi
+
+        echo "Attempt (elapsed ${ELAPSED}s)..."
+        RESPONSE=$(curl -sG --fail "${LETHE_URI}/api/v1/query_range" \
+          --data-urlencode "start=${QUERY_START}" \
+          --data-urlencode "end=${QUERY_END}" \
+          --data-urlencode "query=${QUERY}")
+
+        echo "--- curl response (truncated) ---"
+        echo "$RESPONSE" | head -c 1000; echo
+        echo "---------------------"
+
+        if [ -n "$RESPONSE" ] && echo "$RESPONSE" | grep -qF '"result":' && ! echo "$RESPONSE" | grep -qF '"result":[]'; then
+          echo "✅ Log line found"
+          exit 0
+        fi
+
+        echo "Log line not found. Sleeping 3s..."
+        sleep 3
+      done
+
+      echo "❌ Expected log line not found within ${TEST_TIMEOUT}s"
+      exit 1
+  restartPolicy: Never
+{{- end }}
