@@ -25,7 +25,7 @@ spec:
       START=$((END - 3600))
       echo "Querying Lethe from $START to $END"
 
-      for i in $(seq 1 10); do
+      for i in $(seq 1 12); do
         echo "Attempt $i..."
         RESPONSE=$(curl -sG "${LETHE_URI}/api/v1/query_range" \
           --data-urlencode "start=${START}" \
@@ -33,7 +33,7 @@ spec:
           --data-urlencode "query=pod{namespace=\"{{ .Release.Namespace }}\"}")
         echo "$RESPONSE" | grep 'Starting Lethe' && break
         echo "Log line not found yet. Retrying in 3s..."
-        sleep 3
+        sleep 10
       done
 
       echo "$RESPONSE" | grep 'Starting Lethe' > /dev/null
