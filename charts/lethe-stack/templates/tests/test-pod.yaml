@@ -20,6 +20,7 @@ spec:
     - sh
     - -c
     - |
+      SECONDS=0
       LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
       QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"}"
       END=$(date +%s)
@@ -51,10 +52,12 @@ spec:
       echo "$RESPONSE" | grep 'Starting Lethe' > /dev/null
       if [ $? -ne 0 ]; then
         echo "❌ Expected log line not found after $RETRY_COUNT attempts"
+        echo "⏱️  Elapsed time: ${SECONDS}s"
         exit 1
       fi
 
       echo "✅ Log line found"
+      echo "⏱️  Elapsed time: ${SECONDS}s"
     env:
     - name: LETHE_SERVICE
       value: {{ template "lethe.fullname" . }}
