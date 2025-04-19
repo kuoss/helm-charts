@@ -29,6 +29,6 @@ spec:
     - name: LETHE_SERVICE
       value: {{ template "lethe.fullname" . }}
     - name: LETHE_PORT
-      value: "{{ .Values.lethe.service.port }}"
+      value: "{{ .Values.lethe.service.servicePort }}"
   restartPolicy: Never
 {{- end }}
