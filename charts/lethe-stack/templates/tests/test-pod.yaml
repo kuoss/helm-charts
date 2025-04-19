@@ -22,9 +22,9 @@ spec:
     - |
       SECONDS=0
       LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
-      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"} |= \"Starting Lethe\""
+      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"} |= \"DeleteByAge\""
       END=$(date +%s)
-      START=$((END - 3600))
+      START=$((END - 300))
 
       echo "=== Test Variables ==="
       echo "LETHE_URI:        ${LETHE_URI}"
