@@ -22,7 +22,7 @@ spec:
     - |
       SECONDS=0
       LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
-      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"} |= \"DeleteByAge\""
+      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"}"
       END=$(date +%s)
       START=$((END - 300))
 
