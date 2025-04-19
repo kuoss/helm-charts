@@ -7,8 +7,8 @@ testFramework:
     repository: alpine/curl
     pullPolicy: Always
     tag: latest
-  retryCount: 10
-  retryIntervalSeconds: 3
+  retryCount: 30
+  retryIntervalSeconds: 10
 
 eventrouter:
   enabled: true

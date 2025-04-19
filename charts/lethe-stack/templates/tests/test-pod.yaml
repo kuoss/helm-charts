@@ -21,7 +21,7 @@ spec:
     - -c
     - |
       set -euo pipefail
-      
+
       LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
       QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"}"
       END=$(date +%s)
@@ -44,6 +44,9 @@ spec:
           --data-urlencode "start=${START}" \
           --data-urlencode "end=${END}" \
           --data-urlencode "query=${QUERY}")
+        echo "--- curl response ---"
+        echo "$RESPONSE"
+        echo "---------------------"
         echo "$RESPONSE" | grep 'Starting Lethe' && break
         echo "Log line not found. Sleeping ${RETRY_INTERVAL}s..."
         sleep "$RETRY_INTERVAL"
