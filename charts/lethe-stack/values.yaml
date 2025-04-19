@@ -60,6 +60,7 @@ fluent-bit:
           Tag_Regex         (?<pod>[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*)_(?<namespace>[^_]+)_(?<container>.+)-
           Path              /var/log/containers/*.log
           Exclude_Path      /var/log/containers/*_fluent-bit-*.log
+          DB                /var/log/flb_kube.db
           Parser            containerd
           Buffer_Max_Size   1MB
           Mem_Buf_Limit     5MB
