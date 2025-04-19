@@ -20,14 +20,11 @@ spec:
     - sh
     - -c
     - |
-      set -euo pipefail
-
       LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
       QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"}"
       END=$(date +%s)
       START=$((END - 3600))
 
-      # 변수 출력
       echo "=== Test Variables ==="
       echo "LETHE_URI:        ${LETHE_URI}"
       echo "QUERY:            ${QUERY}"
@@ -37,7 +34,6 @@ spec:
       echo "RETRY_INTERVAL:   ${RETRY_INTERVAL}"
       echo "========================"
 
-      # 쿼리 재시도
       for i in $(seq 1 "$RETRY_COUNT"); do
         echo "Attempt $i..."
         RESPONSE=$(curl -sG "${LETHE_URI}/api/v1/query_range" \
