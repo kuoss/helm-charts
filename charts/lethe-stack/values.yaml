@@ -1,6 +1,13 @@
 global:
   imageRepository: ghcr.io/kuoss
 
+testFramework:
+  enabled: true
+  image:
+    repository: busybox
+    pullPolicy: Always
+    tag: latest
+
 eventrouter:
   enabled: true
   nodeSelector: {}

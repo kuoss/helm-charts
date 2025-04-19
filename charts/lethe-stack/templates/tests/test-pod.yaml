@@ -1,0 +1,34 @@
+{{- if .Values.testFramework.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ template "lethe-stack.fullname" . }}-test
+  namespace: {{ default .Release.Namespace .Values.testFramework.namespace }}
+  labels:
+    helm.sh/chart: {{ include "lethe-stack.chart" . }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: hook-succeeded
+spec:
+  containers:
+  - name: test
+    image: {{ .Values.testFramework.image.repository }}
+    imagePullPolicy: {{ .Values.testFramework.image.pullPolicy }}
+    command: ["sh"]
+    args:
+    - -c
+    - |
+      LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
+      END=$(date +%s)
+      START=$((END - 3600))
+      QUERY='pod%7Bnamespace%3D%22lethe-stack%22%7D'
+      sleep 5s && wget -O- "${LETHE_URI}/api/v1/query_range?start=${START}&end=${END}&query=${QUERY}" | grep 'Starting Lethe'
+    env:
+    - name: LETHE_SERVICE
+      value: {{ template "lethe.fullname" . }}
+    - name: LETHE_PORT
+      value: "{{ .Values.lethe.service.port }}"
+  restartPolicy: Never
+{{- end }}
