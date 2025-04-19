@@ -43,7 +43,7 @@ spec:
           --data-urlencode "query=${QUERY}")
 
         echo "--- curl response ---"
-        echo "$RESPONSE"
+        echo "$RESPONSE" | head -c 1000
         echo "---------------------"
 
         if [ -n "$RESPONSE" ] && echo "$RESPONSE" | grep -qF '"result":' && ! echo "$RESPONSE" | grep -qF '"result":[]'; then
