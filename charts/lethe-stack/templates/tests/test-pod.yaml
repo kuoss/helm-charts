@@ -42,7 +42,7 @@ spec:
           --data-urlencode "end=${END}" \
           --data-urlencode "query=${QUERY}")
 
-        echo "--- curl response ---"
+        echo "--- curl response (truncated) ---"
         echo "$RESPONSE" | head -c 1000; echo
         echo "---------------------"
 
