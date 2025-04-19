@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
     helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation
 spec:
   containers:
   - name: test
