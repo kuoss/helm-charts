@@ -20,7 +20,7 @@ spec:
     - sh
     - -c
     - |
-      SECONDS=0
+
       LETHE_NAME={{ template "lethe.fullname" . }}
       LETHE_PORT={{ .Values.lethe.service.servicePort }}
       LETHE_NAMESPACE={{ .Release.Namespace }}
@@ -28,22 +28,31 @@ spec:
 
       LETHE_URI="http://${LETHE_NAME}:${LETHE_PORT}"
       QUERY="pod{namespace=\"${LETHE_NAMESPACE}\",pod=~\"${LETHE_NAME}-.*\"}"
-      END=$(date +%s)
-      START=$((END - 300))
+      QUERY_END=$(date +%s)
+      QUERY_START=$((QUERY_END - 300))
+      START_TIME=$(date +%s)
 
       echo "=== Test Variables ==="
       echo "LETHE_URI:      ${LETHE_URI}"
       echo "QUERY:          ${QUERY}"
-      echo "START:          ${START}"
-      echo "END:            ${END}"
+      echo "QUERY_START:    ${QUERY_START}"
+      echo "QUERY_END:      ${QUERY_END}"
       echo "TEST_TIMEOUT:   ${TEST_TIMEOUT}"
       echo "========================"
 
-      while [ "$SECONDS" -lt "$TEST_TIMEOUT" ]; do
-        echo "Attempt (elapsed ${SECONDS}s)..."
+      while true; do
+        NOW=$(date +%s)
+        ELAPSED=$((NOW - START_TIME))
+
+        if [ "$ELAPSED" -ge "$TEST_TIMEOUT" ]; then
+          echo "❌ Timeout (${TEST_TIMEOUT}s) reached without finding log"
+          exit 1
+        fi
+
+        echo "Attempt (elapsed ${ELAPSED}s)..."
         RESPONSE=$(curl -sG --fail "${LETHE_URI}/api/v1/query_range" \
-          --data-urlencode "start=${START}" \
-          --data-urlencode "end=${END}" \
+          --data-urlencode "start=${QUERY_START}" \
+          --data-urlencode "end=${QUERY_END}" \
           --data-urlencode "query=${QUERY}")
 
         echo "--- curl response (truncated) ---"
