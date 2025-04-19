@@ -46,7 +46,7 @@ spec:
         echo "$RESPONSE"
         echo "---------------------"
 
-        if echo "$RESPONSE" | grep -q '"result":' && ! echo "$RESPONSE" | grep -q '"result":[]'; then
+        if echo "$RESPONSE" | grep -qF '"result":' && ! echo "$RESPONSE" | grep -qF '"result":[]'; then
           echo "✅ Log line found"
           echo "⏱️  Elapsed time: ${SECONDS}s"
           exit 0
