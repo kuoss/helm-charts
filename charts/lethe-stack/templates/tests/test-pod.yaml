@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: {{ template "lethe-stack.fullname" . }}-test
-  namespace: {{ default .Release.Namespace .Values.testFramework.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     helm.sh/chart: {{ include "lethe-stack.chart" . }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -23,8 +23,12 @@ spec:
       LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
       END=$(date +%s)
       START=$((END - 3600))
-      QUERY='pod%7Bnamespace%3D%22lethe-stack%22%7D'
-      sleep 5s && wget -O- "${LETHE_URI}/api/v1/query_range?start=${START}&end=${END}&query=${QUERY}" | grep 'Starting Lethe'
+      echo "Querying Lethe from $START to $END"
+      curl -sG "${LETHE_URI}/api/v1/query_range" \
+        --data-urlencode "start=${START}" \
+        --data-urlencode "end=${END}" \
+        --data-urlencode "query=pod{namespace=\"{{ .Release.Namespace }}\"}" \
+        | grep 'Starting Lethe' || { echo "Expected log line not found"; exit 1; }
     env:
     - name: LETHE_SERVICE
       value: {{ template "lethe.fullname" . }}

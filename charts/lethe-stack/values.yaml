@@ -4,7 +4,7 @@ global:
 testFramework:
   enabled: true
   image:
-    repository: busybox
+    repository: alpine/curl
     pullPolicy: Always
     tag: latest
 
@@ -155,10 +155,10 @@ lethe:
     size: 7g
     time: 15d
 
-  resources:
-    requests:
-      cpu: 100m
-      memory: 100Mi
-    limits:
-      cpu: 1000m
-      memory: 1000Mi
+  resources: {}
+    # limits:
+    #   cpu: 500m
+    #   memory: 512Mi
+    # requests:
+    #   cpu: 500m
+    #   memory: 512Mi
