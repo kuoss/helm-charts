@@ -27,7 +27,7 @@ spec:
       TEST_TIMEOUT={{ .Values.testFramework.timeout }}
 
       LETHE_URI="http://${LETHE_NAME}:${LETHE_PORT}"
-      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\",pod!~\".*-eventrouter-.*\"}"
+      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"}"
       QUERY_END=$(date +%s)
       QUERY_START=$((QUERY_END - 3600))
 
