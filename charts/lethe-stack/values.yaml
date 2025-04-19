@@ -56,13 +56,17 @@ fluent-bit:
     inputs: |
       [INPUT]
           Name              tail
-          Path              /var/log/containers/*.log
-          Exclude_Path      /var/log/containers/*_fluent-bit-*.log
           Tag               kube_<namespace>_<pod>_<container>
           Tag_Regex         (?<pod>[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*)_(?<namespace>[^_]+)_(?<container>.+)-
+          Path              /var/log/containers/*.log
+          Exclude_Path      /var/log/containers/*_fluent-bit-*.log
+          DB                /var/log/flb_kube.db
           Parser            containerd
+          Buffer_Max_Size   1MB
           Mem_Buf_Limit     5MB
           Skip_Long_Lines   On
+          Refresh_Interval  5
+          Read_from_Head    True
 
       [INPUT]
           Name              systemd
