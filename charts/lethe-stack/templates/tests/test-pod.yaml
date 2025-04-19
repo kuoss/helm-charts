@@ -21,8 +21,8 @@ spec:
     - -c
     - |
       SECONDS=0
-      LETHE_URI="http://${LETHE_SERVICE}:${LETHE_PORT}"
-      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\"}"
+      LETHE_URI="http://${LETHE_NAME}:${LETHE_PORT}"
+      QUERY="pod{namespace=\"${LETHE_NAMESPACE}\",pod=~\"${LETHE_NAME}\"}"
       END=$(date +%s)
       START=$((END - 300))
 
@@ -60,7 +60,7 @@ spec:
       echo "⏱️  Elapsed time: ${SECONDS}s"
       exit 1
     env:
-    - name: LETHE_SERVICE
+    - name: LETHE_NAME
       value: {{ template "lethe.fullname" . }}
     - name: LETHE_PORT
       value: "{{ .Values.lethe.service.servicePort }}"
