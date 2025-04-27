@@ -27,6 +27,6 @@ spec:
     - name: http
       port: {{ .Values.service.servicePort }}
       protocol: TCP
-      targetPort: 80
+      targetPort: 8080
   selector:
     {{- include "myip.selectorLabels" . | nindent 4 }}

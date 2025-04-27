@@ -7,7 +7,7 @@ deployment:
 
 env: []
   # - name: APP_ADDR
-  #   value: :80
+  #   value: :8080
   # - name: APP_PROXIES
   #   value: 10.0.0.0/8
 
@@ -15,7 +15,7 @@ service:
   annotations: {}
   labels: {}
   type: ClusterIP
-  servicePort: 80
+  servicePort: 8080
   loadBalancerIP: ""  # Assign ext IP when Service type is LoadBalancer
   loadBalancerSourceRanges: []  # Only allow access to loadBalancerIP from these IPs
 
