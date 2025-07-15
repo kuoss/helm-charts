@@ -1,7 +1,7 @@
 apiVersion: v2
 name: venti-stack
-appVersion: v0.2.24
-version: 0.3.13
+appVersion: v0.3.1
+version: 0.4.0
 kubeVersion: ">=1.16.0-0"
 description: Venti stack is a logging and monitoring system.
 home: https://kuoss.github.io/helm-charts
@@ -40,4 +40,4 @@ annotations:
       url: https://github.com/kuoss/helm-charts
   eventrouterVersion: v0.4.11
   fluentBitVersion: 3.2.7
-  letheVersion: v0.2.11
+  letheVersion: v0.3.0
