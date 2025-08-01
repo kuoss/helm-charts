@@ -27,5 +27,5 @@ annotations:
   "artifacthub.io/links": |
     - name: Chart Source
       url: https://github.com/kuoss/helm-charts
-  eventrouterVersion: v0.4.11
+  eventrouterVersion: v0.4.12
   fluentBitVersion: 3.2.7
