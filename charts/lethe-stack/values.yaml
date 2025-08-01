@@ -104,6 +104,12 @@ fluent-bit:
           Port              24224
 
 lethe:
+  automountServiceAccountToken: false
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+
   nodeSelector: {}
   hostAliases: []
   dnsConfig: {}

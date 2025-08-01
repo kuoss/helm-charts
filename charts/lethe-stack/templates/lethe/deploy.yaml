@@ -17,6 +17,8 @@ spec:
       labels:
         {{- include "lethe.labels" . | nindent 8 }}
     spec:
+      automountServiceAccountToken: {{ .Values.lethe.automountServiceAccountToken }}
+      serviceAccountName: {{ include "lethe.serviceAccountName" . }}
       {{- with .Values.lethe.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
