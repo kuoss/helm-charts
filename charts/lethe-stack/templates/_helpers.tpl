@@ -71,6 +71,17 @@ app.kubernetes.io/component: lethe
 {{- end -}}
 
 {{/*
+Create the name of the service account to use
+*/}}
+{{- define "lethe.serviceAccountName" -}}
+{{- if .Values.lethe.serviceAccount.create }}
+{{- default (include "lethe.fullname" .) .Values.lethe.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.lethe.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{/*
 Allow the release namespace to be overridden for multi-namespace deployments in combined charts
 */}}
 {{- define "lethe-stack.namespace" -}}

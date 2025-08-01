@@ -318,6 +318,35 @@
       "lethe": {
         "type": "object",
         "properties": {
+          "automountServiceAccountToken": {
+            "description": "Specifies whether to automatically mount the ServiceAccount token into the Pod's filesystem.",
+            "type": "boolean",
+            "default": false
+          },
+          "serviceAccount": {
+            "description": "Contains properties related to the service account configuration.",
+            "type": "object",
+            "required": [
+              "create"
+            ],
+            "properties": {
+              "create": {
+                "description": "Specifies whether a service account should be created.",
+                "type": "boolean",
+                "default": true
+              },
+              "annotations": {
+                "description": "Annotations to add to the service account.",
+                "type": "object",
+                "default": {}
+              },
+              "name": {
+                "description": "The name of the service account to use. If not set and create is true, a name is generated using the fullname template.",
+                "type": "string",
+                "default": ""
+              }
+            }
+          },
           "nodeSelector": {
             "type": "object",
             "default": {}
