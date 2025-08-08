@@ -1,7 +1,7 @@
 apiVersion: v2
 name: lethe-stack
 appVersion: v0.3.0
-version: 0.2.0
+version: 0.2.1
 kubeVersion: ">=1.16.0-0"
 description: Lethe stack is a logging system.
 home: https://kuoss.github.io/helm-charts
@@ -16,7 +16,7 @@ maintainers:
 type: application
 dependencies:
   - name: fluent-bit
-    version: 0.48.8
+    version: 0.51.0
     repository: https://fluent.github.io/helm-charts
     condition: fluent-bit.enabled
 keywords:
@@ -28,4 +28,4 @@ annotations:
     - name: Chart Source
       url: https://github.com/kuoss/helm-charts
   eventrouterVersion: v0.4.12
-  fluentBitVersion: 3.2.7
+  fluentBitVersion: 4.0.7
