@@ -731,6 +731,41 @@ entries:
         - name: Chart Source
           url: https://github.com/kuoss/helm-charts
       eventrouterVersion: v0.4.12
+      fluentBitVersion: 4.0.7
+    apiVersion: v2
+    appVersion: v0.3.0
+    created: "2025-08-08T06:24:52.642381729Z"
+    dependencies:
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.51.0
+    description: Lethe stack is a logging system.
+    digest: b8a01ff89459602ac78c9b8800dc3ff132956ed0b793e3efd3b0834ae4f96bf0
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - lethe
+    - logging
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: lethe-stack
+    sources:
+    - https://github.com/fluent/fluent-bit
+    - https://github.com/kuoss/eventrouter
+    - https://github.com/kuoss/lethe
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/lethe-stack-0.2.1/lethe-stack-0.2.1.tgz
+    version: 0.2.1
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+      eventrouterVersion: v0.4.12
       fluentBitVersion: 3.2.7
     apiVersion: v2
     appVersion: v0.3.0
@@ -4314,4 +4349,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-08T06:17:01.654638271Z"
+generated: "2025-08-08T06:24:52.642655335Z"
