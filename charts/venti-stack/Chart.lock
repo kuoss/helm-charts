@@ -1,9 +1,9 @@
 dependencies:
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 27.5.1
+  version: 27.29.1
 - name: fluent-bit
   repository: https://fluent.github.io/helm-charts
-  version: 0.48.8
-digest: sha256:c396a81fc232dc8faf5643aa90394284880caebf519ccb5d516a3d5add8bf4c4
-generated: "2025-03-04T10:36:23.869230779+09:00"
+  version: 0.51.0
+digest: sha256:e9696459013cdd85875cc256aa0723bc30e25c4c90e93469dab081c0305af430
+generated: "2025-08-08T06:13:27.601384723Z"
