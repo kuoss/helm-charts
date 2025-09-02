@@ -1,7 +1,7 @@
 apiVersion: v2
 name: ingress-annotator
-appVersion: v0.2.2
-version: 0.2.0
+appVersion: v0.3.0
+version: 0.3.0
 kubeVersion: ">=1.19.0-0"
 description: Dynamically manages Kubernetes Ingress annotations based on ConfigMap rules, ensuring consistency and automation.
 home: https://github.com/kuoss/ingress-annotator
@@ -16,7 +16,7 @@ dependencies: []
 keywords:
   - ingress
   - annotations
-  - kubernetes
+  - annotator
   - configmap
 annotations:
   "artifacthub.io/license": Apache-2.0
