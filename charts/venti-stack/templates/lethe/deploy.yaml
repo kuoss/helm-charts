@@ -19,6 +19,11 @@ spec:
     spec:
       automountServiceAccountToken: {{ .Values.lethe.automountServiceAccountToken }}
       serviceAccountName: {{ include "lethe.serviceAccountName" . }}
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
       {{- with .Values.lethe.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
