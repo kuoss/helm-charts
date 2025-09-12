@@ -1,6 +1,17 @@
 global:
   imageRepository: ghcr.io/kuoss
 
+# Extra manifests to deploy as an array
+extraManifests: []
+  # - |
+  #   apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #   labels:
+  #     name: extra
+  #   data:
+  #     extra-data: "value"
+
 fluent-bit:
   # https://github.com/fluent/helm-charts/blob/main/charts/fluent-bit/values.yaml
   testFramework:

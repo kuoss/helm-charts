@@ -11,6 +11,9 @@
         }
       }
     },
+    "extraManifests": {
+      "type": "array"
+    },
     "prometheus": {
       "enabled": {
         "type": "boolean"
