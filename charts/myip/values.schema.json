@@ -52,6 +52,40 @@
             },
             "type": "object"
         },
+        "resources": {
+            "description": "Resource limits and requests for the Container.",
+            "type": "object",
+            "properties": {
+                "limits": {
+                    "description": "Resource limits for the Container.",
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "description": "CPU request for the Container.",
+                            "type": "string"
+                        },
+                        "memory": {
+                            "description": "Memory request for the Container.",
+                            "type": "string"
+                        }
+                    }
+                },
+                "requests": {
+                    "description": "Resource requests for the Container.",
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "description": "CPU request for the Container.",
+                            "type": "string"
+                        },
+                        "memory": {
+                            "description": "Memory request for the Container.",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "service": {
             "properties": {
                 "annotations": {
