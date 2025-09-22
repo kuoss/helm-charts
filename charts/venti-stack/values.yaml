@@ -945,6 +945,13 @@ venti:
               for: 0m
               severity: warning
               summary: Node {{ $labels.instance }} is under pod pressure ({{ $value }})
+            v07:
+              alert: v07-LoadBalancerExternalIPPending
+              enabled: true
+              expr: kube_service_spec_type{type="LoadBalancer"} unless on(namespace,service) kube_service_status_load_balancer_ingress
+              for: 10m
+              severity: warning
+              summary: Service {{ $labels.namespace }}/{{ $labels.service }} of type LoadBalancer is pending external IP ({{ $value }})
 
       extraGroups: []
       # - name: example
