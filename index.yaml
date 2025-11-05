@@ -1305,6 +1305,53 @@ entries:
       letheVersion: v0.3.1
     apiVersion: v2
     appVersion: v0.3.2
+    created: "2025-11-05T05:58:58.55823715Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 27.29.1
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.51.0
+    description: Venti stack is a logging and monitoring system.
+    digest: ed93698a4172c5ec3886595775d4af3eba157cd95270ec45a5ffa94e2653f1d9
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.4.7/venti-stack-0.4.7.tgz
+    version: 0.4.7
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+      eventrouterVersion: v0.4.13
+      fluentBitVersion: 4.0.7
+      letheVersion: v0.3.1
+    apiVersion: v2
+    appVersion: v0.3.2
     created: "2025-09-22T04:25:14.812767654Z"
     dependencies:
     - condition: prometheus.enabled
@@ -4618,4 +4665,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-22T04:25:14.813115687Z"
+generated: "2025-11-05T05:58:58.558522905Z"
