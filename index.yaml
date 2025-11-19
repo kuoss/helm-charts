@@ -1300,6 +1300,53 @@ entries:
       artifacthub.io/links: |
         - name: Chart Source
           url: https://github.com/kuoss/helm-charts
+      eventrouterVersion: v0.4.15
+      fluentBitVersion: 4.1.0
+      letheVersion: v0.3.3
+    apiVersion: v2
+    appVersion: v0.3.3
+    created: "2025-11-19T08:21:18.904657873Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 27.45.0
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.54.0
+    description: Venti stack is a logging and monitoring system.
+    digest: 1af7c8917108efe1f0fcd8ef724af686ee71cb54cc904530865d96c0adfa4ac9
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.4.10/venti-stack-0.4.10.tgz
+    version: 0.4.10
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
       eventrouterVersion: v0.4.14
       fluentBitVersion: 4.1.0
       letheVersion: v0.3.3
@@ -4712,4 +4759,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-11T05:43:35.574032588Z"
+generated: "2025-11-19T08:21:18.905011946Z"
