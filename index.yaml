@@ -1301,6 +1301,53 @@ entries:
         - name: Chart Source
           url: https://github.com/kuoss/helm-charts
       eventrouterVersion: v0.4.15
+      fluentBitVersion: 5.1.1
+      letheVersion: v0.3.3
+    apiVersion: v2
+    appVersion: v0.3.3
+    created: "2026-08-18T02:42:58.597372178Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 29.25.0
+    - condition: fluent-bit.enabled
+      name: fluent-bit
+      repository: https://fluent.github.io/helm-charts
+      version: 0.58.1
+    description: Venti stack is a logging and monitoring system.
+    digest: 8e560dee17ce54c8891615c133d8781d0a8566d054cb2387107c3f4e3f622943
+    home: https://kuoss.github.io/helm-charts
+    icon: https://avatars.githubusercontent.com/u/110170011?s=400.png
+    keywords:
+    - monitoring
+    - prometheus
+    - lethe
+    - logging
+    - venti
+    - visualizer
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: opcore@gmail.com
+      name: jmnote
+    name: venti-stack
+    sources:
+    - https://github.com/kubernetes/kube-state-metrics
+    - https://github.com/kuoss/lethe
+    - https://github.com/kuoss/venti
+    - https://github.com/prometheus/alertmanager
+    - https://github.com/prometheus/node_exporter
+    - https://github.com/prometheus/prometheus
+    type: application
+    urls:
+    - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.5.0/venti-stack-0.5.0.tgz
+    version: 0.5.0
+  - annotations:
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/kuoss/helm-charts
+      eventrouterVersion: v0.4.15
       fluentBitVersion: 4.1.0
       letheVersion: v0.3.3
     apiVersion: v2
@@ -4759,4 +4806,4 @@ entries:
     urls:
     - https://github.com/kuoss/helm-charts/releases/download/venti-stack-0.1.0/venti-stack-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-19T08:21:18.905011946Z"
+generated: "2026-08-18T02:42:58.59764522Z"
