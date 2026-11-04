@@ -1018,3 +1018,21 @@ venti:
     path: /
     pathType: Prefix
     extraPaths: []
+
+  ## Gateway API HTTPRoute (alternative to ingress, same shape as venti.ingress)
+  ## Ref. https://gateway-api.sigs.k8s.io/api-types/httproute/
+  route:
+    enabled: false
+    annotations: {}
+    extraLabels: {}
+    ## Gateways (and listeners) this route attaches to
+    parentRefs: []
+    # - name: gateway
+    #   namespace: nginx-gateway
+    #   sectionName: http
+    ## Hostnames (templated)
+    hosts: []
+    # - venti.domain.com
+    path: /
+    ## PathPrefix | Exact
+    pathType: PathPrefix

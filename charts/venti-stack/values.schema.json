@@ -1562,6 +1562,49 @@
               "default": []
             }
           }
+        },
+        "route": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "annotations": {
+              "type": "object",
+              "default": {}
+            },
+            "extraLabels": {
+              "type": "object",
+              "default": {}
+            },
+            "parentRefs": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "default": []
+            },
+            "hosts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "path": {
+              "type": "string",
+              "default": "/"
+            },
+            "pathType": {
+              "type": "string",
+              "enum": [
+                "PathPrefix",
+                "Exact"
+              ],
+              "default": "PathPrefix"
+            }
+          }
         }
       }
     }
