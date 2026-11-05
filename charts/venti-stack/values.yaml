@@ -1019,20 +1019,21 @@ venti:
     pathType: Prefix
     extraPaths: []
 
-  ## Gateway API HTTPRoute (alternative to ingress, same shape as venti.ingress)
+  ## Gateway API HTTPRoute (alternative to ingress, same keys as prometheus.server.route.main)
   ## Ref. https://gateway-api.sigs.k8s.io/api-types/httproute/
   route:
-    enabled: false
-    annotations: {}
-    extraLabels: {}
-    ## Gateways (and listeners) this route attaches to
-    parentRefs: []
-    # - name: gateway
-    #   namespace: nginx-gateway
-    #   sectionName: http
-    ## Hostnames (templated)
-    hosts: []
-    # - venti.domain.com
-    path: /
-    ## PathPrefix | Exact
-    pathType: PathPrefix
+    main:
+      enabled: false
+      annotations: {}
+      labels: {}
+      ## Gateways (and listeners) this route attaches to
+      parentRefs: []
+      # - name: gateway
+      #   namespace: nginx-gateway
+      #   sectionName: http
+      ## Hostnames (templated)
+      hostnames: []
+      # - venti.domain.com
+      path: /
+      ## PathPrefix | Exact
+      pathType: PathPrefix
