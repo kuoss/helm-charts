@@ -1,35 +1,35 @@
 {{- if .Values.venti.enabled -}}
-{{- if .Values.venti.route.enabled -}}
+{{- if .Values.venti.route.main.enabled -}}
 {{- $serviceName := include "venti.fullname" . }}
 {{- $servicePort := .Values.venti.service.servicePort -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-{{- if .Values.venti.route.annotations }}
+{{- if .Values.venti.route.main.annotations }}
   annotations:
-{{ toYaml .Values.venti.route.annotations | indent 4 }}
+{{ toYaml .Values.venti.route.main.annotations | indent 4 }}
 {{- end }}
   labels:
     {{- include "venti.labels" . | nindent 4 }}
-{{- range $key, $value := .Values.venti.route.extraLabels }}
+{{- range $key, $value := .Values.venti.route.main.labels }}
     {{ $key }}: {{ $value | quote }}
 {{- end }}
   name: {{ template "venti.fullname" . }}
   namespace: {{ template "venti-stack.namespace" . }}
 spec:
-{{- with .Values.venti.route.parentRefs }}
+{{- with .Values.venti.route.main.parentRefs }}
   parentRefs:
 {{ toYaml . | indent 4 }}
 {{- end }}
-{{- with .Values.venti.route.hosts }}
+{{- with .Values.venti.route.main.hostnames }}
   hostnames:
 {{ tpl (toYaml .) $ | indent 4 }}
 {{- end }}
   rules:
     - matches:
         - path:
-            type: {{ .Values.venti.route.pathType }}
-            value: {{ .Values.venti.route.path }}
+            type: {{ .Values.venti.route.main.pathType }}
+            value: {{ .Values.venti.route.main.path }}
       backendRefs:
         - name: {{ $serviceName }}
           port: {{ $servicePort }}

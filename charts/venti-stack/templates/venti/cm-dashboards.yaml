@@ -20,14 +20,14 @@ data:
       - title: apiserver%
         type: stat
         targets:
-        - expr: 100 * up{job="kubernetes-apiservers"}
+        - expr: 100 * up{job="kubernetes-api-servers"}
           thresholds:
           - values: [80,100]
             invert: true
       - title: k8s version
         type: stat
         targets:
-        - expr: kubernetes_build_info{job="kubernetes-apiservers"}
+        - expr: kubernetes_build_info{job="kubernetes-api-servers"}
           legend: "{{`{{`}}git_version{{`}}`}}"
     - panels:
       - title: node
@@ -156,7 +156,7 @@ data:
       - title: apiserver
         type: stat
         targets:
-        - expr: sum(up{job="kubernetes-apiservers"})
+        - expr: sum(up{job="kubernetes-api-servers"})
       - title: controller
         type: stat
         targets:
